@@ -1,6 +1,7 @@
 package mega.triple.aaa.presentation.core.ui.theme
 
 import android.app.Activity
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
@@ -27,15 +28,24 @@ fun lightColors() =
         background = Color(0xFFF3F7FB),
     )
 
+fun darkColors() =
+    Colors(
+        primary = Color(0xFFE30713),
+        secondary = Color(0xFFFFFFFF),
+        tertiary = Color(0xFF1D1B20),
+        background = Color(0xFFF3F7FB),
+    )
+
 @Composable
 fun AAATheme(
+    isDarkMode: Boolean = isSystemInDarkTheme(),
     typography: Typography = AAATheme.typography,
     spaces: Spaces = AAATheme.spaces,
     shapes: Shapes = AAATheme.shapes,
     borders: Borders = AAATheme.borders,
     content: @Composable () -> Unit,
 ) {
-    val colorsTheme = lightColors()
+    val colorsTheme = if (isDarkMode) darkColors() else lightColors()
     val view = LocalView.current
 
     if (!view.isInEditMode) {
