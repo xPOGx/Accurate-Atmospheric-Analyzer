@@ -2,9 +2,7 @@ package mega.triple.aaa.presentation.core.ui.theme
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
-import mega.triple.aaa.presentation.core.ui.theme.components.Borders
 import mega.triple.aaa.presentation.core.ui.theme.components.Colors
-import mega.triple.aaa.presentation.core.ui.theme.components.LocalBorders
 import mega.triple.aaa.presentation.core.ui.theme.components.LocalColors
 import mega.triple.aaa.presentation.core.ui.theme.components.LocalShapes
 import mega.triple.aaa.presentation.core.ui.theme.components.LocalSpaces
@@ -33,9 +31,4 @@ object AAATheme {
         @Composable
         @ReadOnlyComposable
         get() = LocalShapes.current
-
-    val borders: Borders
-        @Composable
-        @ReadOnlyComposable
-        get() = LocalBorders.current
 }

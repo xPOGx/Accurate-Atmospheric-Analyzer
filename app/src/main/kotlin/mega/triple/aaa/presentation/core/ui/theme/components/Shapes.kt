@@ -1,6 +1,5 @@
 package mega.triple.aaa.presentation.core.ui.theme.components
 
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.staticCompositionLocalOf
@@ -11,7 +10,9 @@ class Shapes(
     /**
      * Circular Shape with all the corners sized as the 50 percent of the shape size.
      */
-    val circleShape: RoundedCornerShape = CircleShape,
+    val circleShape: RoundedCornerShape = RoundedCornerShape(50),
+    val tabItemShape: RoundedCornerShape = RoundedCornerShape(14.dp),
+    val toolbarShape: RoundedCornerShape = RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp),
 ) {
     fun roundedCustom(
         topStart: Dp = 0.dp,
