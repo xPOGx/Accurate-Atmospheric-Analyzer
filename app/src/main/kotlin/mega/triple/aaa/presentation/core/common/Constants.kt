@@ -6,4 +6,6 @@ object Constants {
 
     const val ZERO_FLOAT = 0f
     const val FLOAT_180 = 180f
+
+    const val LOCATION_SEPARATOR = ", "
 }

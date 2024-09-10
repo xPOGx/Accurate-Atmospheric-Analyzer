@@ -16,8 +16,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import mega.triple.aaa.R
-import mega.triple.aaa.presentation.core.ui.components.ext.SpacerH
-import mega.triple.aaa.presentation.core.ui.components.ext.SpacerW
+import mega.triple.aaa.presentation.core.ui.components.ext.SpacerHeight
+import mega.triple.aaa.presentation.core.ui.components.ext.SpacerWidth
 import mega.triple.aaa.presentation.core.ui.components.icon.CircleBgIcon
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme.colors
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme.spaces
@@ -41,13 +41,13 @@ fun ForecastCard(
                 modifier = Modifier.padding(start = spaces.size12)
             ) {
                 CircleBgIcon(iconRes = R.drawable.ic_clock)
-                SpacerW(spaces.size8)
+                SpacerWidth(spaces.size8)
                 Text(
                     text = "Hourly forecast",
                     style = typography.ps400size14,
                 )
             }
-            SpacerH(spaces.size16)
+            SpacerHeight(spaces.size16)
             LazyRow(
                 contentPadding = PaddingValues(horizontal = spaces.size20),
                 horizontalArrangement = Arrangement.spacedBy(spaces.size32)
@@ -75,13 +75,13 @@ fun AAAForecastCardItem(
             text = text,
             style = typography.gs400size13
         )
-        SpacerH(spaces.size4)
+        SpacerHeight(spaces.size4)
         Image(
             painter = painterResource(R.drawable.img_weather_temp),
             contentDescription = null,
             modifier = Modifier.size(spaces.size32)
         )
-        SpacerH(spaces.size6)
+        SpacerHeight(spaces.size6)
         Text(
             text = "5°",
             style = typography.gs400size18,

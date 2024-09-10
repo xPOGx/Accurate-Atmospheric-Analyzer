@@ -17,7 +17,6 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.tooling.preview.Preview
 import mega.triple.aaa.R
 import mega.triple.aaa.presentation.core.ui.components.card.ForecastCard
@@ -31,7 +30,9 @@ import mega.triple.aaa.presentation.core.ui.theme.AAATheme.typography
 
 @Composable
 fun HomeScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    locationName: String? = null,
+    navigateToSearch: (() -> Unit)? = null,
 ) {
     val gridState = rememberLazyGridState()
     val compact by remember {
@@ -39,15 +40,19 @@ fun HomeScreen(
             gridState.firstVisibleItemIndex != 0
         }
     }
+
     var selectedIndex by remember { mutableIntStateOf(0) }
+    val changeIndex: ((Int) -> Unit) = { selectedIndex = it }
 
     Scaffold(
         containerColor = colors.background,
         topBar = {
             TopAppBar(
+                locationName = locationName,
                 compact = compact,
                 selectedIndex = selectedIndex,
-                onSelect = { selectedIndex = it },
+                onSelect = changeIndex,
+                onSearch = navigateToSearch
             )
         },
         modifier = modifier.fillMaxSize(),
@@ -66,7 +71,7 @@ fun HomeScreen(
             item(span = allLine) {
                 DayTab(
                     selectedIndex = selectedIndex,
-                    onSelect = { selectedIndex = it },
+                    onSelect = changeIndex,
                     modifier = Modifier
                 )
             }
@@ -120,6 +125,7 @@ fun HomeScreen(
                     descriptionTextStyle = typography.gs500size14,
                     iconRes = R.drawable.ic_night,
                     extra = "N ago" to null,
+                    extraModifier = Modifier.padding(bottom = spaces.size12)
                 )
             }
             item(contentType = "AAACardItem") {
@@ -129,12 +135,12 @@ fun HomeScreen(
                     descriptionTextStyle = typography.gs500size14,
                     iconRes = R.drawable.ic_night,
                     extra = "in N" to null,
+                    extraModifier = Modifier.padding(bottom = spaces.size12),
                 )
             }
         }
     }
 }
-
 
 @Preview
 @Composable

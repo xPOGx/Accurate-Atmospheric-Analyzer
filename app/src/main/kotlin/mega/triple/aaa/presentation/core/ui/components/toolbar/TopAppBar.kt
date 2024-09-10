@@ -41,17 +41,20 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import mega.triple.aaa.R
 import mega.triple.aaa.presentation.core.common.Constants.TOOLBAR_HEIGHT_MAX
 import mega.triple.aaa.presentation.core.common.Constants.TOOLBAR_HEIGHT_MIN
+import mega.triple.aaa.presentation.core.ui.components.ext.SpacerHeight
 import mega.triple.aaa.presentation.core.ui.components.tab.DayTab
 import mega.triple.aaa.presentation.core.ui.ext.formatFeelTemperature
 import mega.triple.aaa.presentation.core.ui.ext.formatPartTemperature
 import mega.triple.aaa.presentation.core.ui.ext.formatTemperature
 import mega.triple.aaa.presentation.core.ui.ext.formatTime
+import mega.triple.aaa.presentation.core.ui.theme.AAATheme
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme.colors
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme.shapes
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme.spaces
@@ -63,7 +66,9 @@ fun TopAppBar(
     modifier: Modifier = Modifier,
     compact: Boolean,
     selectedIndex: Int,
+    locationName: String? = null,
     onSelect: ((Int) -> Unit)? = null,
+    onSearch: (() -> Unit)? = null,
 ) {
     val density = LocalDensity.current
     val cutout = WindowInsets.displayCutout.getTop(density) / density.density
@@ -72,26 +77,27 @@ fun TopAppBar(
 
     val fullColor = colors.white
     val compactColor = colors.black
-    val animateColor = if (compact) compactColor else fullColor
+    val mainColor = if (compact) compactColor else fullColor
+
     val animateHeight by animateDpAsState(
         targetValue = if (compact) min else max,
         label = "animateHeight",
     )
     val animateTempSize by animateIntAsState(
         targetValue = if (compact) 57 else 122,
-        label = "animateTextSize",
+        label = "animateTempSize",
     )
     val animateFeelSize by animateFloatAsState(
         targetValue = if (compact) 16f else 18f,
         label = "animateFeelSize",
     )
-    val animateOffset by animateOffsetAsState(
+    val animateFeelOffset by animateOffsetAsState(
         targetValue = if (compact) {
             Offset(0f, -(10 * density.density))
         } else {
             Offset(-(20 * density.density), -(30 * density.density))
         },
-        label = "animateOffset",
+        label = "animateFeelOffset",
     )
     val animateImageSize by animateDpAsState(
         targetValue = if (compact) 60.dp else 108.dp,
@@ -103,7 +109,7 @@ fun TopAppBar(
     )
     val mainShape = shapes.roundedCustom(
         bottomStart = animateShapeSize,
-        bottomEnd = animateShapeSize,
+        bottomEnd = animateShapeSize
     )
 
     Column(
@@ -145,15 +151,15 @@ fun TopAppBar(
                         .padding(start = spaces.size24),
                 ) {
                     Text(
-                        "Kharkiv, Ukraine",
-                        color = animateColor,
+                        text = locationName ?: "Kharkiv, Ukraine",
+                        color = mainColor,
                         style = typography.ps400size22,
                     )
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = { onSearch?.invoke() }) {
                         Icon(
                             painter = painterResource(R.drawable.ic_search),
                             contentDescription = null,
-                            tint = animateColor,
+                            tint = mainColor,
                         )
                     }
                 }
@@ -164,15 +170,15 @@ fun TopAppBar(
                     Text(
                         text = formatTemperature(3),
                         style = typography.ps400size14.copy(fontSize = animateTempSize.sp),
-                        color = animateColor,
+                        color = mainColor,
                     )
                     Text(text = formatFeelTemperature(-2),
                         style = typography.ps400size18.copy(fontSize = animateFeelSize.sp),
-                        color = animateColor,
+                        color = mainColor,
                         modifier = Modifier
                             .graphicsLayer {
-                                translationX = animateOffset.x
-                                translationY = animateOffset.y
+                                translationX = animateFeelOffset.x
+                                translationY = animateFeelOffset.y
                             }
                             .align(Alignment.Bottom))
                     Spacer(modifier = Modifier.weight(1f))
@@ -185,7 +191,7 @@ fun TopAppBar(
                             contentDescription = null,
                             modifier = Modifier.size(animateImageSize)
                         )
-                        Spacer(modifier = Modifier.height(spaces.size16))
+                        SpacerHeight(spaces.size16)
                         AnimatedVisibility(
                             visible = !compact,
                             modifier = Modifier.align(Alignment.CenterHorizontally)
@@ -251,5 +257,27 @@ fun TopAppBar(
                 }
             }
         }
+    }
+}
+
+@Preview
+@Composable
+private fun TopAppBarPreview() {
+    AAATheme {
+        TopAppBar(
+            compact = false,
+            selectedIndex = 0,
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun TopAppBarPreviewCompact() {
+    AAATheme {
+        TopAppBar(
+            compact = true,
+            selectedIndex = 0,
+        )
     }
 }

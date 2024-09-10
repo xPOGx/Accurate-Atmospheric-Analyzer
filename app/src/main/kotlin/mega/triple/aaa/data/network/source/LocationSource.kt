@@ -6,16 +6,16 @@ import mega.triple.aaa.data.network.response.CountryResponse
 
 interface LocationSource {
     suspend fun getContinents(
-        language: String,
+        language: String = "uk-ua",
     ): Result<List<ContinentResponse>>
 
     suspend fun getCountries(
-        language: String,
+        language: String = "uk-ua",
         continentId: String,
     ): Result<List<CountryResponse>>
 
     suspend fun getCities(
-        language: String,
+        language: String = "uk-ua",
         countryId: String,
     ): Result<List<CityResponse>>
 }

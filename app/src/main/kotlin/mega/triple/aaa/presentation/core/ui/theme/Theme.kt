@@ -20,9 +20,6 @@ import mega.triple.aaa.presentation.core.ui.theme.components.Typography
 
 fun lightColors() =
     Colors(
-        primary = Color.Red,
-        secondary = Color.Green,
-        tertiary = Color.Blue,
         white = Color.White,
         black = Color.Black,
         background = Color(0xFFF6EDFF),

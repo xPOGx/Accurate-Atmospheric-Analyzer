@@ -7,9 +7,12 @@ import androidx.activity.enableEdgeToEdge
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import mega.triple.aaa.presentation.feature.home.HomeScreen
+import androidx.navigation.compose.rememberNavController
+import dagger.hilt.android.AndroidEntryPoint
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme
+import mega.triple.aaa.presentation.navigation.AAANavHost
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,8 +29,10 @@ class MainActivity : ComponentActivity() {
 
         // Content
         setContent {
+            val navHostController = rememberNavController()
+
             AAATheme {
-                HomeScreen()
+                AAANavHost(navHostController = navHostController)
             }
         }
     }

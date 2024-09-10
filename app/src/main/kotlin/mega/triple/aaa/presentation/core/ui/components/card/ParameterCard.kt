@@ -4,12 +4,10 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Card
@@ -22,8 +20,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import mega.triple.aaa.R
 import mega.triple.aaa.presentation.core.common.Constants
+import mega.triple.aaa.presentation.core.ui.components.ext.SpacerHeight
+import mega.triple.aaa.presentation.core.ui.components.ext.SpacerWidth
 import mega.triple.aaa.presentation.core.ui.components.icon.CircleBgIcon
+import mega.triple.aaa.presentation.core.ui.theme.AAATheme
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme.colors
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme.spaces
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme.typography
@@ -31,6 +35,7 @@ import mega.triple.aaa.presentation.core.ui.theme.AAATheme.typography
 @Composable
 fun ParameterCard(
     modifier: Modifier = Modifier,
+    extraModifier: Modifier = Modifier,
     title: String,
     description: String,
     descriptionTextStyle: TextStyle = typography.gs400size16,
@@ -44,23 +49,21 @@ fun ParameterCard(
         ),
         modifier = modifier,
     ) {
-        Box(
-            modifier = Modifier
-                .padding(
-                    vertical = spaces.size8,
-                    horizontal = spaces.size12,
-                )
-                .fillMaxSize()
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+        Box {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .padding(spaces.size12)
+                    .fillMaxWidth()
+            ) {
                 CircleBgIcon(iconRes = iconRes)
-                Spacer(modifier = Modifier.width(spaces.size8))
+                SpacerWidth(spaces.size8)
                 Column {
                     Text(
                         text = title,
                         style = typography.ps400size14,
                     )
-                    Spacer(modifier = Modifier.height(spaces.size4))
+                    SpacerHeight(spaces.size4)
                     Text(
                         text = description,
                         style = descriptionTextStyle,
@@ -70,7 +73,9 @@ fun ParameterCard(
             AAACardExtra(
                 text = extra.first,
                 isPositive = extra.second,
-                modifier = Modifier.align(Alignment.BottomEnd)
+                modifier = extraModifier
+                    .align(Alignment.BottomEnd)
+                    .padding(end = spaces.size12)
             )
         }
     }
@@ -110,6 +115,19 @@ fun AAACardExtra(
         Text(
             text = text,
             style = typography.gs500size11,
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun ParameterCardPreview() {
+    AAATheme {
+        ParameterCard(
+            title = "Title",
+            description = "Description",
+            iconRes = R.drawable.ic_sun,
+            extra = "Extra" to true,
         )
     }
 }
