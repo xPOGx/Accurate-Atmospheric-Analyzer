@@ -15,8 +15,8 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
 import mega.triple.aaa.data.network.api.LocationService
 import mega.triple.aaa.data.network.api.impl.LocationServiceImpl
-import mega.triple.aaa.data.network.source.LocationSource
-import mega.triple.aaa.data.network.source.impl.LocationSourceImpl
+import mega.triple.aaa.data.network.source.LocationNetSource
+import mega.triple.aaa.data.network.source.impl.LocationNetSourceImpl
 import okhttp3.Interceptor
 
 @Module
@@ -59,7 +59,7 @@ object NetworkModule {
     ): LocationService = LocationServiceImpl(httpClient)
 
     @Provides
-    fun provideLocationSource(
+    fun provideLocationNetSource(
         apiService: LocationService
-    ): LocationSource = LocationSourceImpl(apiService)
+    ): LocationNetSource = LocationNetSourceImpl(apiService)
 }

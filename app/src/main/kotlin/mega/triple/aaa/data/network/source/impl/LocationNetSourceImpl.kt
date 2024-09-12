@@ -5,12 +5,12 @@ import mega.triple.aaa.data.network.api.ext.safeResultCall
 import mega.triple.aaa.data.network.response.CityResponse
 import mega.triple.aaa.data.network.response.ContinentResponse
 import mega.triple.aaa.data.network.response.CountryResponse
-import mega.triple.aaa.data.network.source.LocationSource
+import mega.triple.aaa.data.network.source.LocationNetSource
 import javax.inject.Inject
 
-class LocationSourceImpl @Inject constructor(
+class LocationNetSourceImpl @Inject constructor(
     private val apiService: LocationService
-) : LocationSource {
+) : LocationNetSource {
     override suspend fun getContinents(language: String): Result<List<ContinentResponse>> =
         safeResultCall {
             apiService.getContinents(language)

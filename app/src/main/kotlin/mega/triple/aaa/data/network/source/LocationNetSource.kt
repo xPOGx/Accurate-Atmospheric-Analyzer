@@ -4,7 +4,7 @@ import mega.triple.aaa.data.network.response.CityResponse
 import mega.triple.aaa.data.network.response.ContinentResponse
 import mega.triple.aaa.data.network.response.CountryResponse
 
-interface LocationSource {
+interface LocationNetSource {
     suspend fun getContinents(
         language: String = "uk-ua",
     ): Result<List<ContinentResponse>>

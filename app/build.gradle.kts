@@ -2,7 +2,9 @@ plugins {
     // CORE
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    // In kotlin 2+ need compose plugin
     alias(libs.plugins.jetbrains.kotlin.compose)
+    // Serialization
     alias(libs.plugins.jetbrains.kotlin.serialization)
     // HILT
     alias(libs.plugins.dagger.hilt)
@@ -75,6 +77,10 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
+    // Room
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
 }
 
 secrets {

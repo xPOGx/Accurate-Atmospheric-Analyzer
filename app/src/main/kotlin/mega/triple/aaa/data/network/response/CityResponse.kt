@@ -13,7 +13,7 @@ data class CityResponse(
     @SerialName("EnglishType")
     val englishType: String?,
     @SerialName("ID")
-    val iD: String?,
+    val id: String?,
     @SerialName("Level")
     val level: Int?,
     @SerialName("LocalizedName")
