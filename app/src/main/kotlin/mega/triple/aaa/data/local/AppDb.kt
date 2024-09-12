@@ -11,7 +11,7 @@ import mega.triple.aaa.data.local.model.CityDbModel
 import mega.triple.aaa.data.local.model.ContinentDbModel
 import mega.triple.aaa.data.local.model.CountryDbModel
 
-const val DB_VERSION = 0
+const val DB_VERSION = 1
 
 @Database(
     version = DB_VERSION,

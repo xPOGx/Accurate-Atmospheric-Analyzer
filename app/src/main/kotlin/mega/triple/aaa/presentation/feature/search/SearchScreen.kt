@@ -8,6 +8,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -41,6 +42,7 @@ import mega.triple.aaa.presentation.core.ui.theme.AAATheme.colors
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme.spaces
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme.typography
 import mega.triple.aaa.presentation.feature.search.components.LocationChooseCard
+import mega.triple.aaa.presentation.feature.search.ext.SearchAction
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -48,11 +50,11 @@ fun SearchScreen(
     modifier: Modifier = Modifier,
     uiState: SearchUiState = SearchUiState(),
     loadList: ((LocationType) -> Unit)? = null,
-    updateUiState: ((SearchUiState) -> Unit)? = null,
+    onAction: ((SearchAction) -> Unit)? = null,
     onNavigateBack: (() -> Unit)? = null,
 ) {
     var editMode: LocationType? by remember { mutableStateOf(null) }
-    val isSaveVisible = uiState.locationUiModel.city != null && editMode == null
+    val isSaveVisible = uiState.location.city != null && editMode == null
 
     Scaffold(
         topBar = {
@@ -98,35 +100,19 @@ fun SearchScreen(
                         SpacerHeight(height = spaces.size8)
                         LazyColumn(
                             verticalArrangement = Arrangement.spacedBy(spaces.size8),
+                            contentPadding = PaddingValues(bottom = spaces.size16)
                         ) {
-                            items(items = uiState.locationList) {
-                                LocationCard(title = it) {
-                                    val model = uiState.locationUiModel
-
-                                    updateUiState?.invoke(
-                                        uiState.copy(
-                                            locationList = emptyList(),
-                                            locationUiModel = when (editMode) {
-                                                CONTINENT ->
-                                                    model.copy(
-                                                        continent = it,
-                                                        country = null,
-                                                        city = null,
-                                                    )
-
-                                                COUNTRY ->
-                                                    model.copy(
-                                                        country = it,
-                                                        city = null,
-                                                    )
-
-                                                CITY ->
-                                                    model.copy(city = it)
-
-                                                else -> model
+                            items(items = uiState.locationList) { (id, title) ->
+                                LocationCard(title = title ?: "Empty Name") {
+                                    editMode?.let { mode ->
+                                        onAction?.invoke(
+                                            when (mode) {
+                                                CONTINENT -> SearchAction.Continent(id)
+                                                COUNTRY -> SearchAction.Country(id)
+                                                CITY -> SearchAction.City(id)
                                             }
                                         )
-                                    )
+                                    }
 
                                     editMode = null
                                 }
@@ -137,24 +123,24 @@ fun SearchScreen(
                     Column(verticalArrangement = Arrangement.spacedBy(spaces.size8)) {
                         LocationChooseCard(
                             title = "Continent",
-                            value = uiState.locationUiModel.continent,
+                            value = uiState.location.continent?.englishName,
                         ) {
                             editMode = CONTINENT
                             loadList?.invoke(CONTINENT)
                         }
-                        uiState.locationUiModel.continent?.let {
+                        uiState.location.continent?.let {
                             LocationChooseCard(
                                 title = "Country",
-                                value = uiState.locationUiModel.country,
+                                value = uiState.location.country?.englishName,
                             ) {
                                 editMode = COUNTRY
                                 loadList?.invoke(COUNTRY)
                             }
                         }
-                        uiState.locationUiModel.country?.let {
+                        uiState.location.country?.let {
                             LocationChooseCard(
                                 title = "City",
-                                value = uiState.locationUiModel.city,
+                                value = uiState.location.city?.englishName,
                             ) {
                                 editMode = CITY
                                 loadList?.invoke(CITY)

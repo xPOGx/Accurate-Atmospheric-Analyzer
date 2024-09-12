@@ -3,6 +3,7 @@ package mega.triple.aaa.domain.location
 import kotlinx.coroutines.flow.first
 import mega.triple.aaa.data.local.source.LocationDbSource
 import mega.triple.aaa.data.network.source.LocationNetSource
+import mega.triple.aaa.domain.ext.DB_EMPTY
 import mega.triple.aaa.domain.location.model.CountryDomainModel
 import mega.triple.aaa.domain.location.model.CountryDomainModel.Companion.toDbModel
 import mega.triple.aaa.domain.location.model.CountryDomainModel.Companion.toDomainModel
@@ -16,7 +17,7 @@ class GetCountriesUseCase @Inject constructor(
         return try {
             val dbModels = locationDbSource.getCountries(continentId).first()
             if (dbModels.isEmpty()) {
-                throw IllegalStateException("Database is empty")
+                throw IllegalStateException(DB_EMPTY)
             } else {
                 val domainModels = dbModels.map { it.toDomainModel() }
                 Result.success(domainModels)

@@ -41,7 +41,7 @@ fun AAANavHost(
             SearchScreen(
                 uiState = uiState,
                 loadList = viewModel::loadList,
-                updateUiState = { viewModel.updateUiState(it) },
+                onAction = viewModel::onAction,
                 onNavigateBack = { navHostController.navigateUp() }
             )
         }

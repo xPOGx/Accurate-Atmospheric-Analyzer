@@ -8,4 +8,5 @@ object Constants {
     const val FLOAT_180 = 180f
 
     const val LOCATION_SEPARATOR = ", "
+    const val UNDERSCORE = "_"
 }

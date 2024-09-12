@@ -12,7 +12,7 @@ data class CityDbModel(
     @ColumnInfo("id")
     val id: String,
     @ColumnInfo("country_id")
-    val countryID: String,
+    val countryID: String?,
     @ColumnInfo("english_name")
     val englishName: String?,
     @ColumnInfo("english_type")

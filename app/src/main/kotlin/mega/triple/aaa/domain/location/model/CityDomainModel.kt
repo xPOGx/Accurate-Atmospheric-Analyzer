@@ -2,11 +2,11 @@ package mega.triple.aaa.domain.location.model
 
 import mega.triple.aaa.data.local.model.CityDbModel
 import mega.triple.aaa.data.network.response.CityResponse
-import mega.triple.aaa.domain.ext.validateNotNull
+import mega.triple.aaa.presentation.core.common.Constants.UNDERSCORE
 
 data class CityDomainModel(
     val id: String,
-    val countryID: String,
+    val countryID: String?,
     val englishName: String?,
     val englishType: String?,
     val level: Int?,
@@ -25,9 +25,9 @@ data class CityDomainModel(
                 localizedType = localizedType,
             )
 
-        fun CityResponse.toDbModel(countryID: String): CityDbModel =
+        fun CityResponse.toDbModel(continentId: String): CityDbModel =
             CityDbModel(
-                id = validateNotNull(id),
+                id = createUuid(continentId, countryID, id),
                 countryID = countryID,
                 englishName = englishName,
                 englishType = englishType,
@@ -35,5 +35,14 @@ data class CityDomainModel(
                 localizedName = localizedName,
                 localizedType = localizedType,
             )
+
+        private fun createUuid(continentId: String, countryId: String?, cityId: String?) =
+            buildString {
+                append(continentId)
+                append(UNDERSCORE)
+                append(countryId)
+                append(UNDERSCORE)
+                append(cityId)
+            }
     }
 }
