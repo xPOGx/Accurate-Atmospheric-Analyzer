@@ -11,10 +11,10 @@ data class CountryDbModel(
     @PrimaryKey
     @ColumnInfo("id")
     val id: String,
+    @ColumnInfo("continent_id")
+    val continentId: String,
     @ColumnInfo("english_name")
     val englishName: String?,
-    @ColumnInfo("continent_id")
-    val continentId: String?,
     @ColumnInfo("localized_name")
     val localizedName: String?,
 )
