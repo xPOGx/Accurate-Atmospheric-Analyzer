@@ -34,6 +34,11 @@ data class Typography(
         fontWeight = FontWeight.W700,
         fontFamily = productSansFamily,
     ),
+    val ps700size36: TextStyle = TextStyle(
+        fontSize = 36.sp,
+        fontWeight = FontWeight.W700,
+        fontFamily = productSansFamily,
+    ),
     val gs400size16: TextStyle = TextStyle(
         fontSize = 16.sp,
         fontWeight = FontWeight.W400,

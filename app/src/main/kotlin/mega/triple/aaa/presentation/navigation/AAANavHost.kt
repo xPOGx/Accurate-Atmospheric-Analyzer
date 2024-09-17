@@ -37,9 +37,11 @@ fun AAANavHost(
         ) {
             val viewModel = hiltViewModel<SearchViewModel>()
             val uiState by viewModel.uiState.collectAsState()
+            val uiStatus by viewModel.uiStatus.collectAsState()
 
             SearchScreen(
                 uiState = uiState,
+                uiStatus = uiStatus,
                 loadList = viewModel::loadList,
                 onAction = viewModel::onAction,
                 onNavigateBack = { navHostController.navigateUp() }

@@ -14,6 +14,7 @@ import mega.triple.aaa.presentation.core.ui.ext.LocationType
 import mega.triple.aaa.presentation.core.ui.ext.LocationType.CITY
 import mega.triple.aaa.presentation.core.ui.ext.LocationType.CONTINENT
 import mega.triple.aaa.presentation.core.ui.ext.LocationType.COUNTRY
+import mega.triple.aaa.presentation.core.ui.ext.UiStatus
 import mega.triple.aaa.presentation.core.ui.model.CityUiModel.Companion.toUiModel
 import mega.triple.aaa.presentation.core.ui.model.ContinentUiModel.Companion.toUiModel
 import mega.triple.aaa.presentation.core.ui.model.CountryUiModel.Companion.toUiModel
@@ -30,7 +31,11 @@ class SearchViewModel @Inject constructor(
     private val _uiState: MutableStateFlow<SearchUiState> = MutableStateFlow(SearchUiState())
     val uiState = _uiState.asStateFlow()
 
+    private val _uiStatus: MutableStateFlow<UiStatus> = MutableStateFlow(UiStatus.DONE)
+    val uiStatus = _uiStatus.asStateFlow()
+
     fun loadList(type: LocationType) {
+        _uiStatus.update { UiStatus.LOADING }
         viewModelScope.launch {
             when (type) {
                 CONTINENT -> {
@@ -43,9 +48,11 @@ class SearchViewModel @Inject constructor(
                         _uiState.update {
                             it.copy(locationList = locationList)
                         }
-                    }.onFailure {
-                        // TODO uiEvent error
-                        val t = it
+                        _uiStatus.update { UiStatus.DONE }
+                    }.onFailure { e ->
+                        _uiStatus.update {
+                            UiStatus.ERROR(e.message) { loadList(type) }
+                        }
                     }
                 }
 
@@ -60,9 +67,11 @@ class SearchViewModel @Inject constructor(
                         _uiState.update {
                             it.copy(locationList = locationList)
                         }
-                    }.onFailure {
-                        // TODO uiEvent error
-                        val t = it
+                        _uiStatus.update { UiStatus.DONE }
+                    }.onFailure { e ->
+                        _uiStatus.update {
+                            UiStatus.ERROR(e.message) { loadList(type) }
+                        }
                     }
                 }
 
@@ -78,9 +87,11 @@ class SearchViewModel @Inject constructor(
                         _uiState.update {
                             it.copy(locationList = locationList)
                         }
-                    }.onFailure {
-                        // TODO uiEvent error
-                        val t = it
+                        _uiStatus.update { UiStatus.DONE }
+                    }.onFailure { e ->
+                        _uiStatus.update {
+                            UiStatus.ERROR(e.message) { loadList(type) }
+                        }
                     }
                 }
             }
@@ -98,7 +109,6 @@ class SearchViewModel @Inject constructor(
 
                     _uiState.update { state ->
                         state.copy(
-                            locationList = emptyList(),
                             location = LocationWrapper(continent = continent),
                         )
                     }
@@ -113,7 +123,6 @@ class SearchViewModel @Inject constructor(
 
                     _uiState.update { state ->
                         state.copy(
-                            locationList = emptyList(),
                             location = state.location.copy(
                                 country = country,
                                 city = null,
@@ -132,7 +141,6 @@ class SearchViewModel @Inject constructor(
 
                     _uiState.update { state ->
                         state.copy(
-                            locationList = emptyList(),
                             location = state.location.copy(
                                 city = city,
                             )

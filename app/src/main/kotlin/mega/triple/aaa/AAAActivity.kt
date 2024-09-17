@@ -13,7 +13,7 @@ import mega.triple.aaa.presentation.core.ui.theme.AAATheme
 import mega.triple.aaa.presentation.navigation.AAANavHost
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class AAAActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
