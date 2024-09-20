@@ -2,7 +2,9 @@ package mega.triple.aaa.domain.location.model
 
 import mega.triple.aaa.data.local.model.CityDbModel
 import mega.triple.aaa.data.network.response.CityResponse
+import mega.triple.aaa.data.proto.CityProto
 import mega.triple.aaa.presentation.core.common.Constants.UNDERSCORE
+import mega.triple.aaa.presentation.core.ui.model.CityUiModel
 
 data class CityDomainModel(
     val id: String,
@@ -29,6 +31,28 @@ data class CityDomainModel(
             CityDbModel(
                 id = createUuid(continentId, countryID, id),
                 countryID = countryID,
+                englishName = englishName,
+                englishType = englishType,
+                level = level,
+                localizedName = localizedName,
+                localizedType = localizedType,
+            )
+
+        fun CityDomainModel.toProtoModel(): CityProto =
+            CityProto.newBuilder()
+                .setId(id)
+                .setCountryId(countryID)
+                .setEnglishName(englishName)
+                .setEnglishType(englishType)
+                .setLevel(level ?: 0)
+                .setLocalizedName(localizedName)
+                .setLocalizedType(localizedType)
+                .build()
+
+        fun CityProto.toDomainModel(): CityDomainModel =
+            CityDomainModel(
+                id = id,
+                countryID = countryId,
                 englishName = englishName,
                 englishType = englishType,
                 level = level,
