@@ -1,5 +1,6 @@
 [versions]
 agp = "8.5.2"
+datastore = "1.1.1"
 hiltAndroid = "2.51.1"
 hiltCompiler = "2.51.1"
 hiltNavigationCompose = "1.2.0"
@@ -7,20 +8,23 @@ kotlin = "2.0.10"
 coreKtx = "1.13.1"
 kotlinxSerializationJson = "1.7.1"
 kotlinxSerializationJsonPlugin = "2.0.20"
-lifecycleRuntimeKtx = "2.8.5"
+lifecycleRuntimeKtx = "2.8.6"
 activityCompose = "1.9.2"
-composeBom = "2024.09.00"
+composeBom = "2024.09.02"
 daggerHilt = "2.51.1"
 ksp = "2.0.10-1.0.24"
 ktor = "2.3.9"
 chucker = "4.0.0"
-navigationCompose = "2.8.0"
+navigationCompose = "2.8.1"
+protobufJavalite = "3.18.0"
 room = "2.6.1"
 secretsGradlePlugin = "2.0.1"
+protobufPlugin = "0.9.4"
 
 [libraries]
 # Core
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "datastore" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
@@ -49,6 +53,7 @@ chucker = { module = "com.github.chuckerteam.chucker:library", version.ref = "ch
 
 # 3d party
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+protobuf-javalite = { module = "com.google.protobuf:protobuf-javalite", version.ref = "protobufJavalite" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -59,6 +64,8 @@ secrets-gradle-plugin = { id = "com.google.android.libraries.mapsplatform.secret
 
 dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "daggerHilt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+
+protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }
 
 [bundles]
 network = ["io-ktor-client-core", "io-ktor-client-okhttp", "io-ktor-client-content-negotiation", "io-ktor-serialization-json", "kotlinx-serialization-json", "chucker"]

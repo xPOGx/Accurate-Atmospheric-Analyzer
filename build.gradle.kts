@@ -5,4 +5,5 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.compose) apply false
     alias(libs.plugins.dagger.hilt) apply false
     alias(libs.plugins.ksp) apply false
+    alias(libs.plugins.protobuf) apply false
 }

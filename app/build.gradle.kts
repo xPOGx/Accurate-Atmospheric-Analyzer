@@ -11,6 +11,8 @@ plugins {
     alias(libs.plugins.ksp)
     // 3d party
     alias(libs.plugins.secrets.gradle.plugin)
+    // Datastore
+    alias(libs.plugins.protobuf)
 }
 
 android {
@@ -81,6 +83,9 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
+    // Datastore
+    implementation(libs.androidx.datastore)
+    implementation(libs.protobuf.javalite)
 }
 
 secrets {
@@ -98,4 +103,19 @@ secrets {
     // "sdk.dir" is ignored by default.
     ignoreList.add("keyToIgnore") // Ignore the key "keyToIgnore"
     ignoreList.add("sdk.*")       // Ignore all keys matching the regexp "sdk.*"
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.14.0"
+    }
+    generateProtoTasks {
+        all().forEach { task ->
+            task.builtins {
+                create("java") {
+                    option("lite")
+                }
+            }
+        }
+    }
 }
