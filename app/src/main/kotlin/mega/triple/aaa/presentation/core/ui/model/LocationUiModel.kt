@@ -2,7 +2,7 @@ package mega.triple.aaa.presentation.core.ui.model
 
 import mega.triple.aaa.presentation.core.common.Constants.LOCATION_SEPARATOR
 
-data class LocationWrapper(
+data class LocationUiModel(
     val continent: ContinentUiModel? = null,
     val country: CountryUiModel? = null,
     val city: CityUiModel? = null,

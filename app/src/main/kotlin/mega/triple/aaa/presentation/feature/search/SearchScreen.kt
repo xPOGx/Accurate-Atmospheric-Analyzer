@@ -21,7 +21,6 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,30 +31,27 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import mega.triple.aaa.presentation.core.ui.components.card.ErrorCard
 import mega.triple.aaa.presentation.core.ui.components.card.LocationCard
 import mega.triple.aaa.presentation.core.ui.components.ext.SpacerHeight
 import mega.triple.aaa.presentation.core.ui.ext.LocationType
 import mega.triple.aaa.presentation.core.ui.ext.LocationType.CITY
 import mega.triple.aaa.presentation.core.ui.ext.LocationType.CONTINENT
 import mega.triple.aaa.presentation.core.ui.ext.LocationType.COUNTRY
-import mega.triple.aaa.presentation.core.ui.ext.UiStatus
+import mega.triple.aaa.presentation.core.ui.ext.render
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme.colors
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme.spaces
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme.typography
 import mega.triple.aaa.presentation.feature.search.components.LocationChooseCard
 import mega.triple.aaa.presentation.feature.search.ext.SearchAction
+import mega.triple.aaa.presentation.feature.search.ext.SearchAction.OnNavigateBack
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
     modifier: Modifier = Modifier,
     uiState: SearchUiState = SearchUiState(),
-    uiStatus: UiStatus = UiStatus.DONE,
-    loadList: ((LocationType) -> Unit)? = null,
     onAction: ((SearchAction) -> Unit)? = null,
-    onNavigateBack: (() -> Unit)? = null,
 ) {
     var editMode: LocationType? by remember { mutableStateOf(null) }
 
@@ -70,7 +66,7 @@ fun SearchScreen(
                 },
                 navigationIcon = {
                     IconButton(
-                        onClick = { onNavigateBack?.invoke() },
+                        onClick = { onAction?.invoke(OnNavigateBack) },
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Default.ArrowBack,
@@ -99,39 +95,25 @@ fun SearchScreen(
                             title = "Go back",
                             modifier = Modifier.fillMaxWidth(.5f),
                         ) { editMode = null }
-                        when (uiStatus) {
-                            UiStatus.LOADING -> {
-                                LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-                            }
-
-                            is UiStatus.ERROR -> {
-                                ErrorCard(
-                                    errorMsg = uiStatus.error,
-                                    onTryAgain = uiStatus.onTryAgain,
-                                )
-                            }
-
-                            UiStatus.DONE -> {
-                                SpacerHeight(height = spaces.size8)
-                                LazyColumn(
-                                    verticalArrangement = Arrangement.spacedBy(spaces.size8),
-                                    contentPadding = PaddingValues(bottom = spaces.size16),
-                                    modifier = Modifier.padding(horizontal = spaces.size16)
-                                ) {
-                                    items(items = uiState.locationList) { (id, title) ->
-                                        LocationCard(title = title ?: "Empty Name") {
-                                            editMode?.let { mode ->
-                                                onAction?.invoke(
-                                                    when (mode) {
-                                                        CONTINENT -> SearchAction.Continent(id)
-                                                        COUNTRY -> SearchAction.Country(id)
-                                                        CITY -> SearchAction.City(id)
-                                                    }
-                                                )
-                                            }
-
-                                            editMode = null
+                        uiState.locationList.render {
+                            SpacerHeight(height = spaces.size8)
+                            LazyColumn(
+                                verticalArrangement = Arrangement.spacedBy(spaces.size8),
+                                contentPadding = PaddingValues(bottom = spaces.size16),
+                                modifier = Modifier.padding(horizontal = spaces.size16)
+                            ) {
+                                items(items = it) { (id, title) ->
+                                    LocationCard(title = title ?: "Empty Name") {
+                                        editMode?.let { mode ->
+                                            onAction?.invoke(
+                                                when (mode) {
+                                                    CONTINENT -> SearchAction.SaveContinent(id)
+                                                    COUNTRY -> SearchAction.SaveCountry(id)
+                                                    CITY -> SearchAction.SaveCity(id)
+                                                }
+                                            )
                                         }
+                                        editMode = null
                                     }
                                 }
                             }
@@ -147,7 +129,7 @@ fun SearchScreen(
                             value = uiState.location.continent?.englishName,
                         ) {
                             editMode = CONTINENT
-                            loadList?.invoke(CONTINENT)
+                            onAction?.invoke(SearchAction.LoadLocations(CONTINENT))
                         }
                         uiState.location.continent?.let {
                             LocationChooseCard(
@@ -155,16 +137,18 @@ fun SearchScreen(
                                 value = uiState.location.country?.englishName,
                             ) {
                                 editMode = COUNTRY
-                                loadList?.invoke(COUNTRY)
+                                onAction?.invoke(SearchAction.LoadLocations(COUNTRY))
                             }
                         }
                         uiState.location.country?.let {
                             LocationChooseCard(
                                 title = "City",
-                                value = uiState.location.city?.englishName,
+                                value = uiState.location.city?.let {
+                                    "${it.englishName} - ${it.englishType}"
+                                },
                             ) {
                                 editMode = CITY
-                                loadList?.invoke(CITY)
+                                onAction?.invoke(SearchAction.LoadLocations(CITY))
                             }
                         }
                     }
@@ -180,8 +164,7 @@ fun SearchScreen(
                     .padding(bottom = spaces.size24),
             ) {
                 LocationCard(title = "Save Changes") {
-                    /* TODO action */
-                    onNavigateBack?.invoke()
+                    onAction?.invoke(SearchAction.SaveAll)
                 }
             }
         }

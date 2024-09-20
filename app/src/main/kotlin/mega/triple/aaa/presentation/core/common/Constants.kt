@@ -1,8 +1,8 @@
 package mega.triple.aaa.presentation.core.common
 
 object Constants {
-    const val TOOLBAR_HEIGHT_MIN = 176
-    const val TOOLBAR_HEIGHT_MAX = 360
+    const val TOOLBAR_HEIGHT_MIN = 180
+    const val TOOLBAR_HEIGHT_MAX = TOOLBAR_HEIGHT_MIN * 2
 
     const val ZERO_FLOAT = 0f
     const val FLOAT_180 = 180f

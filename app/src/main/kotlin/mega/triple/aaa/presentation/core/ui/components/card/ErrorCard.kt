@@ -57,8 +57,10 @@ fun ErrorCard(
                     text = errorMsg,
                     style = typography.gs400size18
                 )
-                TextButton(onClick = { onTryAgain?.invoke() }) {
-                    Text(text = "Try again")
+                onTryAgain?.let {
+                    TextButton(onClick = onTryAgain) {
+                        Text(text = "Try again")
+                    }
                 }
             }
         }

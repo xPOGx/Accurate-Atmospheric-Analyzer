@@ -3,10 +3,11 @@ package mega.triple.aaa.presentation.navigation
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -36,15 +37,17 @@ fun AAANavHost(
             exitTransition = { slideOutHorizontally { it } },
         ) {
             val viewModel = hiltViewModel<SearchViewModel>()
-            val uiState by viewModel.uiState.collectAsState()
-            val uiStatus by viewModel.uiStatus.collectAsState()
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+            LaunchedEffect("eventHandler") {
+                viewModel.onNavigationBack.collect {
+                    navHostController.navigateUp()
+                }
+            }
 
             SearchScreen(
                 uiState = uiState,
-                uiStatus = uiStatus,
-                loadList = viewModel::loadList,
                 onAction = viewModel::onAction,
-                onNavigateBack = { navHostController.navigateUp() }
             )
         }
     }

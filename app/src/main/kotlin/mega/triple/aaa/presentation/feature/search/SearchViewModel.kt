@@ -14,11 +14,12 @@ import mega.triple.aaa.presentation.core.ui.ext.LocationType
 import mega.triple.aaa.presentation.core.ui.ext.LocationType.CITY
 import mega.triple.aaa.presentation.core.ui.ext.LocationType.CONTINENT
 import mega.triple.aaa.presentation.core.ui.ext.LocationType.COUNTRY
-import mega.triple.aaa.presentation.core.ui.ext.UiStatus
+import mega.triple.aaa.presentation.core.ui.ext.SingleEvent
+import mega.triple.aaa.presentation.core.ui.ext.UI
 import mega.triple.aaa.presentation.core.ui.model.CityUiModel.Companion.toUiModel
 import mega.triple.aaa.presentation.core.ui.model.ContinentUiModel.Companion.toUiModel
 import mega.triple.aaa.presentation.core.ui.model.CountryUiModel.Companion.toUiModel
-import mega.triple.aaa.presentation.core.ui.model.LocationWrapper
+import mega.triple.aaa.presentation.core.ui.model.LocationUiModel
 import mega.triple.aaa.presentation.feature.search.ext.SearchAction
 import javax.inject.Inject
 
@@ -28,123 +29,140 @@ class SearchViewModel @Inject constructor(
     private val getCountriesUseCase: GetCountriesUseCase,
     private val getCitiesUseCase: GetCitiesUseCase,
 ) : ViewModel() {
+    // FLOWS
     private val _uiState: MutableStateFlow<SearchUiState> = MutableStateFlow(SearchUiState())
     val uiState = _uiState.asStateFlow()
 
-    private val _uiStatus: MutableStateFlow<UiStatus> = MutableStateFlow(UiStatus.DONE)
-    val uiStatus = _uiStatus.asStateFlow()
+    // EVENTS
+    var onNavigationBack = SingleEvent()
 
-    fun loadList(type: LocationType) {
-        _uiStatus.update { UiStatus.LOADING }
+    fun onAction(action: SearchAction) {
+        when (action) {
+            is SearchAction.SaveContinent -> saveContinent(action.continentId)
+
+            is SearchAction.SaveCountry -> saveCountry(action.countryId)
+
+            is SearchAction.SaveCity -> saveCity(action.cityId)
+
+            is SearchAction.SaveAll -> {
+                /* TODO action */
+                onNavigationBack.fire()
+            }
+
+            is SearchAction.LoadLocations -> loadList(action.type)
+
+            is SearchAction.OnNavigateBack -> onNavigationBack.fire()
+        }
+    }
+
+
+    private fun saveContinent(continentId: String) = viewModelScope.launch {
+        val continents = getContinentsUseCase()
+            .getOrNull()
+            ?.map { it.toUiModel() }
+        val continent = continents?.find { it.id == continentId }
+
+        _uiState.update { state ->
+            state.copy(location = LocationUiModel(continent = continent))
+        }
+    }
+
+
+    private fun saveCountry(countryId: String) = viewModelScope.launch {
+        val continentId = _uiState.value.location.continent?.id ?: return@launch
+        val countries = getCountriesUseCase(continentId)
+            .getOrNull()
+            ?.map { it.toUiModel() }
+        val country = countries?.find { it.id == countryId }
+
+        _uiState.update { state ->
+            state.copy(
+                location = state.location.copy(
+                    country = country,
+                    city = null,
+                ),
+            )
+        }
+    }
+
+    private fun saveCity(cityId: String) = viewModelScope.launch {
+        val continentId = _uiState.value.location.continent?.id ?: return@launch
+        val countryId = _uiState.value.location.country?.id ?: return@launch
+        val cities = getCitiesUseCase(continentId, countryId)
+            .getOrNull()
+            ?.map { it.toUiModel() }
+        val city = cities?.find { it.id == cityId }
+
+        _uiState.update { state ->
+            state.copy(location = state.location.copy(city = city))
+        }
+    }
+
+    private fun loadList(type: LocationType) {
+        _uiState.update { it.copy(locationList = UI.LOADING) }
         viewModelScope.launch {
             when (type) {
                 CONTINENT -> {
                     getContinentsUseCase().mapCatching { domainModels ->
                         domainModels.map { it.toUiModel() }
                     }.onSuccess { uiModels ->
-                        val locationList = uiModels.map {
-                            it.id to it.englishName
-                        }
-                        _uiState.update {
-                            it.copy(locationList = locationList)
-                        }
-                        _uiStatus.update { UiStatus.DONE }
+                        val locationList = uiModels
+                            .map { it.id to it.englishName }
+                            .sortedBy { it.second }
+                        _uiState.update { it.copy(locationList = UI.READY(locationList)) }
                     }.onFailure { e ->
-                        _uiStatus.update {
-                            UiStatus.ERROR(e.message) { loadList(type) }
+                        _uiState.update {
+                            it.copy(locationList = UI.ERROR(e) { loadList(type) })
                         }
                     }
                 }
 
                 COUNTRY -> {
-                    val continentId = _uiState.value.location.continent?.id ?: return@launch
-                    getCountriesUseCase(continentId).mapCatching { domainModels ->
-                        domainModels.map { it.toUiModel() }
-                    }.onSuccess { uiModels ->
-                        val locationList = uiModels.map {
-                            it.id to it.englishName
-                        }
+                    val continentId = _uiState.value.location.continent?.id
+                    if (continentId == null) {
                         _uiState.update {
-                            it.copy(locationList = locationList)
+                            it.copy(locationList = UI.ERROR(Exception("Continent not chosen")))
                         }
-                        _uiStatus.update { UiStatus.DONE }
-                    }.onFailure { e ->
-                        _uiStatus.update {
-                            UiStatus.ERROR(e.message) { loadList(type) }
+                    } else {
+                        getCountriesUseCase(continentId).mapCatching { domainModels ->
+                            domainModels.map { it.toUiModel() }
+                        }.onSuccess { uiModels ->
+                            val locationList = uiModels
+                                .map { it.id to it.englishName }
+                                .sortedBy { it.second }
+                            _uiState.update { it.copy(locationList = UI.READY(locationList)) }
+                        }.onFailure { e ->
+                            _uiState.update {
+                                it.copy(locationList = UI.ERROR(e) { loadList(type) })
+                            }
                         }
                     }
                 }
 
                 CITY -> {
-                    val continentId = _uiState.value.location.continent?.id ?: return@launch
-                    val countryId = _uiState.value.location.country?.id ?: return@launch
-                    getCitiesUseCase(continentId, countryId).mapCatching { domainModels ->
-                        domainModels.map { it.toUiModel() }
-                    }.onSuccess { uiModels ->
-                        val locationList = uiModels.map {
-                            it.id to it.englishName
+                    val continentId = _uiState.value.location.continent?.id
+                    val countryId = _uiState.value.location.country?.id
+                    if (continentId == null || countryId == null) {
+                        val error = when {
+                            continentId == null -> "Continent not chosen"
+                            else -> "Country not chosen"
                         }
                         _uiState.update {
-                            it.copy(locationList = locationList)
+                            it.copy(locationList = UI.ERROR(Exception(error)))
                         }
-                        _uiStatus.update { UiStatus.DONE }
-                    }.onFailure { e ->
-                        _uiStatus.update {
-                            UiStatus.ERROR(e.message) { loadList(type) }
+                    } else {
+                        getCitiesUseCase(continentId, countryId).mapCatching { domainModels ->
+                            domainModels.map { it.toUiModel() }
+                        }.onSuccess { uiModels ->
+                            val locationList = uiModels
+                                .map { it.id to "${it.englishName} - ${it.englishType}" }
+                                .sortedBy { it.second }
+                            _uiState.update { it.copy(locationList = UI.READY(locationList)) }
+                        }.onFailure { e ->
+                            _uiState.update {
+                                it.copy(locationList = UI.ERROR(e) { loadList(type) })
+                            }
                         }
-                    }
-                }
-            }
-        }
-    }
-
-    fun onAction(action: SearchAction) {
-        viewModelScope.launch {
-            when (action) {
-                is SearchAction.Continent -> {
-                    val continents = getContinentsUseCase()
-                        .getOrNull()
-                        ?.map { it.toUiModel() }
-                    val continent = continents?.find { it.id == action.continentId }
-
-                    _uiState.update { state ->
-                        state.copy(
-                            location = LocationWrapper(continent = continent),
-                        )
-                    }
-                }
-
-                is SearchAction.Country -> {
-                    val continentId = _uiState.value.location.continent?.id ?: return@launch
-                    val countries = getCountriesUseCase(continentId)
-                        .getOrNull()
-                        ?.map { it.toUiModel() }
-                    val country = countries?.find { it.id == action.countryId }
-
-                    _uiState.update { state ->
-                        state.copy(
-                            location = state.location.copy(
-                                country = country,
-                                city = null,
-                            )
-                        )
-                    }
-                }
-
-                is SearchAction.City -> {
-                    val continentId = _uiState.value.location.continent?.id ?: return@launch
-                    val countryId = _uiState.value.location.country?.id ?: return@launch
-                    val cities = getCitiesUseCase(continentId, countryId)
-                        .getOrNull()
-                        ?.map { it.toUiModel() }
-                    val city = cities?.find { it.id == action.cityId }
-
-                    _uiState.update { state ->
-                        state.copy(
-                            location = state.location.copy(
-                                city = city,
-                            )
-                        )
                     }
                 }
             }
@@ -153,6 +171,6 @@ class SearchViewModel @Inject constructor(
 }
 
 data class SearchUiState(
-    val location: LocationWrapper = LocationWrapper(),
-    val locationList: List<Pair<String, String?>> = emptyList(),
+    val location: LocationUiModel = LocationUiModel(),
+    val locationList: UI<List<Pair<String, String?>>> = UI.LOADING,
 )
