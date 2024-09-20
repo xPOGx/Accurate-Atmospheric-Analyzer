@@ -1,17 +1,31 @@
 package mega.triple.aaa.presentation.navigation
 
+import android.widget.Toast
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.displayCutoutPadding
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import mega.triple.aaa.presentation.core.ui.ext.render
+import mega.triple.aaa.presentation.core.ui.theme.AAATheme
 import mega.triple.aaa.presentation.feature.home.HomeScreen
+import mega.triple.aaa.presentation.feature.home.HomeViewModel
 import mega.triple.aaa.presentation.feature.search.SearchScreen
 import mega.triple.aaa.presentation.feature.search.SearchViewModel
 import mega.triple.aaa.presentation.navigation.ext.Routes
@@ -27,9 +41,17 @@ fun AAANavHost(
         modifier = modifier,
     ) {
         composable(route = Routes.HOME) {
-            HomeScreen(
-                navigateToSearch = { navHostController.navigate(Routes.SEARCH) },
-            )
+            val viewModel = hiltViewModel<HomeViewModel>()
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+            uiState.location.render(
+                onLoading = { GlobalLoading(withBackground = false) }
+            ) { location ->
+                HomeScreen(
+                    location = location,
+                    navigateToSearch = { navHostController.navigate(Routes.SEARCH) },
+                )
+            }
         }
         composable(
             route = Routes.SEARCH,
@@ -39,9 +61,23 @@ fun AAANavHost(
             val viewModel = hiltViewModel<SearchViewModel>()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-            LaunchedEffect("eventHandler") {
-                viewModel.onNavigationBack.collect {
-                    navHostController.navigateUp()
+            val context = LocalContext.current
+
+            with(viewModel) {
+                LaunchedEffect("onSaveSuccess") {
+                    onSaveSuccess.collect {
+                        navHostController.navigateUp()
+                    }
+                }
+                LaunchedEffect("onNavigationBack") {
+                    onNavigationBack.collect {
+                        navHostController.navigateUp()
+                    }
+                }
+                LaunchedEffect("onToast") {
+                    onToast.collect { msg ->
+                        Toast.makeText(context, msg, Toast.LENGTH_LONG)
+                    }
                 }
             }
 
@@ -50,5 +86,46 @@ fun AAANavHost(
                 onAction = viewModel::onAction,
             )
         }
+    }
+}
+
+@Composable
+fun GlobalLoading(
+    modifier: Modifier = Modifier,
+    withBackground: Boolean = false,
+) {
+    val body: @Composable () -> Unit = {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = modifier
+                .fillMaxSize()
+                .displayCutoutPadding()
+        ) {
+            CircularProgressIndicator(
+                modifier = Modifier.fillMaxWidth(.2f)
+            )
+        }
+    }
+
+    if (withBackground) {
+        Dialog(
+            onDismissRequest = { /* ignore */ },
+            properties = DialogProperties(
+                dismissOnBackPress = false,
+                dismissOnClickOutside = false,
+            ),
+        ) {
+            body()
+        }
+    } else {
+        body()
+    }
+}
+
+@Preview
+@Composable
+private fun GlobalLoadingPreview() {
+    AAATheme {
+        GlobalLoading()
     }
 }

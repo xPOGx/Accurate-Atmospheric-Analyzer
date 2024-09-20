@@ -5,6 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import mega.triple.aaa.data.proto.LocationDataStore
 import mega.triple.aaa.data.proto.LocationProto
 import mega.triple.aaa.data.proto.serializer.LocationProtoSerializer
@@ -21,11 +22,17 @@ class LocationDataStoreImpl @Inject constructor(
         }
     }
 
-    override fun readLocation(): Flow<LocationProto> = dataStore.data
+    override fun readLocation(): Flow<LocationProto?> = dataStore.data.map {
+        if (it.hasCity() && it.hasCountry() && it.hasContinent()) {
+            it
+        } else {
+            null
+        }
+    }
 
     companion object {
         private val Context.locationDataStore: DataStore<LocationProto> by dataStore(
-            fileName = "",
+            fileName = "location.pb",
             serializer = LocationProtoSerializer,
         )
     }

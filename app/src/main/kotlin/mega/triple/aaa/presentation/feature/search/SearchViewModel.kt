@@ -10,12 +10,15 @@ import kotlinx.coroutines.launch
 import mega.triple.aaa.domain.location.GetCitiesUseCase
 import mega.triple.aaa.domain.location.GetContinentsUseCase
 import mega.triple.aaa.domain.location.GetCountriesUseCase
+import mega.triple.aaa.domain.location.SetLocationUseCase
+import mega.triple.aaa.domain.location.model.LocationDomainModel.Companion.toDomainModel
 import mega.triple.aaa.presentation.core.ui.ext.LocationType
 import mega.triple.aaa.presentation.core.ui.ext.LocationType.CITY
 import mega.triple.aaa.presentation.core.ui.ext.LocationType.CONTINENT
 import mega.triple.aaa.presentation.core.ui.ext.LocationType.COUNTRY
 import mega.triple.aaa.presentation.core.ui.ext.SingleEvent
 import mega.triple.aaa.presentation.core.ui.ext.UI
+import mega.triple.aaa.presentation.core.ui.ext.UIEvent
 import mega.triple.aaa.presentation.core.ui.model.CityUiModel.Companion.toUiModel
 import mega.triple.aaa.presentation.core.ui.model.ContinentUiModel.Companion.toUiModel
 import mega.triple.aaa.presentation.core.ui.model.CountryUiModel.Companion.toUiModel
@@ -28,13 +31,16 @@ class SearchViewModel @Inject constructor(
     private val getContinentsUseCase: GetContinentsUseCase,
     private val getCountriesUseCase: GetCountriesUseCase,
     private val getCitiesUseCase: GetCitiesUseCase,
+    private val setLocationUseCase: SetLocationUseCase,
 ) : ViewModel() {
     // FLOWS
     private val _uiState: MutableStateFlow<SearchUiState> = MutableStateFlow(SearchUiState())
     val uiState = _uiState.asStateFlow()
 
     // EVENTS
-    var onNavigationBack = SingleEvent()
+    val onNavigationBack = SingleEvent()
+    val onSaveSuccess = SingleEvent()
+    val onToast = UIEvent<String>()
 
     fun onAction(action: SearchAction) {
         when (action) {
@@ -44,17 +50,13 @@ class SearchViewModel @Inject constructor(
 
             is SearchAction.SaveCity -> saveCity(action.cityId)
 
-            is SearchAction.SaveAll -> {
-                /* TODO action */
-                onNavigationBack.fire()
-            }
+            is SearchAction.SaveAll -> saveAll()
 
             is SearchAction.LoadLocations -> loadList(action.type)
 
             is SearchAction.OnNavigateBack -> onNavigationBack.fire()
         }
     }
-
 
     private fun saveContinent(continentId: String) = viewModelScope.launch {
         val continents = getContinentsUseCase()
@@ -166,6 +168,14 @@ class SearchViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    private fun saveAll() {
+        viewModelScope.launch {
+            setLocationUseCase(_uiState.value.location.toDomainModel())
+                .onSuccess { onSaveSuccess.fire() }
+                .onFailure { onToast.send(it.message ?: "Error saving location") }
         }
     }
 }

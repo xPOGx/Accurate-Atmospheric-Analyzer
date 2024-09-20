@@ -31,8 +31,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -72,8 +75,16 @@ fun TopAppBar(
 ) {
     val density = LocalDensity.current
     val cutout = WindowInsets.displayCutout.getTop(density) / density.density
-    val min = remember { (TOOLBAR_HEIGHT_MIN + cutout).dp }
-    val max = remember { (TOOLBAR_HEIGHT_MAX + cutout).dp }
+    var min by remember { mutableStateOf((TOOLBAR_HEIGHT_MIN + cutout).dp) }
+    var max by remember { mutableStateOf((TOOLBAR_HEIGHT_MAX + cutout).dp) }
+
+    LaunchedEffect(cutout) {
+        val newMin = (TOOLBAR_HEIGHT_MIN + cutout).dp
+        if (newMin != min) {
+            min = newMin
+            max = (TOOLBAR_HEIGHT_MAX + cutout).dp
+        }
+    }
 
     val fullColor = colors.white
     val compactColor = colors.black
@@ -151,7 +162,7 @@ fun TopAppBar(
                         .padding(start = spaces.size24),
                 ) {
                     Text(
-                        text = locationName ?: "Kharkiv, Ukraine",
+                        text = locationName ?: "Unknown place",
                         color = mainColor,
                         style = typography.ps400size22,
                     )

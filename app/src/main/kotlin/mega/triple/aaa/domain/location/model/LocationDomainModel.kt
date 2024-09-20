@@ -25,6 +25,13 @@ data class LocationDomainModel(
                 city = city?.toUiModel(),
             )
 
+        fun LocationUiModel.toDomainModel(): LocationDomainModel =
+            LocationDomainModel(
+                continent = continent?.toDomainModel(),
+                country = country?.toDomainModel(),
+                city = city?.toDomainModel(),
+            )
+
         fun LocationDomainModel.toProtoModel(): LocationProto =
             LocationProto.newBuilder()
                 .setContinent(continent?.toProtoModel())

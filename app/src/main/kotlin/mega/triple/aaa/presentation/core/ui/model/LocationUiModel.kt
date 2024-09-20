@@ -1,6 +1,6 @@
 package mega.triple.aaa.presentation.core.ui.model
 
-import mega.triple.aaa.presentation.core.common.Constants.LOCATION_SEPARATOR
+import mega.triple.aaa.presentation.core.common.Constants
 
 data class LocationUiModel(
     val continent: ContinentUiModel? = null,
@@ -9,10 +9,18 @@ data class LocationUiModel(
 ) {
     // TODO: from locale
     val locationName: String? by lazy {
-        buildString {
-            append(city?.englishName)
-            append(LOCATION_SEPARATOR)
-            append(country?.englishName)
+        if (isValid()) {
+            buildString {
+                append(city!!.englishType)
+                append(Constants.SPACE)
+                append(city.englishName)
+                append(Constants.LOCATION_SEPARATOR)
+                append(country!!.englishName)
+            }
+        } else {
+            null
         }
     }
+
+    fun isValid() = continent != null && country != null && city != null
 }

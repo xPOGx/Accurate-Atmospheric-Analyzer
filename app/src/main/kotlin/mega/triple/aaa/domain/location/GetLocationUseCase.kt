@@ -14,7 +14,7 @@ class GetLocationUseCase @Inject constructor(
     operator fun invoke(): Flow<LocationDomainModel?> {
         return try {
             val protoModel = locationDataStore.readLocation()
-            protoModel.map { it.toDomainModel() }
+            protoModel.map { it?.toDomainModel() }
         } catch (e: Exception) {
             flowOf(null)
         }

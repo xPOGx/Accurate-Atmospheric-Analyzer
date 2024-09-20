@@ -5,5 +5,5 @@ import kotlinx.coroutines.flow.Flow
 interface LocationDataStore {
     suspend fun saveLocation(locationProto: LocationProto)
 
-    fun readLocation(): Flow<LocationProto>
+    fun readLocation(): Flow<LocationProto?>
 }

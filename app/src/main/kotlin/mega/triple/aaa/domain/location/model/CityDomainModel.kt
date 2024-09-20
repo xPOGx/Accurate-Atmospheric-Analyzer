@@ -60,6 +60,17 @@ data class CityDomainModel(
                 localizedType = localizedType,
             )
 
+        fun CityUiModel.toDomainModel(): CityDomainModel =
+            CityDomainModel(
+                id = id,
+                countryID = countryID,
+                englishName = englishName,
+                englishType = englishType,
+                level = level,
+                localizedName = localizedName,
+                localizedType = localizedType,
+            )
+
         private fun createUuid(continentId: String, countryId: String?, cityId: String?) =
             buildString {
                 append(continentId)

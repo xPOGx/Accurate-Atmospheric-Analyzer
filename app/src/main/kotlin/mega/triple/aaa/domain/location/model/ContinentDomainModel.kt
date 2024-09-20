@@ -39,5 +39,12 @@ data class ContinentDomainModel(
                 englishName = englishName,
                 localizedName = localizedName,
             )
+
+        fun ContinentUiModel.toDomainModel(): ContinentDomainModel =
+            ContinentDomainModel(
+                id = id,
+                englishName = englishName,
+                localizedName = localizedName,
+            )
     }
 }

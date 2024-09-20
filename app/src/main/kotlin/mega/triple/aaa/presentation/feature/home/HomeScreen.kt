@@ -23,6 +23,7 @@ import mega.triple.aaa.presentation.core.ui.components.card.ForecastCard
 import mega.triple.aaa.presentation.core.ui.components.card.ParameterCard
 import mega.triple.aaa.presentation.core.ui.components.tab.DayTab
 import mega.triple.aaa.presentation.core.ui.components.toolbar.TopAppBar
+import mega.triple.aaa.presentation.core.ui.model.LocationUiModel
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme.colors
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme.spaces
@@ -31,7 +32,7 @@ import mega.triple.aaa.presentation.core.ui.theme.AAATheme.typography
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    locationName: String? = null,
+    location: LocationUiModel? = null,
     navigateToSearch: (() -> Unit)? = null,
 ) {
     val gridState = rememberLazyGridState()
@@ -48,7 +49,7 @@ fun HomeScreen(
         containerColor = colors.background,
         topBar = {
             TopAppBar(
-                locationName = locationName,
+                locationName = location?.let { location.locationName },
                 compact = compact,
                 selectedIndex = selectedIndex,
                 onSelect = changeIndex,

@@ -51,6 +51,7 @@ import mega.triple.aaa.presentation.feature.search.ext.SearchAction.OnNavigateBa
 fun SearchScreen(
     modifier: Modifier = Modifier,
     uiState: SearchUiState = SearchUiState(),
+    forceMode: Boolean = false,
     onAction: ((SearchAction) -> Unit)? = null,
 ) {
     var editMode: LocationType? by remember { mutableStateOf(null) }
@@ -65,9 +66,9 @@ fun SearchScreen(
                     )
                 },
                 navigationIcon = {
-                    IconButton(
-                        onClick = { onAction?.invoke(OnNavigateBack) },
-                    ) {
+                    if (forceMode) {
+                        // STUB
+                    } else IconButton(onClick = { onAction?.invoke(OnNavigateBack) }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Default.ArrowBack,
                             contentDescription = null,
