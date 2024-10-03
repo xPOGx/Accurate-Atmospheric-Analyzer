@@ -37,6 +37,7 @@ data class Spaces(
     val size62: Dp = 62.dp,
     val size72: Dp = 72.dp,
     val size80: Dp = 80.dp,
+    val size100: Dp = 100.dp,
 )
 
 val LocalSpaces = staticCompositionLocalOf { Spaces() }

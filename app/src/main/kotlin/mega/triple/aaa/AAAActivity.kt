@@ -6,11 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -47,36 +43,29 @@ class AAAActivity : ComponentActivity() {
             val mainViewModel = hiltViewModel<AAAViewModel>()
             val location by mainViewModel.location.collectAsStateWithLifecycle()
 
-            location.render(
-                onLoading = { GlobalLoading(withBackground = false) }
-            ) {
-                var isLoading by remember { mutableStateOf(false) }
+            val context = LocalContext.current
 
-                AAATheme {
-                    if (isLoading) {
-                        GlobalLoading()
-                    }
-
-                    AnimatedContent(
-                        targetState = it != null, label = "MainScreen",
-                    ) { isValid ->
+            AAATheme {
+                location.render(
+                    onLoading = { GlobalLoading(withBackground = false) }
+                ) {
+                    AnimatedContent(targetState = it != null, label = "MainScreen") { isValid ->
                         if (isValid) {
                             AAANavHost(navHostController = navHostController)
                         } else {
                             val viewModel = hiltViewModel<SearchViewModel>()
                             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-                            val context = LocalContext.current
-
-
                             with(viewModel) {
-                                LaunchedEffect("onSaveSuccess") {
-                                    onSaveSuccess.collect { isLoading = true }
+                                onSaveSuccess.collectEffect {
+                                    Toast.makeText(
+                                        context,
+                                        uiState.location.locationName,
+                                        Toast.LENGTH_LONG
+                                    ).show()
                                 }
-                                LaunchedEffect("onToast") {
-                                    onToast.collect { msg ->
-                                        Toast.makeText(context, msg, Toast.LENGTH_LONG)
-                                    }
+                                onToast.collectEffect { msg ->
+                                    Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
                                 }
                             }
 

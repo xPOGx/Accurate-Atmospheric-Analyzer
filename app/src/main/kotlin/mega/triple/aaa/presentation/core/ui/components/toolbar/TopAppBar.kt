@@ -155,7 +155,7 @@ fun TopAppBar(
                     .displayCutoutPadding(),
             ) {
                 Row(
-                    verticalAlignment = Alignment.CenterVertically,
+                    verticalAlignment = Alignment.Top,
                     horizontalArrangement = Arrangement.Absolute.SpaceBetween,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -165,6 +165,7 @@ fun TopAppBar(
                         text = locationName ?: "Unknown place",
                         color = mainColor,
                         style = typography.ps400size22,
+                        modifier = Modifier.weight(1f)
                     )
                     IconButton(onClick = { onSearch?.invoke() }) {
                         Icon(

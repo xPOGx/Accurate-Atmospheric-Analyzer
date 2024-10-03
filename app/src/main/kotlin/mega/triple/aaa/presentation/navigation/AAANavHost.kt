@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -64,20 +63,13 @@ fun AAANavHost(
             val context = LocalContext.current
 
             with(viewModel) {
-                LaunchedEffect("onSaveSuccess") {
-                    onSaveSuccess.collect {
-                        navHostController.navigateUp()
-                    }
+                onSaveSuccess.collectEffect {
+                    Toast.makeText(context, uiState.location.locationName, Toast.LENGTH_LONG).show()
+                    navHostController.navigateUp()
                 }
-                LaunchedEffect("onNavigationBack") {
-                    onNavigationBack.collect {
-                        navHostController.navigateUp()
-                    }
-                }
-                LaunchedEffect("onToast") {
-                    onToast.collect { msg ->
-                        Toast.makeText(context, msg, Toast.LENGTH_LONG)
-                    }
+                onNavigationBack.collectEffect { navHostController.navigateUp() }
+                onToast.collectEffect { msg ->
+                    Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
                 }
             }
 
@@ -114,9 +106,8 @@ fun GlobalLoading(
                 dismissOnBackPress = false,
                 dismissOnClickOutside = false,
             ),
-        ) {
-            body()
-        }
+            content = body,
+        )
     } else {
         body()
     }

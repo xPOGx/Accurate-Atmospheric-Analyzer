@@ -1,33 +1,49 @@
 package mega.triple.aaa.presentation.feature.home
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridItemSpanScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import mega.triple.aaa.R
 import mega.triple.aaa.presentation.core.ui.components.card.ForecastCard
 import mega.triple.aaa.presentation.core.ui.components.card.ParameterCard
 import mega.triple.aaa.presentation.core.ui.components.tab.DayTab
 import mega.triple.aaa.presentation.core.ui.components.toolbar.TopAppBar
+import mega.triple.aaa.presentation.core.ui.ext.noRippleClickable
 import mega.triple.aaa.presentation.core.ui.model.LocationUiModel
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme.colors
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme.spaces
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme.typography
+import mega.triple.aaa.presentation.core.ui.view.DottedCircleProgressBar
 
 @Composable
 fun HomeScreen(
@@ -45,11 +61,13 @@ fun HomeScreen(
     var selectedIndex by remember { mutableIntStateOf(0) }
     val changeIndex: ((Int) -> Unit) = { selectedIndex = it }
 
+    var uvCustomVisible by remember { mutableStateOf(false) }
+
     Scaffold(
         containerColor = colors.background,
         topBar = {
             TopAppBar(
-                locationName = location?.let { location.locationName },
+                locationName = location?.locationName,
                 compact = compact,
                 selectedIndex = selectedIndex,
                 onSelect = changeIndex,
@@ -101,12 +119,34 @@ fun HomeScreen(
                 )
             }
             item(contentType = "AAACardItem") {
-                ParameterCard(
-                    title = "UV Index",
-                    description = "2,3",
-                    iconRes = R.drawable.ic_sun,
-                    extra = "0.3" to false,
-                )
+                AnimatedContent(uvCustomVisible, label = "uvCustomVisible") {
+                    if (it) {
+                        Card(
+                            colors = CardDefaults.cardColors().copy(
+                                containerColor = colors.cardBG,
+                                contentColor = colors.cardContent,
+                            ),
+                            modifier = modifier.noRippleClickable { uvCustomVisible = false },
+                        ) {
+                            AndroidView(
+                                factory = { ctx ->
+                                    DottedCircleProgressBar(ctx).apply {
+                                        setup(progress = 30f)
+                                    }
+                                },
+                                modifier = Modifier.height(spaces.size100)
+                            )
+                        }
+                    } else {
+                        ParameterCard(
+                            title = "UV Index",
+                            description = "2,3",
+                            iconRes = R.drawable.ic_sun,
+                            extra = "0.3" to false,
+                            modifier = Modifier.noRippleClickable { uvCustomVisible = true }
+                        )
+                    }
+                }
             }
             item(span = allLine) {
                 ForecastCard()
