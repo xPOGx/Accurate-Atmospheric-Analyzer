@@ -1,5 +1,6 @@
 package mega.triple.aaa.presentation.core.ui.components.tab
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -59,22 +61,17 @@ fun DayTabItem(
 ) {
     val indicationSource = remember { MutableInteractionSource() }
 
-    val containerColor: Color
-    val contentColor: Color
+    val contentColor: Color = if (selected) colors.tabContent else colors.black
 
-    if (selected) {
-        containerColor = colors.tabContainer
-        contentColor = colors.tabContent
-    } else {
-        containerColor = colors.white
-        contentColor = colors.black
-    }
-
+    val animatedContainerColor by animateColorAsState(
+        targetValue = if (selected) colors.tabContainer else colors.white,
+        label = "animatedContainerColor"
+    )
 
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
-            .background(containerColor, shapes.tabItemShape)
+            .background(animatedContainerColor, shapes.tabItemShape)
             .clickable(
                 interactionSource = indicationSource,
                 indication = null,
