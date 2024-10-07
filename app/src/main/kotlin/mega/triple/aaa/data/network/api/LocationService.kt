@@ -16,4 +16,10 @@ interface LocationService {
         language: String,
         countryId: String,
     ): HttpResponse
+
+    suspend fun getCityKey(
+        countryId: String,
+        cityId: String,
+        cityName: String,
+    ): HttpResponse
 }

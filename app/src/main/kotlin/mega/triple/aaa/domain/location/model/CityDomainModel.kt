@@ -7,7 +7,8 @@ import mega.triple.aaa.presentation.core.common.Constants.UNDERSCORE
 import mega.triple.aaa.presentation.core.ui.model.CityUiModel
 
 data class CityDomainModel(
-    val id: String,
+    val id: String?,
+    val locationKey: String?,
     val countryID: String?,
     val englishName: String?,
     val englishType: String?,
@@ -19,6 +20,7 @@ data class CityDomainModel(
         fun CityDbModel.toDomainModel(): CityDomainModel =
             CityDomainModel(
                 id = id,
+                locationKey = locationKey,
                 countryID = countryID,
                 englishName = englishName,
                 englishType = englishType,
@@ -29,7 +31,9 @@ data class CityDomainModel(
 
         fun CityResponse.toDbModel(continentId: String): CityDbModel =
             CityDbModel(
-                id = createUuid(continentId, countryID, id),
+                dbId = createUuid(continentId, countryID, id),
+                id = id,
+                locationKey = null,
                 countryID = countryID,
                 englishName = englishName,
                 englishType = englishType,
@@ -41,6 +45,7 @@ data class CityDomainModel(
         fun CityDomainModel.toProtoModel(): CityProto =
             CityProto.newBuilder()
                 .setId(id)
+                .setLocationKey(locationKey)
                 .setCountryId(countryID)
                 .setEnglishName(englishName)
                 .setEnglishType(englishType)
@@ -52,6 +57,7 @@ data class CityDomainModel(
         fun CityProto.toDomainModel(): CityDomainModel =
             CityDomainModel(
                 id = id,
+                locationKey = locationKey,
                 countryID = countryId,
                 englishName = englishName,
                 englishType = englishType,
@@ -63,6 +69,7 @@ data class CityDomainModel(
         fun CityUiModel.toDomainModel(): CityDomainModel =
             CityDomainModel(
                 id = id,
+                locationKey = locationKey,
                 countryID = countryID,
                 englishName = englishName,
                 englishType = englishType,

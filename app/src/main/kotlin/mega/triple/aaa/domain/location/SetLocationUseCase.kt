@@ -7,10 +7,25 @@ import javax.inject.Inject
 
 class SetLocationUseCase @Inject constructor(
     private val locationDataStore: LocationDataStore,
+    private val getCityKeyUseCase: GetCityKeyUseCase,
 ) {
     suspend operator fun invoke(domainModel: LocationDomainModel): Result<Unit> {
         return try {
-            locationDataStore.saveLocation(domainModel.toProtoModel())
+            getCityKeyUseCase(
+                countryId = domainModel.country!!.id,
+                cityId = domainModel.city!!.id!!,
+                cityName = domainModel.city.englishName!!,
+            ).onSuccess { key ->
+                val newModel = domainModel.copy(
+                    city = domainModel.city.copy(
+                        locationKey = key
+                    )
+                )
+                locationDataStore.saveLocation(newModel.toProtoModel())
+            }.onFailure {
+                throw it
+            }
+
             Result.success(Unit)
         } catch (e: Exception) {
             Result.failure(e)

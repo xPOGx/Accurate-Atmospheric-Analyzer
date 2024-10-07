@@ -9,8 +9,12 @@ import androidx.room.PrimaryKey
 )
 data class CityDbModel(
     @PrimaryKey
+    @ColumnInfo("db_id")
+    val dbId: String,
     @ColumnInfo("id")
-    val id: String,
+    val id: String?,
+    @ColumnInfo("location_key")
+    val locationKey: String?,
     @ColumnInfo("country_id")
     val countryID: String?,
     @ColumnInfo("english_name")

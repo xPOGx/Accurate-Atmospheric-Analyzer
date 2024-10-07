@@ -44,7 +44,7 @@ fun DayTab(
             modifier = Modifier.weight(1f),
         )
         DayTabItem(
-            title = "10 days",
+            title = "5 days",
             onClick = { onSelect?.invoke(2) },
             selected = selectedIndex == 2,
             modifier = Modifier.weight(1f),

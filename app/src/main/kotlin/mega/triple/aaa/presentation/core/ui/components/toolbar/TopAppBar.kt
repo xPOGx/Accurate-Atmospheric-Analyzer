@@ -184,15 +184,27 @@ fun TopAppBar(
                         style = typography.ps400size14.copy(fontSize = animateTempSize.sp),
                         color = mainColor,
                     )
-                    Text(text = formatFeelTemperature(-2),
-                        style = typography.ps400size18.copy(fontSize = animateFeelSize.sp),
-                        color = mainColor,
+                    Column(
                         modifier = Modifier
                             .graphicsLayer {
                                 translationX = animateFeelOffset.x
                                 translationY = animateFeelOffset.y
                             }
-                            .align(Alignment.Bottom))
+                            .align(Alignment.Bottom)
+                    ) {
+                        Text(
+                            text = formatFeelTemperature(-2),
+                            style = typography.ps400size18.copy(fontSize = animateFeelSize.sp),
+                            color = mainColor,
+                        )
+                        androidx.compose.animation.AnimatedVisibility(!compact) {
+                            Text(
+                                text = formatFeelTemperature(-3, inShadow = true),
+                                style = typography.ps400size18.copy(fontSize = animateFeelSize.sp),
+                                color = mainColor,
+                            )
+                        }
+                    }
                     Spacer(modifier = Modifier.weight(1f))
                     Column(
                         horizontalAlignment = Alignment.End,

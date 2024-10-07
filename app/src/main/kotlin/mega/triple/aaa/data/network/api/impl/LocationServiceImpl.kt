@@ -32,6 +32,17 @@ class LocationServiceImpl @Inject constructor(
         }
     }
 
+    override suspend fun getCityKey(
+        countryId: String,
+        cityId: String,
+        cityName: String,
+    ): HttpResponse {
+        return client.get(cityKeyUrl(countryId, cityId)) {
+            parameter("apikey", BuildConfig.API_KEY)
+            parameter("q", cityName)
+        }
+    }
+
     companion object {
         private const val BASE_URL = "https://dataservice.accuweather.com"
         private const val LOCATION_URL = "$BASE_URL/locations/v1"
@@ -39,5 +50,7 @@ class LocationServiceImpl @Inject constructor(
         private fun continentUrl() = "$LOCATION_URL/regions"
         private fun countyUrl(continentId: String) = "$LOCATION_URL/countries/$continentId"
         private fun cityUrl(countryId: String) = "$LOCATION_URL/adminareas/$countryId"
+        private fun cityKeyUrl(countryId: String, cityId: String) =
+            "$LOCATION_URL/cities/$countryId/$cityId/search"
     }
 }

@@ -166,7 +166,7 @@ fun HomeScreen(
                     title = "Sunrise",
                     description = "5:24",
                     descriptionTextStyle = typography.gs500size14,
-                    iconRes = R.drawable.ic_night,
+                    iconRes = R.drawable.ic_sunrise,
                     extra = "N ago" to null,
                     extraModifier = Modifier.padding(bottom = spaces.size12)
                 )
@@ -176,7 +176,7 @@ fun HomeScreen(
                     title = "Sunset",
                     description = "19:53",
                     descriptionTextStyle = typography.gs500size14,
-                    iconRes = R.drawable.ic_night,
+                    iconRes = R.drawable.ic_sunset,
                     extra = "in N" to null,
                     extraModifier = Modifier.padding(bottom = spaces.size12),
                 )

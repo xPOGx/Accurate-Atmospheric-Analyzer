@@ -106,13 +106,15 @@ fun SearchScreen(
                                 items(items = it) { (id, title) ->
                                     LocationCard(title = title ?: "Empty Name") {
                                         editMode?.let { mode ->
-                                            onAction?.invoke(
-                                                when (mode) {
-                                                    CONTINENT -> SearchAction.SaveContinent(id)
-                                                    COUNTRY -> SearchAction.SaveCountry(id)
-                                                    CITY -> SearchAction.SaveCity(id)
-                                                }
-                                            )
+                                            id?.let {
+                                                onAction?.invoke(
+                                                    when (mode) {
+                                                        CONTINENT -> SearchAction.SaveContinent(id)
+                                                        COUNTRY -> SearchAction.SaveCountry(id)
+                                                        CITY -> SearchAction.SaveCity(id)
+                                                    }
+                                                )
+                                            }
                                         }
                                         editMode = null
                                     }

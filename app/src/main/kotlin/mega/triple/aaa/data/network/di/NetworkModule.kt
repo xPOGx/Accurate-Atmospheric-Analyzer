@@ -12,7 +12,9 @@ import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.serialization.kotlinx.json.DefaultJson
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.json.Json
 import mega.triple.aaa.data.network.api.LocationService
 import mega.triple.aaa.data.network.api.impl.LocationServiceImpl
 import mega.triple.aaa.data.network.source.LocationNetSource
@@ -49,7 +51,11 @@ object NetworkModule {
     ): HttpClient =
         HttpClient(httpClientEngine) {
             install(ContentNegotiation) {
-                json()
+                json(
+                    Json(DefaultJson) {
+                        ignoreUnknownKeys = true
+                    }
+                )
             }
         }
 

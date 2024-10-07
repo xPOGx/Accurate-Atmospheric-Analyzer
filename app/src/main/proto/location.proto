@@ -24,10 +24,11 @@ message CountryProto {
 
 message CityProto {
   string id = 1;
-  string country_id = 2;
-  string english_name = 3;
-  string english_type = 4;
-  int32 level = 5;
-  string localized_name = 6;
-  string localized_type = 7;
+  string location_key = 2;
+  string country_id = 3;
+  string english_name = 4;
+  string english_type = 5;
+  int32 level = 6;
+  string localized_name = 7;
+  string localized_type = 8;
 }

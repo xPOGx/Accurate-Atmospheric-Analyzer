@@ -10,4 +10,6 @@ object Constants {
     const val LOCATION_SEPARATOR = ", "
     const val SPACE = " "
     const val UNDERSCORE = "_"
+    const val CELSIUS = '°'
+    const val FAHRENHEIT = 'F'
 }

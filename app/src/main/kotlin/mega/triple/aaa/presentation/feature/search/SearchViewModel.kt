@@ -182,5 +182,5 @@ class SearchViewModel @Inject constructor(
 
 data class SearchUiState(
     val location: LocationUiModel = LocationUiModel(),
-    val locationList: UI<List<Pair<String, String?>>> = UI.LOADING,
+    val locationList: UI<List<Pair<String?, String?>>> = UI.LOADING,
 )
