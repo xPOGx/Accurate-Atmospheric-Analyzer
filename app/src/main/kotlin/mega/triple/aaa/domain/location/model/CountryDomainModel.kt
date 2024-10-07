@@ -1,6 +1,6 @@
 package mega.triple.aaa.domain.location.model
 
-import mega.triple.aaa.data.local.model.CountryDbModel
+import mega.triple.aaa.data.local.model.location.CountryDbModel
 import mega.triple.aaa.data.network.response.location.CountryResponse
 import mega.triple.aaa.data.proto.CountryProto
 import mega.triple.aaa.domain.ext.validateNotNull

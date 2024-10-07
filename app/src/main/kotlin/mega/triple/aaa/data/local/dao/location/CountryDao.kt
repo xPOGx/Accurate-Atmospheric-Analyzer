@@ -1,11 +1,11 @@
-package mega.triple.aaa.data.local.dao
+package mega.triple.aaa.data.local.dao.location
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
-import mega.triple.aaa.data.local.model.CountryDbModel
+import mega.triple.aaa.data.local.model.location.CountryDbModel
 
 @Dao
 interface CountryDao {

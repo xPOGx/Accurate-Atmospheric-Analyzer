@@ -7,9 +7,9 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import mega.triple.aaa.data.local.AppDb
-import mega.triple.aaa.data.local.dao.CityDao
-import mega.triple.aaa.data.local.dao.ContinentDao
-import mega.triple.aaa.data.local.dao.CountryDao
+import mega.triple.aaa.data.local.dao.location.CityDao
+import mega.triple.aaa.data.local.dao.location.ContinentDao
+import mega.triple.aaa.data.local.dao.location.CountryDao
 import mega.triple.aaa.data.local.source.LocationDbSource
 import mega.triple.aaa.data.local.source.impl.LocationDbSourceImpl
 

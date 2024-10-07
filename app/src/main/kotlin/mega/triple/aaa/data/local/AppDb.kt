@@ -4,12 +4,12 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import mega.triple.aaa.data.local.dao.CityDao
-import mega.triple.aaa.data.local.dao.ContinentDao
-import mega.triple.aaa.data.local.dao.CountryDao
-import mega.triple.aaa.data.local.model.CityDbModel
-import mega.triple.aaa.data.local.model.ContinentDbModel
-import mega.triple.aaa.data.local.model.CountryDbModel
+import mega.triple.aaa.data.local.dao.location.CityDao
+import mega.triple.aaa.data.local.dao.location.ContinentDao
+import mega.triple.aaa.data.local.dao.location.CountryDao
+import mega.triple.aaa.data.local.model.location.CityDbModel
+import mega.triple.aaa.data.local.model.location.ContinentDbModel
+import mega.triple.aaa.data.local.model.location.CountryDbModel
 
 const val DB_VERSION = 1
 

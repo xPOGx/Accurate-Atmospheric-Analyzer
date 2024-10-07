@@ -1,12 +1,12 @@
 package mega.triple.aaa.data.local.source.impl
 
 import kotlinx.coroutines.flow.Flow
-import mega.triple.aaa.data.local.dao.CityDao
-import mega.triple.aaa.data.local.dao.ContinentDao
-import mega.triple.aaa.data.local.dao.CountryDao
-import mega.triple.aaa.data.local.model.CityDbModel
-import mega.triple.aaa.data.local.model.ContinentDbModel
-import mega.triple.aaa.data.local.model.CountryDbModel
+import mega.triple.aaa.data.local.dao.location.CityDao
+import mega.triple.aaa.data.local.dao.location.ContinentDao
+import mega.triple.aaa.data.local.dao.location.CountryDao
+import mega.triple.aaa.data.local.model.location.CityDbModel
+import mega.triple.aaa.data.local.model.location.ContinentDbModel
+import mega.triple.aaa.data.local.model.location.CountryDbModel
 import mega.triple.aaa.data.local.source.LocationDbSource
 import javax.inject.Inject
 

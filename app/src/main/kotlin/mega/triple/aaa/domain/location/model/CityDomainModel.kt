@@ -1,6 +1,6 @@
 package mega.triple.aaa.domain.location.model
 
-import mega.triple.aaa.data.local.model.CityDbModel
+import mega.triple.aaa.data.local.model.location.CityDbModel
 import mega.triple.aaa.data.network.response.location.CityResponse
 import mega.triple.aaa.data.proto.CityProto
 import mega.triple.aaa.presentation.core.common.Constants.UNDERSCORE

@@ -1,9 +1,9 @@
 package mega.triple.aaa.data.local.source
 
 import kotlinx.coroutines.flow.Flow
-import mega.triple.aaa.data.local.model.CityDbModel
-import mega.triple.aaa.data.local.model.ContinentDbModel
-import mega.triple.aaa.data.local.model.CountryDbModel
+import mega.triple.aaa.data.local.model.location.CityDbModel
+import mega.triple.aaa.data.local.model.location.ContinentDbModel
+import mega.triple.aaa.data.local.model.location.CountryDbModel
 
 interface LocationDbSource {
     fun getContinents(): Flow<List<ContinentDbModel>>

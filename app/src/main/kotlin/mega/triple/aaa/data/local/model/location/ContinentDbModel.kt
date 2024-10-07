@@ -1,4 +1,4 @@
-package mega.triple.aaa.data.local.model
+package mega.triple.aaa.data.local.model.location
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
