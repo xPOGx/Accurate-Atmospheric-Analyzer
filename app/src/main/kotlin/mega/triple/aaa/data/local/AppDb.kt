@@ -4,9 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import mega.triple.aaa.data.local.dao.forecast.DailyForecastDao
 import mega.triple.aaa.data.local.dao.location.CityDao
 import mega.triple.aaa.data.local.dao.location.ContinentDao
 import mega.triple.aaa.data.local.dao.location.CountryDao
+import mega.triple.aaa.data.local.model.forecast.daily.DailyForecastDbModel
 import mega.triple.aaa.data.local.model.location.CityDbModel
 import mega.triple.aaa.data.local.model.location.ContinentDbModel
 import mega.triple.aaa.data.local.model.location.CountryDbModel
@@ -19,6 +21,7 @@ const val DB_VERSION = 1
         ContinentDbModel::class,
         CountryDbModel::class,
         CityDbModel::class,
+        DailyForecastDbModel::class,
     ],
     exportSchema = false
 )
@@ -26,6 +29,8 @@ abstract class AppDb : RoomDatabase() {
     abstract fun continentDao(): ContinentDao
     abstract fun countryDao(): CountryDao
     abstract fun cityDao(): CityDao
+
+    abstract fun dailyForecastDao(): DailyForecastDao
 
     companion object {
         @Volatile

@@ -7,10 +7,13 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import mega.triple.aaa.data.local.AppDb
+import mega.triple.aaa.data.local.dao.forecast.DailyForecastDao
 import mega.triple.aaa.data.local.dao.location.CityDao
 import mega.triple.aaa.data.local.dao.location.ContinentDao
 import mega.triple.aaa.data.local.dao.location.CountryDao
+import mega.triple.aaa.data.local.source.ForecastDbSource
 import mega.triple.aaa.data.local.source.LocationDbSource
+import mega.triple.aaa.data.local.source.impl.ForecastDbSourceImpl
 import mega.triple.aaa.data.local.source.impl.LocationDbSourceImpl
 
 @Module
@@ -29,9 +32,17 @@ object DatabaseModule {
     fun provideCityDao(appDb: AppDb): CityDao = appDb.cityDao()
 
     @Provides
+    fun provideDailyForecastDao(appDb: AppDb): DailyForecastDao = appDb.dailyForecastDao()
+
+    @Provides
     fun provideLocationDbSource(
         continentDao: ContinentDao,
         countryDao: CountryDao,
         cityDao: CityDao,
     ): LocationDbSource = LocationDbSourceImpl(continentDao, countryDao, cityDao)
+
+    @Provides
+    fun provideForecastDbSource(
+        dailyForecastDao: DailyForecastDao,
+    ): ForecastDbSource = ForecastDbSourceImpl(dailyForecastDao)
 }

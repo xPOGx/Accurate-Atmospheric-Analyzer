@@ -9,9 +9,9 @@ data class SunMoonResponse(
     @SerialName("Age")
     val age: Int?,
     @SerialName("EpochRise")
-    val epochRise: Int?,
+    val epochRise: Long?,
     @SerialName("EpochSet")
-    val epochSet: Int?,
+    val epochSet: Long?,
     @SerialName("Phase")
     val phase: String?,
     @SerialName("Rise")

@@ -17,7 +17,7 @@ data class DailyForecastResponse(
     @SerialName("Day")
     val day: DayNightResponse?,
     @SerialName("EpochDate")
-    val epochDate: Int?,
+    val epochDate: Long?,
     @SerialName("HoursOfSun")
     val hoursOfSun: Double?,
     @SerialName("Moon")
