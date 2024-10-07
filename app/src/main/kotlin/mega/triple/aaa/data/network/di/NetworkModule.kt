@@ -15,9 +15,13 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.DefaultJson
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
+import mega.triple.aaa.data.network.api.ForecastService
 import mega.triple.aaa.data.network.api.LocationService
+import mega.triple.aaa.data.network.api.impl.ForecastServiceImpl
 import mega.triple.aaa.data.network.api.impl.LocationServiceImpl
+import mega.triple.aaa.data.network.source.ForecastNetSource
 import mega.triple.aaa.data.network.source.LocationNetSource
+import mega.triple.aaa.data.network.source.impl.ForecastNetSourceImpl
 import mega.triple.aaa.data.network.source.impl.LocationNetSourceImpl
 import okhttp3.Interceptor
 
@@ -61,11 +65,21 @@ object NetworkModule {
 
     @Provides
     fun provideLocationService(
-        httpClient: HttpClient
+        httpClient: HttpClient,
     ): LocationService = LocationServiceImpl(httpClient)
 
     @Provides
+    fun provideForecastService(
+        httpClient: HttpClient,
+    ): ForecastService = ForecastServiceImpl(httpClient)
+
+    @Provides
     fun provideLocationNetSource(
-        apiService: LocationService
+        apiService: LocationService,
     ): LocationNetSource = LocationNetSourceImpl(apiService)
+
+    @Provides
+    fun provideForecastNetSource(
+        apiService: ForecastService,
+    ): ForecastNetSource = ForecastNetSourceImpl(apiService)
 }
