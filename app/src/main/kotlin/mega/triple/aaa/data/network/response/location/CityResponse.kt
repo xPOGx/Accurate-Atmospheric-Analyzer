@@ -1,4 +1,4 @@
-package mega.triple.aaa.data.network.response
+package mega.triple.aaa.data.network.response.location
 
 
 import kotlinx.serialization.SerialName

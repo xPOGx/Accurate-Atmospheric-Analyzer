@@ -1,8 +1,8 @@
 package mega.triple.aaa.data.network.source
 
-import mega.triple.aaa.data.network.response.CityResponse
-import mega.triple.aaa.data.network.response.ContinentResponse
-import mega.triple.aaa.data.network.response.CountryResponse
+import mega.triple.aaa.data.network.response.location.CityResponse
+import mega.triple.aaa.data.network.response.location.ContinentResponse
+import mega.triple.aaa.data.network.response.location.CountryResponse
 
 interface LocationNetSource {
     suspend fun getContinents(

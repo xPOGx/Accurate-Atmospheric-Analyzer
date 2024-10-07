@@ -2,9 +2,9 @@ package mega.triple.aaa.data.network.source.impl
 
 import mega.triple.aaa.data.network.api.LocationService
 import mega.triple.aaa.data.network.api.ext.safeResultCall
-import mega.triple.aaa.data.network.response.CityResponse
-import mega.triple.aaa.data.network.response.ContinentResponse
-import mega.triple.aaa.data.network.response.CountryResponse
+import mega.triple.aaa.data.network.response.location.CityResponse
+import mega.triple.aaa.data.network.response.location.ContinentResponse
+import mega.triple.aaa.data.network.response.location.CountryResponse
 import mega.triple.aaa.data.network.source.LocationNetSource
 import javax.inject.Inject
 
