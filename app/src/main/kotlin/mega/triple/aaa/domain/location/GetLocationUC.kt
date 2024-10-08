@@ -8,7 +8,7 @@ import mega.triple.aaa.domain.location.model.LocationDomainModel
 import mega.triple.aaa.domain.location.model.LocationDomainModel.Companion.toDomainModel
 import javax.inject.Inject
 
-class GetLocationUseCase @Inject constructor(
+class GetLocationUC @Inject constructor(
     private val locationDataStore: LocationDataStore,
 ) {
     operator fun invoke(): Flow<LocationDomainModel?> {

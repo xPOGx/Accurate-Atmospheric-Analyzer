@@ -5,13 +5,13 @@ import mega.triple.aaa.domain.location.model.LocationDomainModel
 import mega.triple.aaa.domain.location.model.LocationDomainModel.Companion.toProtoModel
 import javax.inject.Inject
 
-class SetLocationUseCase @Inject constructor(
+class SetLocationUC @Inject constructor(
     private val locationDataStore: LocationDataStore,
-    private val getCityKeyUseCase: GetCityKeyUseCase,
+    private val getCityKeyUC: GetCityKeyUC,
 ) {
     suspend operator fun invoke(domainModel: LocationDomainModel): Result<Unit> {
         return try {
-            getCityKeyUseCase(
+            getCityKeyUC(
                 countryId = domainModel.country!!.id,
                 cityId = domainModel.city!!.id!!,
                 cityName = domainModel.city.englishName!!,

@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import mega.triple.aaa.domain.location.GetLocationUseCase
+import mega.triple.aaa.domain.location.GetLocationUC
 import mega.triple.aaa.domain.location.model.LocationDomainModel.Companion.toUiModel
 import mega.triple.aaa.presentation.core.ui.ext.UI
 import mega.triple.aaa.presentation.core.ui.model.LocationUiModel
@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getLocationUseCase: GetLocationUseCase,
+    private val getLocationUC: GetLocationUC,
 ) : ViewModel() {
     // FLOWS
     private val _uiState: MutableStateFlow<HomeUiState> = MutableStateFlow(HomeUiState())
@@ -25,7 +25,7 @@ class HomeViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            getLocationUseCase().collectLatest { location ->
+            getLocationUC().collectLatest { location ->
                 delay(1000) // Time simulation
                 _uiState.update {
                     it.copy(location = UI.READY(location?.toUiModel()))

@@ -7,10 +7,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import mega.triple.aaa.domain.location.GetCitiesUseCase
-import mega.triple.aaa.domain.location.GetContinentsUseCase
-import mega.triple.aaa.domain.location.GetCountriesUseCase
-import mega.triple.aaa.domain.location.SetLocationUseCase
+import mega.triple.aaa.domain.location.GetCitiesUC
+import mega.triple.aaa.domain.location.GetContinentsUC
+import mega.triple.aaa.domain.location.GetCountriesUC
+import mega.triple.aaa.domain.location.SetLocationUC
 import mega.triple.aaa.domain.location.model.LocationDomainModel.Companion.toDomainModel
 import mega.triple.aaa.presentation.core.ui.ext.LocationType
 import mega.triple.aaa.presentation.core.ui.ext.LocationType.CITY
@@ -28,10 +28,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val getContinentsUseCase: GetContinentsUseCase,
-    private val getCountriesUseCase: GetCountriesUseCase,
-    private val getCitiesUseCase: GetCitiesUseCase,
-    private val setLocationUseCase: SetLocationUseCase,
+    private val getContinentsUC: GetContinentsUC,
+    private val getCountriesUC: GetCountriesUC,
+    private val getCitiesUC: GetCitiesUC,
+    private val setLocationUC: SetLocationUC,
 ) : ViewModel() {
     // FLOWS
     private val _uiState: MutableStateFlow<SearchUiState> = MutableStateFlow(SearchUiState())
@@ -59,7 +59,7 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun saveContinent(continentId: String) = viewModelScope.launch {
-        val continents = getContinentsUseCase()
+        val continents = getContinentsUC()
             .getOrNull()
             ?.map { it.toUiModel() }
         val continent = continents?.find { it.id == continentId }
@@ -72,7 +72,7 @@ class SearchViewModel @Inject constructor(
 
     private fun saveCountry(countryId: String) = viewModelScope.launch {
         val continentId = _uiState.value.location.continent?.id ?: return@launch
-        val countries = getCountriesUseCase(continentId)
+        val countries = getCountriesUC(continentId)
             .getOrNull()
             ?.map { it.toUiModel() }
         val country = countries?.find { it.id == countryId }
@@ -90,7 +90,7 @@ class SearchViewModel @Inject constructor(
     private fun saveCity(cityId: String) = viewModelScope.launch {
         val continentId = _uiState.value.location.continent?.id ?: return@launch
         val countryId = _uiState.value.location.country?.id ?: return@launch
-        val cities = getCitiesUseCase(continentId, countryId)
+        val cities = getCitiesUC(continentId, countryId)
             .getOrNull()
             ?.map { it.toUiModel() }
         val city = cities?.find { it.id == cityId }
@@ -105,7 +105,7 @@ class SearchViewModel @Inject constructor(
         viewModelScope.launch {
             when (type) {
                 CONTINENT -> {
-                    getContinentsUseCase().mapCatching { domainModels ->
+                    getContinentsUC().mapCatching { domainModels ->
                         domainModels.map { it.toUiModel() }
                     }.onSuccess { uiModels ->
                         val locationList = uiModels
@@ -126,7 +126,7 @@ class SearchViewModel @Inject constructor(
                             it.copy(locationList = UI.ERROR(Exception("Continent not chosen")))
                         }
                     } else {
-                        getCountriesUseCase(continentId).mapCatching { domainModels ->
+                        getCountriesUC(continentId).mapCatching { domainModels ->
                             domainModels.map { it.toUiModel() }
                         }.onSuccess { uiModels ->
                             val locationList = uiModels
@@ -153,7 +153,7 @@ class SearchViewModel @Inject constructor(
                             it.copy(locationList = UI.ERROR(Exception(error)))
                         }
                     } else {
-                        getCitiesUseCase(continentId, countryId).mapCatching { domainModels ->
+                        getCitiesUC(continentId, countryId).mapCatching { domainModels ->
                             domainModels.map { it.toUiModel() }
                         }.onSuccess { uiModels ->
                             val locationList = uiModels
@@ -173,7 +173,7 @@ class SearchViewModel @Inject constructor(
 
     private fun saveAll() {
         viewModelScope.launch {
-            setLocationUseCase(_uiState.value.location.toDomainModel())
+            setLocationUC(_uiState.value.location.toDomainModel())
                 .onSuccess { onSaveSuccess.fire() }
                 .onFailure { onToast.send(it.message ?: "Error saving location") }
         }
