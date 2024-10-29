@@ -7,7 +7,6 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -16,8 +15,6 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridItemSpanScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -26,7 +23,6 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import mega.triple.aaa.R
@@ -36,7 +32,7 @@ import mega.triple.aaa.presentation.core.ui.components.tab.DayTab
 import mega.triple.aaa.presentation.core.ui.components.toolbar.TopAppBar
 import mega.triple.aaa.presentation.core.ui.components.view.UvIndexView
 import mega.triple.aaa.presentation.core.ui.ext.noRippleClickable
-import mega.triple.aaa.presentation.core.ui.model.LocationUiModel
+import mega.triple.aaa.presentation.core.ui.model.location.LocationUiModel
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme.colors
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme.spaces
@@ -125,20 +121,10 @@ fun HomeScreen(
                     }
                 ) {
                     if (it) {
-                        Card(
-                            colors = CardDefaults.cardColors().copy(
-                                containerColor = colors.cardBG,
-                                contentColor = colors.cardContent,
-                            ),
-                            modifier = Modifier.noRippleClickable { uvCustomVisible = false },
-                        ) {
-                            Box(
-                                contentAlignment = Alignment.Center,
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                UvIndexView(2f)
-                            }
-                        }
+                        UvIndexView(
+                            uvIndex = 2.3f,
+                            modifier = Modifier.noRippleClickable { uvCustomVisible = false }
+                        )
                     } else {
                         ParameterCard(
                             title = "UV Index",

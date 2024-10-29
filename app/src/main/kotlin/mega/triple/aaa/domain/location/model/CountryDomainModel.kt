@@ -4,7 +4,7 @@ import mega.triple.aaa.data.local.model.location.CountryDbModel
 import mega.triple.aaa.data.network.response.location.CountryResponse
 import mega.triple.aaa.data.proto.CountryProto
 import mega.triple.aaa.domain.ext.validateNotNull
-import mega.triple.aaa.presentation.core.ui.model.CountryUiModel
+import mega.triple.aaa.presentation.core.ui.model.location.CountryUiModel
 
 data class CountryDomainModel(
     val id: String,

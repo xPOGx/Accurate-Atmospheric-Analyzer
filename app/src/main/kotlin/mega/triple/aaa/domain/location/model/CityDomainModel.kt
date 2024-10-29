@@ -4,7 +4,7 @@ import mega.triple.aaa.data.local.model.location.CityDbModel
 import mega.triple.aaa.data.network.response.location.CityResponse
 import mega.triple.aaa.data.proto.CityProto
 import mega.triple.aaa.presentation.core.common.Constants.UNDERSCORE
-import mega.triple.aaa.presentation.core.ui.model.CityUiModel
+import mega.triple.aaa.presentation.core.ui.model.location.CityUiModel
 
 data class CityDomainModel(
     val id: String?,

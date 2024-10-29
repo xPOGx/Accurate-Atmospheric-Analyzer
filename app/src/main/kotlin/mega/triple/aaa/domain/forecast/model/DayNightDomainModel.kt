@@ -1,0 +1,131 @@
+package mega.triple.aaa.domain.forecast.model
+
+import mega.triple.aaa.data.local.model.forecast.DayNightDbModel
+import mega.triple.aaa.data.network.response.model.DayNightResponse
+import mega.triple.aaa.domain.forecast.model.DirectionWrapperDomainModel.Companion.toDbModel
+import mega.triple.aaa.domain.forecast.model.DirectionWrapperDomainModel.Companion.toDomainModel
+import mega.triple.aaa.domain.forecast.model.ValueDomainModel.Companion.toDbModel
+import mega.triple.aaa.domain.forecast.model.ValueDomainModel.Companion.toDomainModel
+import mega.triple.aaa.domain.forecast.model.ValueWrapperDomainModel.Companion.toDbModel
+import mega.triple.aaa.domain.forecast.model.ValueWrapperDomainModel.Companion.toDomainModel
+
+data class DayNightDomainModel(
+    val cloudCover: Int?,
+    val evapotranspiration: ValueDomainModel?,
+    val hasPrecipitation: Boolean?,
+    val hoursOfIce: Double?,
+    val hoursOfPrecipitation: Double?,
+    val hoursOfRain: Double?,
+    val hoursOfSnow: Double?,
+    val ice: ValueDomainModel?,
+    val iceProbability: Int?,
+    val icon: Int?,
+    val iconPhrase: String?,
+    val longPhrase: String?,
+    val precipitationProbability: Int?,
+    val rain: ValueDomainModel?,
+    val rainProbability: Int?,
+    val relativeHumidity: ValueWrapperDomainModel?,
+    val shortPhrase: String?,
+    val snow: ValueDomainModel?,
+    val snowProbability: Int?,
+    val solarIrradiance: ValueDomainModel?,
+    val thunderstormProbability: Int?,
+    val totalLiquid: ValueDomainModel?,
+    val wetBulbGlobeTemperature: ValueWrapperDomainModel?,
+    val wetBulbTemperature: ValueWrapperDomainModel?,
+    val wind: DirectionWrapperDomainModel?,
+    val windGust: DirectionWrapperDomainModel?
+) {
+    companion object {
+        fun DayNightResponse.toDbModel(): DayNightDbModel =
+            DayNightDbModel(
+                cloudCover = cloudCover,
+                evapotranspiration = evapotranspiration?.toDbModel(),
+                hasPrecipitation = hasPrecipitation,
+                hoursOfIce = hoursOfIce,
+                hoursOfPrecipitation = hoursOfPrecipitation,
+                hoursOfRain = hoursOfRain,
+                hoursOfSnow = hoursOfSnow,
+                ice = ice?.toDbModel(),
+                iceProbability = iceProbability,
+                icon = icon,
+                iconPhrase = iconPhrase,
+                longPhrase = longPhrase,
+                precipitationProbability = precipitationProbability,
+                rain = rain?.toDbModel(),
+                rainProbability = rainProbability,
+                relativeHumidity = relativeHumidity?.toDbModel(),
+                shortPhrase = shortPhrase,
+                snow = snow?.toDbModel(),
+                snowProbability = snowProbability,
+                solarIrradiance = solarIrradiance?.toDbModel(),
+                thunderstormProbability = thunderstormProbability,
+                totalLiquid = totalLiquid?.toDbModel(),
+                wetBulbGlobeTemperature = wetBulbGlobeTemperature?.toDbModel(),
+                wetBulbTemperature = wetBulbTemperature?.toDbModel(),
+                wind = wind?.toDbModel(),
+                windGust = windGust?.toDbModel(),
+            )
+
+        fun DayNightResponse.toDomainModel(): DayNightDomainModel =
+            DayNightDomainModel(
+                cloudCover = cloudCover,
+                evapotranspiration = evapotranspiration?.toDomainModel(),
+                hasPrecipitation = hasPrecipitation,
+                hoursOfIce = hoursOfIce,
+                hoursOfPrecipitation = hoursOfPrecipitation,
+                hoursOfRain = hoursOfRain,
+                hoursOfSnow = hoursOfSnow,
+                ice = ice?.toDomainModel(),
+                iceProbability = iceProbability,
+                icon = icon,
+                iconPhrase = iconPhrase,
+                longPhrase = longPhrase,
+                precipitationProbability = precipitationProbability,
+                rain = rain?.toDomainModel(),
+                rainProbability = rainProbability,
+                relativeHumidity = relativeHumidity?.toDomainModel(),
+                shortPhrase = shortPhrase,
+                snow = snow?.toDomainModel(),
+                snowProbability = snowProbability,
+                solarIrradiance = solarIrradiance?.toDomainModel(),
+                thunderstormProbability = thunderstormProbability,
+                totalLiquid = totalLiquid?.toDomainModel(),
+                wetBulbGlobeTemperature = wetBulbGlobeTemperature?.toDomainModel(),
+                wetBulbTemperature = wetBulbTemperature?.toDomainModel(),
+                wind = wind?.toDomainModel(),
+                windGust = windGust?.toDomainModel(),
+            )
+
+        fun DayNightDbModel.toDomainModel(): DayNightDomainModel =
+            DayNightDomainModel(
+                cloudCover = cloudCover,
+                evapotranspiration = evapotranspiration?.toDomainModel(),
+                hasPrecipitation = hasPrecipitation,
+                hoursOfIce = hoursOfIce,
+                hoursOfPrecipitation = hoursOfPrecipitation,
+                hoursOfRain = hoursOfRain,
+                hoursOfSnow = hoursOfSnow,
+                ice = ice?.toDomainModel(),
+                iceProbability = iceProbability,
+                icon = icon,
+                iconPhrase = iconPhrase,
+                longPhrase = longPhrase,
+                precipitationProbability = precipitationProbability,
+                rain = rain?.toDomainModel(),
+                rainProbability = rainProbability,
+                relativeHumidity = relativeHumidity?.toDomainModel(),
+                shortPhrase = shortPhrase,
+                snow = snow?.toDomainModel(),
+                snowProbability = snowProbability,
+                solarIrradiance = solarIrradiance?.toDomainModel(),
+                thunderstormProbability = thunderstormProbability,
+                totalLiquid = totalLiquid?.toDomainModel(),
+                wetBulbGlobeTemperature = wetBulbGlobeTemperature?.toDomainModel(),
+                wetBulbTemperature = wetBulbTemperature?.toDomainModel(),
+                wind = wind?.toDomainModel(),
+                windGust = windGust?.toDomainModel(),
+            )
+    }
+}

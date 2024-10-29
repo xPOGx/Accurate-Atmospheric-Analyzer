@@ -25,7 +25,7 @@ class GetCitiesUC @Inject constructor(
                 val domainModels = dbModels.map { it.toDomainModel() }
                 Result.success(domainModels)
             }
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             return locationNetSource.getCities(countryId = countryId)
                 .mapCatching { netModels ->
                     val dbModels = netModels.map { it.toDbModel(continentId) }

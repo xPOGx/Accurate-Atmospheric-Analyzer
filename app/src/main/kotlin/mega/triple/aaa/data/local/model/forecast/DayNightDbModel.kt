@@ -2,6 +2,7 @@ package mega.triple.aaa.data.local.model.forecast
 
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
+import mega.triple.aaa.data.network.response.model.ValueWrapper
 
 data class DayNightDbModel(
     @ColumnInfo("cloud_cover")
@@ -35,7 +36,7 @@ data class DayNightDbModel(
     @ColumnInfo("rain_probability")
     val rainProbability: Int?,
     @Embedded("relative_humidity")
-    val relativeHumidity: ValueDbModel?,
+    val relativeHumidity: ValueWrapperDbModel?,
     @ColumnInfo("short_phrase")
     val shortPhrase: String?,
     @Embedded("snow")

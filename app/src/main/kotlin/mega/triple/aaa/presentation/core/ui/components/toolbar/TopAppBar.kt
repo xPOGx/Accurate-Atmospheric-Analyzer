@@ -53,10 +53,10 @@ import mega.triple.aaa.presentation.core.common.Constants.TOOLBAR_HEIGHT_MAX
 import mega.triple.aaa.presentation.core.common.Constants.TOOLBAR_HEIGHT_MIN
 import mega.triple.aaa.presentation.core.ui.components.ext.SpacerHeight
 import mega.triple.aaa.presentation.core.ui.components.tab.DayTab
-import mega.triple.aaa.presentation.core.ui.ext.formatFeelTemperature
-import mega.triple.aaa.presentation.core.ui.ext.formatPartTemperature
-import mega.triple.aaa.presentation.core.ui.ext.formatTemperature
-import mega.triple.aaa.presentation.core.ui.ext.formatTime
+import mega.triple.aaa.presentation.core.common.formatFeelTemperature
+import mega.triple.aaa.presentation.core.common.formatPartTemperature
+import mega.triple.aaa.presentation.core.common.formatTemperature
+import mega.triple.aaa.presentation.core.common.formatTime
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme.colors
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme.shapes

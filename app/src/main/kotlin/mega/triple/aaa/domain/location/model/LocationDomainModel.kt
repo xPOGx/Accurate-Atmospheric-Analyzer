@@ -7,10 +7,10 @@ import mega.triple.aaa.domain.location.model.ContinentDomainModel.Companion.toDo
 import mega.triple.aaa.domain.location.model.ContinentDomainModel.Companion.toProtoModel
 import mega.triple.aaa.domain.location.model.CountryDomainModel.Companion.toDomainModel
 import mega.triple.aaa.domain.location.model.CountryDomainModel.Companion.toProtoModel
-import mega.triple.aaa.presentation.core.ui.model.CityUiModel.Companion.toUiModel
-import mega.triple.aaa.presentation.core.ui.model.ContinentUiModel.Companion.toUiModel
-import mega.triple.aaa.presentation.core.ui.model.CountryUiModel.Companion.toUiModel
-import mega.triple.aaa.presentation.core.ui.model.LocationUiModel
+import mega.triple.aaa.presentation.core.ui.model.location.CityUiModel.Companion.toUiModel
+import mega.triple.aaa.presentation.core.ui.model.location.ContinentUiModel.Companion.toUiModel
+import mega.triple.aaa.presentation.core.ui.model.location.CountryUiModel.Companion.toUiModel
+import mega.triple.aaa.presentation.core.ui.model.location.LocationUiModel
 
 data class LocationDomainModel(
     val continent: ContinentDomainModel? = null,

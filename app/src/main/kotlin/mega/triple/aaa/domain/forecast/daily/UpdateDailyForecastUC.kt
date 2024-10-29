@@ -1,0 +1,33 @@
+package mega.triple.aaa.domain.forecast.daily
+
+import kotlinx.coroutines.flow.first
+import mega.triple.aaa.data.local.source.ForecastDbSource
+import mega.triple.aaa.data.network.source.ForecastNetSource
+import mega.triple.aaa.domain.ext.EmptyLocationKey
+import mega.triple.aaa.domain.ext.NullResult
+import mega.triple.aaa.domain.forecast.model.DailyForecastDomainModel.Companion.toDbModel
+import mega.triple.aaa.domain.location.GetLocationUC
+import javax.inject.Inject
+
+class UpdateDailyForecastUC @Inject constructor(
+    private val dbSource: ForecastDbSource,
+    private val netSource: ForecastNetSource,
+    private val locationUC: GetLocationUC,
+) {
+    suspend operator fun invoke(): Result<Unit> {
+        val locationKey = locationUC().first()?.city?.locationKey
+            ?: return Result.failure(EmptyLocationKey())
+
+        return try {
+            netSource.get5dayForecast(locationKey = locationKey)
+                .mapCatching { wrapper ->
+                    wrapper.dailyForecasts
+                        ?.map { it.toDbModel() }
+                        ?.let { dbSource.insertDailyForecasts(it) }
+                        ?: throw NullResult()
+                }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+}

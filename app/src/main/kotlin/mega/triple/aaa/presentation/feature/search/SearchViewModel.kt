@@ -19,10 +19,10 @@ import mega.triple.aaa.presentation.core.ui.ext.LocationType.COUNTRY
 import mega.triple.aaa.presentation.core.ui.ext.SingleEvent
 import mega.triple.aaa.presentation.core.ui.ext.UI
 import mega.triple.aaa.presentation.core.ui.ext.UIEvent
-import mega.triple.aaa.presentation.core.ui.model.CityUiModel.Companion.toUiModel
-import mega.triple.aaa.presentation.core.ui.model.ContinentUiModel.Companion.toUiModel
-import mega.triple.aaa.presentation.core.ui.model.CountryUiModel.Companion.toUiModel
-import mega.triple.aaa.presentation.core.ui.model.LocationUiModel
+import mega.triple.aaa.presentation.core.ui.model.location.CityUiModel.Companion.toUiModel
+import mega.triple.aaa.presentation.core.ui.model.location.ContinentUiModel.Companion.toUiModel
+import mega.triple.aaa.presentation.core.ui.model.location.CountryUiModel.Companion.toUiModel
+import mega.triple.aaa.presentation.core.ui.model.location.LocationUiModel
 import mega.triple.aaa.presentation.feature.search.ext.SearchAction
 import javax.inject.Inject
 

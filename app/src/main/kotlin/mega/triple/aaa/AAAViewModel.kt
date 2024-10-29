@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import mega.triple.aaa.domain.location.GetLocationUC
 import mega.triple.aaa.domain.location.model.LocationDomainModel.Companion.toUiModel
 import mega.triple.aaa.presentation.core.ui.ext.UI
-import mega.triple.aaa.presentation.core.ui.model.LocationUiModel
+import mega.triple.aaa.presentation.core.ui.model.location.LocationUiModel
 import javax.inject.Inject
 
 @HiltViewModel

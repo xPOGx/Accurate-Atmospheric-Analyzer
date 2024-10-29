@@ -1,4 +1,4 @@
-package mega.triple.aaa.presentation.core.ui.ext
+package mega.triple.aaa.presentation.core.common
 
 import mega.triple.aaa.presentation.core.common.Constants.CELSIUS
 import mega.triple.aaa.presentation.core.common.Constants.FAHRENHEIT

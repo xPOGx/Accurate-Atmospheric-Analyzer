@@ -1,4 +1,4 @@
-package mega.triple.aaa.presentation.core.ui.model
+package mega.triple.aaa.presentation.core.ui.model.location
 
 import mega.triple.aaa.presentation.core.common.Constants
 

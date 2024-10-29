@@ -9,5 +9,5 @@ interface ForecastNetSource {
         language: String = DEFAULT_LANGUAGE,
         isMetric: Boolean = DEFAULT_METRIC,
         locationKey: String,
-    ): Result<List<DailyForecastWrapper>>
+    ): Result<DailyForecastWrapper>
 }

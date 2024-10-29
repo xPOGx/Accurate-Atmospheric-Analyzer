@@ -13,7 +13,7 @@ class ForecastNetSourceImpl @Inject constructor(
         language: String,
         isMetric: Boolean,
         locationKey: String,
-    ): Result<List<DailyForecastWrapper>> = safeResultCall {
+    ): Result<DailyForecastWrapper> = safeResultCall {
         apiService.get5dayForecast(language, locationKey, isMetric)
     }
 }
