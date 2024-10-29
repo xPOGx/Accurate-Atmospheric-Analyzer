@@ -72,6 +72,11 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    // WorkManager
+    implementation(libs.worker.lib)
+    implementation(libs.worker.startup)
+    implementation(libs.worker.hilt)
+    ksp(libs.worker.hiltCompiler)
     // Network
     implementation(libs.bundles.network)
     implementation(libs.kotlinx.serialization.json)
