@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ValueResponse(
     @SerialName("Phrase")
-    val phrase: String?,
+    val phrase: String? = null,
     @SerialName("Unit")
     val unit: String?,
     @SerialName("UnitType")

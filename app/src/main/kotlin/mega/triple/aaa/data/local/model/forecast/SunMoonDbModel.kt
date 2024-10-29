@@ -1,7 +1,9 @@
 package mega.triple.aaa.data.local.model.forecast
 
 import androidx.room.ColumnInfo
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class SunMoonDbModel(
     @ColumnInfo("age")
     val age: Int?,

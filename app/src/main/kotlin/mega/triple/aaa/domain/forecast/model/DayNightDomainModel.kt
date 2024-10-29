@@ -4,6 +4,8 @@ import mega.triple.aaa.data.local.model.forecast.DayNightDbModel
 import mega.triple.aaa.data.network.response.model.DayNightResponse
 import mega.triple.aaa.domain.forecast.model.DirectionWrapperDomainModel.Companion.toDbModel
 import mega.triple.aaa.domain.forecast.model.DirectionWrapperDomainModel.Companion.toDomainModel
+import mega.triple.aaa.domain.forecast.model.RelativeHumidityDomainModel.Companion.toDbModel
+import mega.triple.aaa.domain.forecast.model.RelativeHumidityDomainModel.Companion.toDomainModel
 import mega.triple.aaa.domain.forecast.model.ValueDomainModel.Companion.toDbModel
 import mega.triple.aaa.domain.forecast.model.ValueDomainModel.Companion.toDomainModel
 import mega.triple.aaa.domain.forecast.model.ValueWrapperDomainModel.Companion.toDbModel
@@ -25,7 +27,7 @@ data class DayNightDomainModel(
     val precipitationProbability: Int?,
     val rain: ValueDomainModel?,
     val rainProbability: Int?,
-    val relativeHumidity: ValueWrapperDomainModel?,
+    val relativeHumidity: RelativeHumidityDomainModel?,
     val shortPhrase: String?,
     val snow: ValueDomainModel?,
     val snowProbability: Int?,

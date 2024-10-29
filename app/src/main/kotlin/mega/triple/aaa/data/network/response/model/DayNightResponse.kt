@@ -37,7 +37,7 @@ data class DayNightResponse(
     @SerialName("RainProbability")
     val rainProbability: Int?,
     @SerialName("RelativeHumidity")
-    val relativeHumidity: ValueWrapper?,
+    val relativeHumidity: RelativeHumidityResponse?,
     @SerialName("ShortPhrase")
     val shortPhrase: String?,
     @SerialName("Snow")

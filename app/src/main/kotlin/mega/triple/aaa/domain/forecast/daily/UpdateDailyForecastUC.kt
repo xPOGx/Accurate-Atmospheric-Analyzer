@@ -21,11 +21,13 @@ class UpdateDailyForecastUC @Inject constructor(
         return try {
             netSource.get5dayForecast(locationKey = locationKey)
                 .mapCatching { wrapper ->
-                    wrapper.dailyForecasts
-                        ?.map { it.toDbModel() }
-                        ?.let { dbSource.insertDailyForecasts(it) }
-                        ?: throw NullResult()
+                    wrapper.dailyForecasts?.map { it.toDbModel() } ?: throw NullResult()
+                }.onSuccess {
+                    dbSource.insertDailyForecasts(it)
+                }.onFailure {
+                    throw it
                 }
+            Result.success(Unit)
         } catch (e: Exception) {
             Result.failure(e)
         }

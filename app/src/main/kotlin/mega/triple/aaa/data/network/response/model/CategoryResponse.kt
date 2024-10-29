@@ -13,7 +13,7 @@ data class CategoryResponse(
     @SerialName("Name")
     val name: String?,
     @SerialName("Type")
-    val type: String?,
+    val type: String? = null,
     @SerialName("Value")
     val value: Int?
 )
