@@ -10,6 +10,12 @@ object Constants {
     const val LOCATION_SEPARATOR = ", "
     const val SPACE = " "
     const val UNDERSCORE = "_"
-    const val CELSIUS = '°'
-    const val FAHRENHEIT = 'F'
+    const val CELSIUS = "°"
+    const val FAHRENHEIT = "F"
+    const val STUB_VALUE = "#"
+    const val PERCENTAGE = "%"
+
+    const val ISO_PATTERN = "yyyy-MM-dd'T'HH:mm:ssZ"
+    const val UI_PATTERN = "MMMM d, HH:mm"
+    const val SIMPLE_PATTERN = "HH:mm"
 }

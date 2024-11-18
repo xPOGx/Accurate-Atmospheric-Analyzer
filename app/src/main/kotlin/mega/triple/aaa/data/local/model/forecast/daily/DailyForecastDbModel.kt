@@ -28,7 +28,7 @@ data class DailyForecastDbModel(
     @ColumnInfo("hours_of_sun")
     val hoursOfSun: Double?,
     @Embedded("moon")
-    val moonResponse: SunMoonDbModel?,
+    val moon: SunMoonDbModel?,
     @Embedded("night")
     val night: DayNightDbModel?,
     @Embedded("real_feel_temperature")

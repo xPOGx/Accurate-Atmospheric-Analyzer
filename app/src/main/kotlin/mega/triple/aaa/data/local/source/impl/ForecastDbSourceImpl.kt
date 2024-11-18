@@ -9,9 +9,18 @@ import javax.inject.Inject
 class ForecastDbSourceImpl @Inject constructor(
     private val dailyForecastDao: DailyForecastDao,
 ) : ForecastDbSource {
-    override fun getDailyForecasts(time: Long): Flow<List<DailyForecastDbModel>> =
-        dailyForecastDao.getDailyForecast(time)
+    override fun getDailyForecasts(): Flow<List<DailyForecastDbModel>> =
+        dailyForecastDao.getDailyForecast()
 
     override suspend fun insertDailyForecasts(list: List<DailyForecastDbModel>) =
         dailyForecastDao.insertDailyForecasts(list)
+
+    override fun getTodayForecast(): Flow<DailyForecastDbModel?> =
+        dailyForecastDao.getTodayForecast()
+
+    override fun getTomorrowForecast(): Flow<DailyForecastDbModel?> =
+        dailyForecastDao.getTomorrowForecast()
+
+    override fun getYesterdayForecast(): Flow<DailyForecastDbModel?> =
+        dailyForecastDao.getYesterdayForecast()
 }

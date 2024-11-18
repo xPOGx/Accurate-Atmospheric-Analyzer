@@ -21,7 +21,7 @@ data class DailyForecastResponse(
     @SerialName("HoursOfSun")
     val hoursOfSun: Double?,
     @SerialName("Moon")
-    val moonResponse: SunMoonResponse?,
+    val moon: SunMoonResponse?,
     @SerialName("Night")
     val night: DayNightResponse?,
     @SerialName("RealFeelTemperature")

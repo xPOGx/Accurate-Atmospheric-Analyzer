@@ -12,6 +12,7 @@ object NetworkHelper {
     const val PARAM_DETAILS = "details"
     const val PARAM_METRIC = "metric"
 
-    const val DEFAULT_LANGUAGE = "uk-ua"
+//    const val DEFAULT_LANGUAGE = "uk-ua"
+    const val DEFAULT_LANGUAGE = "en-us"
     const val DEFAULT_METRIC = true
 }

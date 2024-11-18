@@ -2,6 +2,7 @@ package mega.triple.aaa.domain.forecast.model
 
 import mega.triple.aaa.data.local.model.forecast.RelativeHumidityDbModel
 import mega.triple.aaa.data.network.response.model.RelativeHumidityResponse
+import mega.triple.aaa.presentation.core.ui.model.forecast.RelativeHumidityUiModel
 
 data class RelativeHumidityDomainModel(
     val average: Int?,
@@ -25,6 +26,13 @@ data class RelativeHumidityDomainModel(
 
         fun RelativeHumidityDbModel.toDomainModel(): RelativeHumidityDomainModel =
             RelativeHumidityDomainModel(
+                average = average,
+                maximum = maximum,
+                minimum = minimum,
+            )
+
+        fun RelativeHumidityDomainModel.toUiModel(): RelativeHumidityUiModel =
+            RelativeHumidityUiModel(
                 average = average,
                 maximum = maximum,
                 minimum = minimum,

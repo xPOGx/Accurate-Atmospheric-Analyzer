@@ -48,6 +48,7 @@ fun AAANavHost(
             ) { location ->
                 HomeScreen(
                     location = location,
+                    forecastFlows = uiState.forecastFlows,
                     navigateToSearch = { navHostController.navigate(Routes.SEARCH) },
                 )
             }

@@ -38,7 +38,7 @@ fun ParameterCard(
     description: String,
     descriptionTextStyle: TextStyle = typography.gs400size16,
     @DrawableRes iconRes: Int,
-    extra: Pair<String, Boolean?> = "" to null
+    extra: Pair<String, Boolean?>? = "" to null
 ) {
     Card(
         colors = CardDefaults.cardColors().copy(
@@ -68,13 +68,15 @@ fun ParameterCard(
                     )
                 }
             }
-            AAACardExtra(
-                text = extra.first,
-                isPositive = extra.second,
-                modifier = extraModifier
-                    .align(Alignment.BottomEnd)
-                    .padding(end = spaces.size12)
-            )
+            extra?.let {
+                AAACardExtra(
+                    text = extra.first,
+                    isPositive = extra.second,
+                    modifier = extraModifier
+                        .align(Alignment.BottomEnd)
+                        .padding(end = spaces.size12)
+                )
+            }
         }
     }
 }

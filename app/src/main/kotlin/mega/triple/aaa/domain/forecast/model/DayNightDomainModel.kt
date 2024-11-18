@@ -4,12 +4,17 @@ import mega.triple.aaa.data.local.model.forecast.DayNightDbModel
 import mega.triple.aaa.data.network.response.model.DayNightResponse
 import mega.triple.aaa.domain.forecast.model.DirectionWrapperDomainModel.Companion.toDbModel
 import mega.triple.aaa.domain.forecast.model.DirectionWrapperDomainModel.Companion.toDomainModel
+import mega.triple.aaa.domain.forecast.model.DirectionWrapperDomainModel.Companion.toUiModel
 import mega.triple.aaa.domain.forecast.model.RelativeHumidityDomainModel.Companion.toDbModel
 import mega.triple.aaa.domain.forecast.model.RelativeHumidityDomainModel.Companion.toDomainModel
+import mega.triple.aaa.domain.forecast.model.RelativeHumidityDomainModel.Companion.toUiModel
 import mega.triple.aaa.domain.forecast.model.ValueDomainModel.Companion.toDbModel
 import mega.triple.aaa.domain.forecast.model.ValueDomainModel.Companion.toDomainModel
+import mega.triple.aaa.domain.forecast.model.ValueDomainModel.Companion.toUiModel
 import mega.triple.aaa.domain.forecast.model.ValueWrapperDomainModel.Companion.toDbModel
 import mega.triple.aaa.domain.forecast.model.ValueWrapperDomainModel.Companion.toDomainModel
+import mega.triple.aaa.domain.forecast.model.ValueWrapperDomainModel.Companion.toUiModel
+import mega.triple.aaa.presentation.core.ui.model.forecast.DayNightUiModel
 
 data class DayNightDomainModel(
     val cloudCover: Int?,
@@ -128,6 +133,36 @@ data class DayNightDomainModel(
                 wetBulbTemperature = wetBulbTemperature?.toDomainModel(),
                 wind = wind?.toDomainModel(),
                 windGust = windGust?.toDomainModel(),
+            )
+
+        fun DayNightDomainModel.toUiModel(): DayNightUiModel =
+            DayNightUiModel(
+                cloudCover = cloudCover,
+                evapotranspiration = evapotranspiration?.toUiModel(),
+                hasPrecipitation = hasPrecipitation,
+                hoursOfIce = hoursOfIce,
+                hoursOfPrecipitation = hoursOfPrecipitation,
+                hoursOfRain = hoursOfRain,
+                hoursOfSnow = hoursOfSnow,
+                ice = ice?.toUiModel(),
+                iceProbability = iceProbability,
+                icon = icon,
+                iconPhrase = iconPhrase,
+                longPhrase = longPhrase,
+                precipitationProbability = precipitationProbability,
+                rain = rain?.toUiModel(),
+                rainProbability = rainProbability,
+                relativeHumidity = relativeHumidity?.toUiModel(),
+                shortPhrase = shortPhrase,
+                snow = snow?.toUiModel(),
+                snowProbability = snowProbability,
+                solarIrradiance = solarIrradiance?.toUiModel(),
+                thunderstormProbability = thunderstormProbability,
+                totalLiquid = totalLiquid?.toUiModel(),
+                wetBulbGlobeTemperature = wetBulbGlobeTemperature?.toUiModel(),
+                wetBulbTemperature = wetBulbTemperature?.toUiModel(),
+                wind = wind?.toUiModel(),
+                windGust = windGust?.toUiModel(),
             )
     }
 }

@@ -123,7 +123,7 @@ class DottedCircleProgressBar(context: Context) : View(context) {
     ) = height / 2f + (CIRCLE_RADIUS + multiplier) * sin(Math.toRadians(angle)).toFloat()
 
     companion object {
-        private const val CIRCLE_RADIUS = 120f
+        private const val CIRCLE_RADIUS = 80f
 
         private const val DOT_COUNT = 360 / 10
         private const val DOT_RADIUS = CIRCLE_RADIUS / 15

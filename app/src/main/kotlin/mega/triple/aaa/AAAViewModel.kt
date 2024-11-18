@@ -26,7 +26,6 @@ class AAAViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             getLocationUC().collectLatest { location ->
-                delay(1000) // Time simulation
                 _location.update { UI.READY(location?.toUiModel()) }
             }
         }

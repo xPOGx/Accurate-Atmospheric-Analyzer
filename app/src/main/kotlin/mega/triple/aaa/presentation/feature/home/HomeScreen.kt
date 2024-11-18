@@ -26,6 +26,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import mega.triple.aaa.R
+import mega.triple.aaa.presentation.core.common.Constants.STUB_VALUE
+import mega.triple.aaa.presentation.core.common.ForecastFlows
+import mega.triple.aaa.presentation.core.common.diff
+import mega.triple.aaa.presentation.core.common.formatProbability
+import mega.triple.aaa.presentation.core.common.formatSimpleTime
+import mega.triple.aaa.presentation.core.common.formatSpeed
+import mega.triple.aaa.presentation.core.common.getTimeDiff
 import mega.triple.aaa.presentation.core.ui.components.card.ForecastCard
 import mega.triple.aaa.presentation.core.ui.components.card.ParameterCard
 import mega.triple.aaa.presentation.core.ui.components.tab.DayTab
@@ -37,11 +44,13 @@ import mega.triple.aaa.presentation.core.ui.theme.AAATheme
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme.colors
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme.spaces
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme.typography
+import kotlin.math.absoluteValue
 
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
     location: LocationUiModel? = null,
+    forecastFlows: ForecastFlows = ForecastFlows(),
     navigateToSearch: (() -> Unit)? = null,
 ) {
     val gridState = rememberLazyGridState()
@@ -52,15 +61,29 @@ fun HomeScreen(
     }
 
     var selectedIndex by remember { mutableIntStateOf(0) }
-    val changeIndex: ((Int) -> Unit) = { selectedIndex = it }
+    val changeIndex: ((Int) -> Unit) = {
+        if (it != 2) {
+            selectedIndex = it
+        }
+    }
 
     var uvCustomVisible by remember { mutableStateOf(false) }
+
+    val currentData = when (selectedIndex) {
+        0 -> forecastFlows.today
+        else -> forecastFlows.tomorrow
+    }
+    val diffData = if (selectedIndex == 0) forecastFlows.yesterday else forecastFlows.today
+
+    val dayNight = if (currentData?.isDay == true) currentData.day else currentData?.night
+    val diffDayNight = if (diffData?.isDay == true) diffData.day else diffData?.night
 
     Scaffold(
         containerColor = colors.background,
         topBar = {
             TopAppBar(
                 locationName = location?.locationName,
+                data = currentData,
                 compact = compact,
                 selectedIndex = selectedIndex,
                 onSelect = changeIndex,
@@ -88,30 +111,38 @@ fun HomeScreen(
                 )
             }
             item(contentType = "AAACardItem") {
+                val speedUnit = dayNight?.wind?.speed?.unit
+                val diff = diff(dayNight?.wind?.speed?.value, diffDayNight?.wind?.speed?.value)
                 ParameterCard(
                     title = "Wind speed",
-                    description = "12km/h",
+                    description = formatSpeed(
+                        dayNight?.wind?.speed?.value,
+                        speedUnit,
+                    ),
                     iconRes = R.drawable.ic_air,
-                    extra = "2 km/h" to false,
+                    extra = diff?.let { formatSpeed(it.absoluteValue, speedUnit) to (it > 0) },
                 )
             }
             item(contentType = "AAACardItem") {
+                val diff = diff(dayNight?.rainProbability, diffDayNight?.rainProbability)
                 ParameterCard(
                     title = "Rain chance",
-                    description = "24%",
+                    description = formatProbability(dayNight?.rainProbability),
                     iconRes = R.drawable.ic_rainy,
-                    extra = "10%" to true,
+                    extra = diff?.let { formatProbability(diff.absoluteValue) to (diff > 0) },
                 )
             }
             item(contentType = "AAACardItem") {
                 ParameterCard(
-                    title = "Pressure",
-                    description = "720 hpa",
+                    title = "Air quality",
+                    description = currentData?.airQuality ?: STUB_VALUE,
                     iconRes = R.drawable.ic_waves,
-                    extra = "32 hpa" to true,
+                    extra = null,
                 )
             }
             item(contentType = "AAACardItem") {
+                val uvIndex = currentData?.uvIndex
+                val diff = diff(uvIndex, diffData?.uvIndex)
                 AnimatedContent(
                     targetState = uvCustomVisible,
                     label = "uvCustomVisible",
@@ -122,15 +153,15 @@ fun HomeScreen(
                 ) {
                     if (it) {
                         UvIndexView(
-                            uvIndex = 2.3f,
+                            uvIndex = uvIndex?.toFloat() ?: 0f,
                             modifier = Modifier.noRippleClickable { uvCustomVisible = false }
                         )
                     } else {
                         ParameterCard(
                             title = "UV Index",
-                            description = "2,3",
+                            description = uvIndex.toString(),
                             iconRes = R.drawable.ic_sun,
-                            extra = "0.3" to false,
+                            extra = diff?.let { diff.toString() to (diff > 0) },
                             modifier = Modifier.noRippleClickable { uvCustomVisible = true }
                         )
                     }
@@ -150,20 +181,20 @@ fun HomeScreen(
             item(contentType = "AAACardItem") {
                 ParameterCard(
                     title = "Sunrise",
-                    description = "5:24",
+                    description = formatSimpleTime(currentData?.sun?.timeRise),
                     descriptionTextStyle = typography.gs500size14,
                     iconRes = R.drawable.ic_sunrise,
-                    extra = "N ago" to null,
+                    extra = getTimeDiff(currentData?.sun?.epochRise) to null,
                     extraModifier = Modifier.padding(bottom = spaces.size12)
                 )
             }
             item(contentType = "AAACardItem") {
                 ParameterCard(
                     title = "Sunset",
-                    description = "19:53",
+                    description = formatSimpleTime(currentData?.sun?.timeSet),
                     descriptionTextStyle = typography.gs500size14,
                     iconRes = R.drawable.ic_sunset,
-                    extra = "in N" to null,
+                    extra = getTimeDiff(currentData?.sun?.epochSet) to null,
                     extraModifier = Modifier.padding(bottom = spaces.size12),
                 )
             }

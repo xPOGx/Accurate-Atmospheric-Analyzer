@@ -44,25 +44,28 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import mega.triple.aaa.R
+import mega.triple.aaa.presentation.core.common.Constants.STUB_VALUE
 import mega.triple.aaa.presentation.core.common.Constants.TOOLBAR_HEIGHT_MAX
 import mega.triple.aaa.presentation.core.common.Constants.TOOLBAR_HEIGHT_MIN
-import mega.triple.aaa.presentation.core.ui.components.ext.SpacerHeight
-import mega.triple.aaa.presentation.core.ui.components.tab.DayTab
 import mega.triple.aaa.presentation.core.common.formatFeelTemperature
 import mega.triple.aaa.presentation.core.common.formatPartTemperature
 import mega.triple.aaa.presentation.core.common.formatTemperature
 import mega.triple.aaa.presentation.core.common.formatTime
+import mega.triple.aaa.presentation.core.ui.components.ext.SpacerHeight
+import mega.triple.aaa.presentation.core.ui.components.tab.DayTab
+import mega.triple.aaa.presentation.core.ui.ext.getAccuWeatherIconRes
+import mega.triple.aaa.presentation.core.ui.model.forecast.DailyForecastUiModel
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme.colors
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme.shapes
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme.spaces
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme.typography
-import java.util.Date
 
 @Composable
 fun TopAppBar(
@@ -70,6 +73,7 @@ fun TopAppBar(
     compact: Boolean,
     selectedIndex: Int,
     locationName: String? = null,
+    data: DailyForecastUiModel? = null,
     onSelect: ((Int) -> Unit)? = null,
     onSearch: (() -> Unit)? = null,
 ) {
@@ -111,7 +115,7 @@ fun TopAppBar(
         label = "animateFeelOffset",
     )
     val animateImageSize by animateDpAsState(
-        targetValue = if (compact) 60.dp else 108.dp,
+        targetValue = if (compact) 60.dp else 75.dp,
         label = "animateImageSize",
     )
     val animateShapeSize by animateDpAsState(
@@ -122,6 +126,12 @@ fun TopAppBar(
         bottomStart = animateShapeSize,
         bottomEnd = animateShapeSize
     )
+
+    val temperatureUnit = data?.temperature?.maximum?.unit
+    val feelLikeTemp = data?.realFeelTemperature?.mathAverage
+    val feelLikeShadowTemp = data?.realFeelTemperatureShade?.mathAverage
+    val icon = getAccuWeatherIconRes(data?.day?.icon)
+    val iconPhrase = data?.day?.iconPhrase ?: STUB_VALUE
 
     Column(
         modifier = modifier
@@ -177,10 +187,13 @@ fun TopAppBar(
                 }
                 Row(
                     verticalAlignment = if (compact) Alignment.CenterVertically else Alignment.Bottom,
-                    modifier = Modifier.padding(horizontal = spaces.size24),
+                    modifier = Modifier.padding(horizontal = spaces.size24)
                 ) {
                     Text(
-                        text = formatTemperature(3),
+                        text = formatTemperature(
+                            data?.day?.wetBulbTemperature?.average?.value,
+                            data?.day?.wetBulbTemperature?.average?.unit,
+                        ),
                         style = typography.ps400size14.copy(fontSize = animateTempSize.sp),
                         color = mainColor,
                     )
@@ -193,13 +206,13 @@ fun TopAppBar(
                             .align(Alignment.Bottom)
                     ) {
                         Text(
-                            text = formatFeelTemperature(-2),
+                            text = formatFeelTemperature(feelLikeTemp, temperatureUnit),
                             style = typography.ps400size18.copy(fontSize = animateFeelSize.sp),
                             color = mainColor,
                         )
                         androidx.compose.animation.AnimatedVisibility(!compact) {
                             Text(
-                                text = formatFeelTemperature(-3, inShadow = true),
+                                text = formatFeelTemperature(feelLikeShadowTemp, temperatureUnit, inShadow = true),
                                 style = typography.ps400size18.copy(fontSize = animateFeelSize.sp),
                                 color = mainColor,
                             )
@@ -211,19 +224,20 @@ fun TopAppBar(
                         modifier = Modifier.align(Alignment.Top)
                     ) {
                         Image(
-                            painter = painterResource(R.drawable.img_weather_temp),
+                            painter = painterResource(icon),
                             contentDescription = null,
                             modifier = Modifier.size(animateImageSize)
                         )
-                        SpacerHeight(spaces.size16)
                         AnimatedVisibility(
                             visible = !compact,
                             modifier = Modifier.align(Alignment.CenterHorizontally)
                         ) {
+                            SpacerHeight(spaces.size16)
                             Text(
-                                text = "Cloudy",
+                                text = iconPhrase,
                                 style = typography.ps400size22,
                                 color = fullColor,
+                                textAlign = TextAlign.End,
                             )
                         }
                     }
@@ -257,7 +271,7 @@ fun TopAppBar(
                                 .padding(bottom = spaces.size16),
                         ) {
                             Text(
-                                text = formatTime(Date()),
+                                text = formatTime(data?.date),
                                 style = typography.ps400size18,
                                 color = fullColor
                             )
@@ -266,12 +280,12 @@ fun TopAppBar(
                                 horizontalAlignment = Alignment.End,
                             ) {
                                 Text(
-                                    text = formatPartTemperature(5, true),
+                                    text = formatPartTemperature(data?.temperature?.maximum?.value, true, temperatureUnit),
                                     style = typography.ps700size18,
                                     color = fullColor
                                 )
                                 Text(
-                                    text = formatPartTemperature(-6, false),
+                                    text = formatPartTemperature(data?.temperature?.minimum?.value, false,temperatureUnit),
                                     style = typography.ps700size18,
                                     color = fullColor
                                 )
