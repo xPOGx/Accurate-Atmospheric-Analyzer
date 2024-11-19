@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "679870399737",
+    "project_id": "devlightaaa",
+    "storage_bucket": "devlightaaa.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:679870399737:android:4418bf3e47557331134e28",
+        "android_client_info": {
+          "package_name": "mega.triple.aaa"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBdwL1DnSjnirrbAY7csGSavzPDSaj1x8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

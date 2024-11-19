@@ -1,6 +1,9 @@
 [versions]
 agp = "8.5.2"
 datastore = "1.1.1"
+firebaseBom = "33.6.0"
+firebasePlugin = "4.4.2"
+firebaseCrashPlugin = "3.0.2"
 hiltAndroid = "2.51.1"
 hiltCompiler = "2.51.1"
 hiltNavigationCompose = "1.2.0"
@@ -64,6 +67,11 @@ worker-hiltCompiler = { group = "androidx.hilt", name = "hilt-compiler", version
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 protobuf-javalite = { module = "com.google.protobuf:protobuf-javalite", version.ref = "protobufJavalite" }
 
+# Firebase
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
@@ -75,6 +83,9 @@ dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "daggerHilt
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
 protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }
+
+firebase = { id = "com.google.gms.google-services", version.ref = "firebasePlugin" }
+firebase-crashlytic = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashPlugin" }
 
 [bundles]
 network = ["io-ktor-client-core", "io-ktor-client-okhttp", "io-ktor-client-content-negotiation", "io-ktor-serialization-json", "kotlinx-serialization-json", "chucker"]

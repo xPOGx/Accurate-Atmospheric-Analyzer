@@ -13,6 +13,9 @@ plugins {
     alias(libs.plugins.secrets.gradle.plugin)
     // Datastore
     alias(libs.plugins.protobuf)
+    // Firebase
+    alias(libs.plugins.firebase)
+    alias(libs.plugins.firebase.crashlytic)
 }
 
 android {
@@ -91,6 +94,10 @@ dependencies {
     // Datastore
     implementation(libs.androidx.datastore)
     implementation(libs.protobuf.javalite)
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.crashlytics)
 }
 
 secrets {
