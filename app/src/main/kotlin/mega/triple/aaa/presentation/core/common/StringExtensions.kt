@@ -8,7 +8,7 @@ import java.util.Date
 import java.util.Locale
 import kotlin.math.roundToInt
 
-// TODO: constants; move
+// TODO: constants
 fun formatPartTemperature(
     value: Double?,
     isDay: Boolean,
@@ -19,13 +19,12 @@ fun formatPartTemperature(
     append(formatTemperature(value, unit))
 }
 
-// TODO: constants; move
 fun formatTemperature(value: Double?, unit: String?): String = buildString {
     append(value?.roundToInt() ?: STUB_VALUE)
     append(temperatureSymbol(unit))
 }
 
-// TODO: constants; move
+// TODO: constants
 fun formatFeelTemperature(
     value: Double?,
     unit: String?,
@@ -37,7 +36,6 @@ fun formatFeelTemperature(
     append(temperatureSymbol(unit))
 }
 
-// TODO: constants; move
 fun formatTime(value: String?): String {
     return try {
         val date = SimpleDateFormat(Constants.ISO_PATTERN, Locale.getDefault()).parse(value)
@@ -52,6 +50,14 @@ fun formatSimpleTime(value: String?): String {
     return try {
         val date = SimpleDateFormat(Constants.ISO_PATTERN, Locale.getDefault()).parse(value)
         SimpleDateFormat(Constants.SIMPLE_PATTERN, Locale.getDefault()).format(date)
+    } catch (_: Throwable) {
+        STUB_VALUE
+    }
+}
+
+fun formatDate(value: Long): String {
+    return try {
+        SimpleDateFormat(Constants.DATE_PATTEN, Locale.getDefault()).format(Date(value))
     } catch (_: Throwable) {
         STUB_VALUE
     }

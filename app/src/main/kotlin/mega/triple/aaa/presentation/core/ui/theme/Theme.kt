@@ -37,6 +37,7 @@ fun lightColors() =
         changeDecrease = Color(0xFFBA1A1A),
         tabContainer = Color(0xFFE0B6FF),
         tabContent = Color(0xFF2E004E),
+        secondaryText = Color(0xFF494649),
     )
 
 fun darkColors() =
@@ -50,7 +51,8 @@ fun darkColors() =
         changeGrowth = Color(0xFF2ECC71), // Positive change color (green)
         changeDecrease = Color(0xFFF52424), // Negative change color (red)
         tabContainer = Color(0xFF3F3F3F), // Tab container background
-        tabContent = Color.White, // Text within tabs
+        tabContent = Color.White, // Text within tabs,
+        secondaryText = Color(0xFFB0B0B0),
     )
 
 fun ColorScheme.toColors(isDarkMode: Boolean): Colors =
@@ -65,6 +67,7 @@ fun ColorScheme.toColors(isDarkMode: Boolean): Colors =
         changeDecrease = this.error,
         tabContainer = this.secondaryContainer,
         tabContent = this.onSecondaryContainer,
+        secondaryText = this.secondary,
     )
 
 @Composable

@@ -18,6 +18,7 @@ class Colors(
     cardContent: Color,
     changeGrowth: Color,
     changeDecrease: Color,
+    secondaryText: Color,
 ) {
     var background by mutableStateOf(background)
         private set
@@ -47,6 +48,9 @@ class Colors(
         private set
 
     var changeDecrease by mutableStateOf(changeDecrease)
+        private set
+
+    var secondaryText by mutableStateOf(secondaryText)
         private set
 }
 

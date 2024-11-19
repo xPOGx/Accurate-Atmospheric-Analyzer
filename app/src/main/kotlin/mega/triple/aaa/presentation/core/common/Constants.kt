@@ -18,4 +18,5 @@ object Constants {
     const val ISO_PATTERN = "yyyy-MM-dd'T'HH:mm:ssZ"
     const val UI_PATTERN = "MMMM d, HH:mm"
     const val SIMPLE_PATTERN = "HH:mm"
+    const val DATE_PATTEN = "EEEE, MMM dd"
 }
