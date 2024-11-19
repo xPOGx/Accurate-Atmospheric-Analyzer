@@ -14,9 +14,13 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.Firebase
+import com.google.firebase.analytics.analytics
+import com.google.firebase.initialize
 import dagger.hilt.android.AndroidEntryPoint
 import mega.triple.aaa.presentation.core.ui.ext.render
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme
+import mega.triple.aaa.presentation.feature.analytic.AAAAnalytic
 import mega.triple.aaa.presentation.feature.search.SearchScreen
 import mega.triple.aaa.presentation.feature.search.SearchViewModel
 import mega.triple.aaa.presentation.navigation.AAANavHost
@@ -36,6 +40,12 @@ class AAAActivity : ComponentActivity() {
 
         // Edge to edge
         enableEdgeToEdge()
+
+        // Firebase
+        Firebase.initialize(this)
+        AAAAnalytic.subscribe {
+            Firebase.analytics.logEvent(it, null)
+        }
 
         // Content
         setContent {
