@@ -4,7 +4,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
+import mega.triple.aaa.presentation.core.common.safeLaunch
 
 object AAAAnalytic {
     private val publisher = MutableSharedFlow<String>()
@@ -14,7 +14,7 @@ object AAAAnalytic {
         scope: CoroutineScope = CoroutineScope(Dispatchers.IO),
         action: (String) -> Unit,
     ) {
-        scope.launch {
+        scope.safeLaunch {
             publisher.collectLatest {
                 action(it)
             }
@@ -22,7 +22,7 @@ object AAAAnalytic {
     }
 
     fun logEvent(e: String) {
-        ioScope.launch {
+        ioScope.safeLaunch {
             publisher.emit(e)
         }
     }

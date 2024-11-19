@@ -9,7 +9,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.consumeAsFlow
-import kotlinx.coroutines.launch
+import mega.triple.aaa.presentation.core.common.safeLaunch
 
 class SingleEvent : Flow<Unit> {
     private val channel = Channel<Unit>(Channel.BUFFERED)
@@ -18,7 +18,7 @@ class SingleEvent : Flow<Unit> {
 
     fun fire() {
         synchronized(lock) {
-            scope.launch {
+            scope.safeLaunch {
                 channel.send(Unit)
             }
         }

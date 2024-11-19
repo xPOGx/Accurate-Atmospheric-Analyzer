@@ -9,7 +9,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.consumeAsFlow
-import kotlinx.coroutines.launch
+import mega.triple.aaa.presentation.core.common.safeLaunch
 
 class UIEvent<T> : Flow<T> {
     private val channel = Channel<T>(Channel.BUFFERED)
@@ -18,7 +18,7 @@ class UIEvent<T> : Flow<T> {
 
     fun send(value: T) {
         synchronized(lock) {
-            scope.launch {
+            scope.safeLaunch {
                 channel.trySend(value)
             }
         }

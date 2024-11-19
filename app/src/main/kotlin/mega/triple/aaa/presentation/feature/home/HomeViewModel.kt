@@ -7,11 +7,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import mega.triple.aaa.domain.location.GetLocationUC
 import mega.triple.aaa.domain.location.model.LocationDomainModel.Companion.toUiModel
 import mega.triple.aaa.presentation.core.common.ForecastFlows
 import mega.triple.aaa.presentation.core.common.ForecastHelper
+import mega.triple.aaa.presentation.core.common.safeLaunch
 import mega.triple.aaa.presentation.core.ui.ext.UI
 import mega.triple.aaa.presentation.core.ui.model.location.LocationUiModel
 import javax.inject.Inject
@@ -26,21 +26,25 @@ class HomeViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     init {
-        viewModelScope.launch {
-            getLocationUC().collectLatest { location ->
-                _uiState.update {
-                    it.copy(location = UI.READY(location?.toUiModel()))
-                }
-                location?.let {
-                    forecastHelper.initFlows()
-                }
+        subscribeLocation()
+        subscribeForecast()
+    }
+
+    private fun subscribeLocation() = viewModelScope.safeLaunch {
+        getLocationUC().collectLatest { location ->
+            _uiState.update {
+                it.copy(location = UI.READY(location?.toUiModel()))
+            }
+            location?.let {
+                forecastHelper.initFlows()
             }
         }
-        viewModelScope.launch {
-            forecastHelper.forecastFlows.collectLatest { flows ->
-                _uiState.update {
-                    it.copy(forecastFlows = flows)
-                }
+    }
+
+    private fun subscribeForecast() = viewModelScope.safeLaunch {
+        forecastHelper.forecastFlows.collectLatest { flows ->
+            _uiState.update {
+                it.copy(forecastFlows = flows)
             }
         }
     }
