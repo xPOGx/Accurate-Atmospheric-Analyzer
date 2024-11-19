@@ -10,7 +10,9 @@ import mega.triple.aaa.domain.forecast.daily.GetYesterdayForecastUC
 import mega.triple.aaa.domain.forecast.model.DailyForecastDomainModel.Companion.toUiModel
 import mega.triple.aaa.presentation.core.ui.model.forecast.DailyForecastUiModel
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class ForecastHelper @Inject constructor(
     private val getYesterdayForecastUC: GetYesterdayForecastUC,
     private val getTodayForecastUC: GetTodayForecastUC,

@@ -7,12 +7,14 @@ import mega.triple.aaa.domain.ext.EmptyLocationKey
 import mega.triple.aaa.domain.ext.NullResult
 import mega.triple.aaa.domain.forecast.model.DailyForecastDomainModel.Companion.toDbModel
 import mega.triple.aaa.domain.location.GetLocationUC
+import mega.triple.aaa.presentation.core.common.ForecastHelper
 import javax.inject.Inject
 
 class UpdateDailyForecastUC @Inject constructor(
     private val dbSource: ForecastDbSource,
     private val netSource: ForecastNetSource,
     private val locationUC: GetLocationUC,
+    private val forecastHelper: ForecastHelper,
 ) {
     suspend operator fun invoke(): Result<Unit> {
         val locationKey = locationUC().first()?.city?.locationKey
@@ -24,6 +26,7 @@ class UpdateDailyForecastUC @Inject constructor(
                     wrapper.dailyForecasts?.map { it.toDbModel() } ?: throw NullResult()
                 }.onSuccess {
                     dbSource.insertDailyForecasts(it)
+                    forecastHelper.initFlows()
                 }.onFailure {
                     throw it
                 }

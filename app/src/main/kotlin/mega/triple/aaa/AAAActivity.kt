@@ -16,6 +16,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.Firebase
 import com.google.firebase.analytics.analytics
+import com.google.firebase.analytics.logEvent
 import com.google.firebase.initialize
 import dagger.hilt.android.AndroidEntryPoint
 import mega.triple.aaa.presentation.core.ui.ext.render
@@ -28,6 +29,8 @@ import mega.triple.aaa.presentation.navigation.GlobalLoading
 
 @AndroidEntryPoint
 class AAAActivity : ComponentActivity() {
+    private val activityStart = System.currentTimeMillis()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -88,6 +91,21 @@ class AAAActivity : ComponentActivity() {
                     }
                 }
             }
+        }
+    }
+
+    override fun onDestroy() {
+        logSessionTime()
+        super.onDestroy()
+    }
+
+    private fun logSessionTime() {
+        val activityEnd = System.currentTimeMillis()
+        val minutes = activityEnd.minus(activityStart).div(1000).div(60)
+        Firebase.analytics.logEvent("SessionTime") {
+            param("start: ", activityStart)
+            param("end: ", activityEnd)
+            param("minutes: ", minutes)
         }
     }
 }
