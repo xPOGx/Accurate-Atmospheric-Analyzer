@@ -206,8 +206,8 @@ fun TopAppBar(
                 ) {
                     Text(
                         text = formatTemperature(
-                            data?.day?.wetBulbTemperature?.average?.value,
-                            data?.day?.wetBulbTemperature?.average?.unit,
+                            data?.day?.wetBulbTemperature?.average?.value ?: data?.day?.wetBulbTemperature?.mathAverage,
+                            data?.day?.wetBulbTemperature?.maximum?.unit,
                         ),
                         style = typography.ps400size14.copy(fontSize = animateTempSize.sp),
                         color = mainColor,

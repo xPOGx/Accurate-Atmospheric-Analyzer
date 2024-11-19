@@ -57,17 +57,16 @@ fun HomeScreen(
     navigateToSettings: (() -> Unit)? = null,
 ) {
     val gridState = rememberLazyGridState()
+    var selectedIndex by remember { mutableIntStateOf(0) }
+    var uvCustomVisible by remember { mutableStateOf(false) }
     val compact by remember {
         derivedStateOf {
-            gridState.firstVisibleItemIndex != 0
+            gridState.firstVisibleItemIndex != 0 || selectedIndex == 2
         }
     }
 
-    var selectedIndex by remember { mutableIntStateOf(0) }
     val changeIndex: ((Int) -> Unit) = { selectedIndex = it }
     val listMode = selectedIndex == 2
-
-    var uvCustomVisible by remember { mutableStateOf(false) }
 
     val currentData = when (selectedIndex) {
         0 -> forecastFlows.today
@@ -109,21 +108,18 @@ fun HomeScreen(
             horizontalArrangement = Arrangement.spacedBy(spaces.size16),
             modifier = Modifier.padding(innerPadding)
         ) {
-            item(span = allLine) {
-                DayTab(
-                    selectedIndex = selectedIndex,
-                    onSelect = changeIndex,
-                    modifier = Modifier
-                )
-            }
-
             if (listMode) {
                 items(items = forecastFlows.forecast) {
-                    DayCard(
-                        data = it,
-                    )
+                    DayCard(data = it)
                 }
             } else {
+                item(span = allLine) {
+                    DayTab(
+                        selectedIndex = selectedIndex,
+                        onSelect = changeIndex,
+                        modifier = Modifier
+                    )
+                }
                 item(contentType = "AAACardItem") {
                     val speed = dayNight?.wind?.speed?.value
                     val speedUnit = dayNight?.wind?.speed?.unit
