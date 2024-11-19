@@ -1,12 +1,28 @@
 package mega.triple.aaa.presentation.core.ui.theme
 
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
+import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
+import androidx.compose.material3.Text
+import androidx.compose.material3.dynamicDarkColorScheme
+import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 import mega.triple.aaa.presentation.core.ui.theme.components.Colors
@@ -46,6 +62,20 @@ fun darkColors() =
         tabContent = Color.White, // Text within tabs
     )
 
+fun ColorScheme.toColors(isDarkMode: Boolean): Colors =
+    Colors(
+        white = if (isDarkMode) Color(0xFF1E1B1B) else Color.White,
+        black = if (isDarkMode) Color.White else Color.Black,
+        background = this.background,
+        toolbarBG = this.onBackground,
+        cardBG = this.tertiaryContainer,
+        cardContent = this.onTertiaryContainer,
+        changeGrowth = this.onError,
+        changeDecrease = this.error,
+        tabContainer = this.secondaryContainer,
+        tabContent = this.onSecondaryContainer,
+    )
+
 @Composable
 fun AAATheme(
     isDarkMode: Boolean = isSystemInDarkTheme(),
@@ -54,7 +84,30 @@ fun AAATheme(
     shapes: Shapes = AAATheme.shapes,
     content: @Composable () -> Unit,
 ) {
-    val colorsTheme = if (isDarkMode) darkColors() else lightColors()
+    val context = LocalContext.current
+
+    var selectedMode by remember { mutableIntStateOf(0) }
+
+    val colorsTheme = when (selectedMode) {
+        0 -> when {
+            (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) -> {
+                if (isDarkMode) dynamicDarkColorScheme(context).toColors(true)
+                else dynamicLightColorScheme(context).toColors(false)
+            }
+
+            isDarkMode -> darkColors()
+            else -> lightColors()
+        }
+
+        1 -> @SuppressLint("NewApi") {
+            if (isDarkMode) dynamicDarkColorScheme(context).toColors(true)
+            else dynamicLightColorScheme(context).toColors(false)
+        }
+
+        2 -> darkColors()
+        else -> lightColors()
+    }
+
     val view = LocalView.current
 
     if (!view.isInEditMode) {
@@ -71,6 +124,54 @@ fun AAATheme(
         LocalSpaces provides spaces,
         LocalTypography provides typography,
         LocalShapes provides shapes,
-        content = content,
+        content = {
+            Box(
+                contentAlignment = Alignment.TopCenter,
+            ) {
+                content()
+                TempThemeChooser(
+                    index = selectedMode,
+                    onClick = { selectedMode = it },
+                )
+            }
+        },
     )
+}
+
+@Composable
+fun TempThemeChooser(
+    modifier: Modifier = Modifier,
+    index: Int,
+    onClick: (Int) -> Unit,
+) {
+    TabRow(
+        selectedTabIndex = index,
+        modifier = modifier
+    ) {
+        Tab(
+            selected = index == 0,
+            onClick = { onClick(0) }
+        ) {
+            Text("Auto")
+        }
+        Tab(
+            selected = index == 1,
+            enabled = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S,
+            onClick = { onClick(1) }
+        ) {
+            Text("Dynamic")
+        }
+        Tab(
+            selected = index == 2,
+            onClick = { onClick(2) }
+        ) {
+            Text("Dark")
+        }
+        Tab(
+            selected = index == 3,
+            onClick = { onClick(3) }
+        ) {
+            Text("Light")
+        }
+    }
 }
