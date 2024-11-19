@@ -4,22 +4,12 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.ColorScheme
-import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
-import androidx.compose.material3.Text
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
@@ -33,6 +23,7 @@ import mega.triple.aaa.presentation.core.ui.theme.components.LocalTypography
 import mega.triple.aaa.presentation.core.ui.theme.components.Shapes
 import mega.triple.aaa.presentation.core.ui.theme.components.Spaces
 import mega.triple.aaa.presentation.core.ui.theme.components.Typography
+import mega.triple.aaa.presentation.feature.setting.ext.ThemeType
 
 fun lightColors() =
     Colors(
@@ -78,6 +69,7 @@ fun ColorScheme.toColors(isDarkMode: Boolean): Colors =
 
 @Composable
 fun AAATheme(
+    themeType: ThemeType = ThemeType.AUTO,
     isDarkMode: Boolean = isSystemInDarkTheme(),
     typography: Typography = AAATheme.typography,
     spaces: Spaces = AAATheme.spaces,
@@ -85,11 +77,10 @@ fun AAATheme(
     content: @Composable () -> Unit,
 ) {
     val context = LocalContext.current
+    val view = LocalView.current
 
-    var selectedMode by remember { mutableIntStateOf(0) }
-
-    val colorsTheme = when (selectedMode) {
-        0 -> when {
+    val colorsTheme = when (themeType) {
+        ThemeType.AUTO -> when {
             (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) -> {
                 if (isDarkMode) dynamicDarkColorScheme(context).toColors(true)
                 else dynamicLightColorScheme(context).toColors(false)
@@ -99,16 +90,14 @@ fun AAATheme(
             else -> lightColors()
         }
 
-        1 -> @SuppressLint("NewApi") {
+        ThemeType.DYNAMIC -> @SuppressLint("NewApi") {
             if (isDarkMode) dynamicDarkColorScheme(context).toColors(true)
             else dynamicLightColorScheme(context).toColors(false)
         }
 
-        2 -> darkColors()
+        ThemeType.DARK -> darkColors()
         else -> lightColors()
     }
-
-    val view = LocalView.current
 
     if (!view.isInEditMode) {
         SideEffect {
@@ -124,54 +113,6 @@ fun AAATheme(
         LocalSpaces provides spaces,
         LocalTypography provides typography,
         LocalShapes provides shapes,
-        content = {
-            Box(
-                contentAlignment = Alignment.TopCenter,
-            ) {
-                content()
-                TempThemeChooser(
-                    index = selectedMode,
-                    onClick = { selectedMode = it },
-                )
-            }
-        },
+        content = content,
     )
-}
-
-@Composable
-fun TempThemeChooser(
-    modifier: Modifier = Modifier,
-    index: Int,
-    onClick: (Int) -> Unit,
-) {
-    TabRow(
-        selectedTabIndex = index,
-        modifier = modifier
-    ) {
-        Tab(
-            selected = index == 0,
-            onClick = { onClick(0) }
-        ) {
-            Text("Auto")
-        }
-        Tab(
-            selected = index == 1,
-            enabled = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S,
-            onClick = { onClick(1) }
-        ) {
-            Text("Dynamic")
-        }
-        Tab(
-            selected = index == 2,
-            onClick = { onClick(2) }
-        ) {
-            Text("Dark")
-        }
-        Tab(
-            selected = index == 3,
-            onClick = { onClick(3) }
-        ) {
-            Text("Light")
-        }
-    }
 }

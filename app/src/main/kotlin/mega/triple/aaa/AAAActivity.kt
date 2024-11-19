@@ -19,13 +19,14 @@ import com.google.firebase.analytics.analytics
 import com.google.firebase.analytics.logEvent
 import com.google.firebase.initialize
 import dagger.hilt.android.AndroidEntryPoint
+import mega.triple.aaa.presentation.core.ui.components.loader.GlobalLoading
 import mega.triple.aaa.presentation.core.ui.ext.render
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme
 import mega.triple.aaa.presentation.feature.analytic.AAAAnalytic
 import mega.triple.aaa.presentation.feature.search.SearchScreen
 import mega.triple.aaa.presentation.feature.search.SearchViewModel
+import mega.triple.aaa.presentation.feature.setting.ext.ThemeType
 import mega.triple.aaa.presentation.navigation.AAANavHost
-import mega.triple.aaa.presentation.navigation.GlobalLoading
 
 @AndroidEntryPoint
 class AAAActivity : ComponentActivity() {
@@ -55,10 +56,11 @@ class AAAActivity : ComponentActivity() {
             val navHostController = rememberNavController()
             val mainViewModel = hiltViewModel<AAAViewModel>()
             val location by mainViewModel.location.collectAsStateWithLifecycle()
+            val themeType by mainViewModel.themeType.collectAsStateWithLifecycle(ThemeType.AUTO)
 
             val context = LocalContext.current
 
-            AAATheme {
+            AAATheme(themeType) {
                 location.render(
                     onLoading = { GlobalLoading(withBackground = false) }
                 ) {

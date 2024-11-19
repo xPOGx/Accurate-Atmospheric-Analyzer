@@ -3,30 +3,23 @@ package mega.triple.aaa.presentation.navigation
 import android.widget.Toast
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.displayCutoutPadding
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import mega.triple.aaa.presentation.core.ui.components.loader.GlobalLoading
 import mega.triple.aaa.presentation.core.ui.ext.render
-import mega.triple.aaa.presentation.core.ui.theme.AAATheme
 import mega.triple.aaa.presentation.feature.home.HomeScreen
 import mega.triple.aaa.presentation.feature.home.HomeViewModel
 import mega.triple.aaa.presentation.feature.search.SearchScreen
 import mega.triple.aaa.presentation.feature.search.SearchViewModel
+import mega.triple.aaa.presentation.feature.setting.SettingsScreen
+import mega.triple.aaa.presentation.feature.setting.SettingsViewModel
 import mega.triple.aaa.presentation.navigation.ext.Routes
 
 @Composable
@@ -50,6 +43,7 @@ fun AAANavHost(
                     location = location,
                     forecastFlows = uiState.forecastFlows,
                     navigateToSearch = { navHostController.navigate(Routes.SEARCH) },
+                    navigateToSettings = { navHostController.navigate(Routes.SETTINGS) }
                 )
             }
         }
@@ -79,45 +73,22 @@ fun AAANavHost(
                 onAction = viewModel::onAction,
             )
         }
-    }
-}
-
-@Composable
-fun GlobalLoading(
-    modifier: Modifier = Modifier,
-    withBackground: Boolean = false,
-) {
-    val body: @Composable () -> Unit = {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = modifier
-                .fillMaxSize()
-                .displayCutoutPadding()
+        composable(
+            route = Routes.SETTINGS,
+            enterTransition = { slideInHorizontally { it } },
+            exitTransition = { slideOutHorizontally { it } },
         ) {
-            CircularProgressIndicator(
-                modifier = Modifier.fillMaxWidth(.2f)
+            val viewModel = hiltViewModel<SettingsViewModel>()
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+            with(viewModel) {
+                onNavigationBack.collectEffect { navHostController.navigateUp() }
+            }
+
+            SettingsScreen(
+                uiState = uiState,
+                onAction = viewModel::onAction
             )
         }
-    }
-
-    if (withBackground) {
-        Dialog(
-            onDismissRequest = { /* ignore */ },
-            properties = DialogProperties(
-                dismissOnBackPress = false,
-                dismissOnClickOutside = false,
-            ),
-            content = body,
-        )
-    } else {
-        body()
-    }
-}
-
-@Preview
-@Composable
-private fun GlobalLoadingPreview() {
-    AAATheme {
-        GlobalLoading()
     }
 }

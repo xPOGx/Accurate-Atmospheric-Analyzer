@@ -52,6 +52,7 @@ fun HomeScreen(
     location: LocationUiModel? = null,
     forecastFlows: ForecastFlows = ForecastFlows(),
     navigateToSearch: (() -> Unit)? = null,
+    navigateToSettings: (() -> Unit)? = null,
 ) {
     val gridState = rememberLazyGridState()
     val compact by remember {
@@ -87,7 +88,8 @@ fun HomeScreen(
                 compact = compact,
                 selectedIndex = selectedIndex,
                 onSelect = changeIndex,
-                onSearch = navigateToSearch
+                onSearch = navigateToSearch,
+                onSettings = navigateToSettings,
             )
         },
         modifier = modifier.fillMaxSize(),

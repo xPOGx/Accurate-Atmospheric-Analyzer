@@ -28,6 +28,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeightIn
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -77,6 +79,7 @@ fun TopAppBar(
     data: DailyForecastUiModel? = null,
     onSelect: ((Int) -> Unit)? = null,
     onSearch: (() -> Unit)? = null,
+    onSettings: (() -> Unit)? = null,
 ) {
     val density = LocalDensity.current
     val cutout = WindowInsets.displayCutout.getTop(density) / density.density
@@ -180,12 +183,21 @@ fun TopAppBar(
                         style = typography.ps400size22,
                         modifier = Modifier.weight(1f)
                     )
-                    IconButton(onClick = { onSearch?.invoke() }) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_search),
-                            contentDescription = null,
-                            tint = mainColor,
-                        )
+                    Row {
+                        IconButton(onClick = { onSearch?.invoke() }) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_search),
+                                contentDescription = null,
+                                tint = mainColor,
+                            )
+                        }
+                        IconButton(onClick = { onSettings?.invoke() }) {
+                            Icon(
+                                imageVector = Icons.Default.Settings,
+                                contentDescription = null,
+                                tint = mainColor,
+                            )
+                        }
                     }
                 }
                 Row(
