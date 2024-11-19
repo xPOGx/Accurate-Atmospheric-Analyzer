@@ -13,6 +13,7 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -133,6 +134,8 @@ fun TopAppBar(
     val icon = getAccuWeatherIconRes(data?.day?.icon)
     val iconPhrase = data?.day?.iconPhrase ?: STUB_VALUE
 
+    val imageRes = if (isSystemInDarkTheme()) R.drawable.img_bg_toolbar_dark else R.drawable.img_bg_toolbar
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -150,7 +153,7 @@ fun TopAppBar(
                 exit = fadeOut(),
             ) {
                 Image(
-                    painter = painterResource(R.drawable.img_bg_toolbar),
+                    painter = painterResource(imageRes),
                     contentScale = ContentScale.Crop,
                     contentDescription = null,
                     modifier = Modifier

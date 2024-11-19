@@ -32,8 +32,19 @@ fun lightColors() =
         tabContent = Color(0xFF2E004E),
     )
 
-// TODO invert of something
-fun darkColors() = lightColors()
+fun darkColors() =
+    Colors(
+        white = Color(0xFF1E1B1B), // Text color (previously black)
+        black = Color.White, // Background color (previously white)
+        background = Color(0xFF121212), // Background for most elements
+        toolbarBG = Color(0xFF1C1C1C), // Toolbar background
+        cardBG = Color(0xFF333333), // Card background (darker than toolbar)
+        cardContent = Color.White, // Text within cards (previously white)
+        changeGrowth = Color(0xFF2ECC71), // Positive change color (green)
+        changeDecrease = Color(0xFFF52424), // Negative change color (red)
+        tabContainer = Color(0xFF3F3F3F), // Tab container background
+        tabContent = Color.White, // Text within tabs
+    )
 
 @Composable
 fun AAATheme(
