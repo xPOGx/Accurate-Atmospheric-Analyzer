@@ -1,4 +1,4 @@
-package mega.triple.aaa.presentation.feature.setting.ext
+package mega.triple.aaa.presentation.feature.settings.ext
 
 sealed class SettingsAction {
     data object OnNavigateBack : SettingsAction()

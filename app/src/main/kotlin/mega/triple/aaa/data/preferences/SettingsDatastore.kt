@@ -9,7 +9,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import mega.triple.aaa.presentation.feature.setting.ext.ThemeType
+import mega.triple.aaa.presentation.feature.settings.ext.ThemeType
 import javax.inject.Inject
 import javax.inject.Singleton
 

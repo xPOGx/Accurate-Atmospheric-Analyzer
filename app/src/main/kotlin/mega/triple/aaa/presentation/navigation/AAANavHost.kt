@@ -2,7 +2,9 @@ package mega.triple.aaa.presentation.navigation
 
 import android.widget.Toast
 import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -18,8 +20,8 @@ import mega.triple.aaa.presentation.feature.home.HomeScreen
 import mega.triple.aaa.presentation.feature.home.HomeViewModel
 import mega.triple.aaa.presentation.feature.search.SearchScreen
 import mega.triple.aaa.presentation.feature.search.SearchViewModel
-import mega.triple.aaa.presentation.feature.setting.SettingsScreen
-import mega.triple.aaa.presentation.feature.setting.SettingsViewModel
+import mega.triple.aaa.presentation.feature.settings.SettingsScreen
+import mega.triple.aaa.presentation.feature.settings.SettingsViewModel
 import mega.triple.aaa.presentation.navigation.ext.Routes
 
 @Composable
@@ -75,8 +77,8 @@ fun AAANavHost(
         }
         composable(
             route = Routes.SETTINGS,
-            enterTransition = { slideInHorizontally { it } },
-            exitTransition = { slideOutHorizontally { it } },
+            enterTransition = { slideInVertically { -it } },
+            exitTransition = { slideOutVertically { -it } },
         ) {
             val viewModel = hiltViewModel<SettingsViewModel>()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()

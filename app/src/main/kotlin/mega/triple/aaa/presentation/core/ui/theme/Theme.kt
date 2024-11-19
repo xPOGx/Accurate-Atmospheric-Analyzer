@@ -23,7 +23,7 @@ import mega.triple.aaa.presentation.core.ui.theme.components.LocalTypography
 import mega.triple.aaa.presentation.core.ui.theme.components.Shapes
 import mega.triple.aaa.presentation.core.ui.theme.components.Spaces
 import mega.triple.aaa.presentation.core.ui.theme.components.Typography
-import mega.triple.aaa.presentation.feature.setting.ext.ThemeType
+import mega.triple.aaa.presentation.feature.settings.ext.ThemeType
 
 fun lightColors() =
     Colors(

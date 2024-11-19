@@ -1,4 +1,4 @@
-package mega.triple.aaa.presentation.feature.setting
+package mega.triple.aaa.presentation.feature.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,8 +10,8 @@ import kotlinx.coroutines.flow.update
 import mega.triple.aaa.data.preferences.SettingsDatastore
 import mega.triple.aaa.presentation.core.common.safeLaunch
 import mega.triple.aaa.presentation.core.ui.ext.SingleEvent
-import mega.triple.aaa.presentation.feature.setting.ext.SettingsAction
-import mega.triple.aaa.presentation.feature.setting.ext.ThemeType
+import mega.triple.aaa.presentation.feature.settings.ext.SettingsAction
+import mega.triple.aaa.presentation.feature.settings.ext.ThemeType
 import javax.inject.Inject
 
 @HiltViewModel

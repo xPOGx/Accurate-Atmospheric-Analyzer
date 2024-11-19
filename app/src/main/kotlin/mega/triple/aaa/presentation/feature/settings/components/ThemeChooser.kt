@@ -1,4 +1,4 @@
-package mega.triple.aaa.presentation.feature.setting.components
+package mega.triple.aaa.presentation.feature.settings.components
 
 import android.os.Build
 import androidx.compose.foundation.layout.padding
@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme
-import mega.triple.aaa.presentation.feature.setting.ext.ThemeType
+import mega.triple.aaa.presentation.feature.settings.ext.ThemeType
 
 @Composable
 fun ThemeChooser(

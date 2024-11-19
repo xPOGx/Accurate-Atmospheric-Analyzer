@@ -14,7 +14,7 @@ import mega.triple.aaa.domain.location.model.LocationDomainModel.Companion.toUiM
 import mega.triple.aaa.presentation.core.common.safeLaunch
 import mega.triple.aaa.presentation.core.ui.ext.UI
 import mega.triple.aaa.presentation.core.ui.model.location.LocationUiModel
-import mega.triple.aaa.presentation.feature.setting.ext.ThemeType
+import mega.triple.aaa.presentation.feature.settings.ext.ThemeType
 import javax.inject.Inject
 
 @HiltViewModel

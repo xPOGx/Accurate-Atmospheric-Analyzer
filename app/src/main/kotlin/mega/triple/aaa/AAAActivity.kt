@@ -25,7 +25,7 @@ import mega.triple.aaa.presentation.core.ui.theme.AAATheme
 import mega.triple.aaa.presentation.feature.analytic.AAAAnalytic
 import mega.triple.aaa.presentation.feature.search.SearchScreen
 import mega.triple.aaa.presentation.feature.search.SearchViewModel
-import mega.triple.aaa.presentation.feature.setting.ext.ThemeType
+import mega.triple.aaa.presentation.feature.settings.ext.ThemeType
 import mega.triple.aaa.presentation.navigation.AAANavHost
 
 @AndroidEntryPoint
