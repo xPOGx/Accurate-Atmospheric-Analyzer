@@ -72,7 +72,7 @@ fun ColorScheme.toColors(isDarkMode: Boolean): Colors =
 
 @Composable
 fun AAATheme(
-    themeType: ThemeType = ThemeType.AUTO,
+    themeType: ThemeType = ThemeType.LIGHT,
     isDarkMode: Boolean = isSystemInDarkTheme(),
     typography: Typography = AAATheme.typography,
     spaces: Spaces = AAATheme.spaces,

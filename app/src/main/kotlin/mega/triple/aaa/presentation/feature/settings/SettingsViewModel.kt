@@ -46,5 +46,5 @@ class SettingsViewModel @Inject constructor(
 }
 
 data class SettingsUiState(
-    val themeType: ThemeType = ThemeType.AUTO,
+    val themeType: ThemeType = ThemeType.LIGHT,
 )

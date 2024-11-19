@@ -56,7 +56,7 @@ class AAAActivity : ComponentActivity() {
             val navHostController = rememberNavController()
             val mainViewModel = hiltViewModel<AAAViewModel>()
             val location by mainViewModel.location.collectAsStateWithLifecycle()
-            val themeType by mainViewModel.themeType.collectAsStateWithLifecycle(ThemeType.AUTO)
+            val themeType by mainViewModel.themeType.collectAsStateWithLifecycle(ThemeType.LIGHT)
 
             val context = LocalContext.current
 

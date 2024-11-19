@@ -23,7 +23,7 @@ class SettingsDatastore @Inject constructor(
 
     fun getThemeType(): Flow<ThemeType> = data.map { pref ->
         val value = pref[themeTypePrefKey]
-        ThemeType.entries.firstOrNull { it.type == value } ?: ThemeType.AUTO
+        ThemeType.entries.firstOrNull { it.type == value } ?: ThemeType.LIGHT
     }
 
     suspend fun setThemeType(type: ThemeType) {
