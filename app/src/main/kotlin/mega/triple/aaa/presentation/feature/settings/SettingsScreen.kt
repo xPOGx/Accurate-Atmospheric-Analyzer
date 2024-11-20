@@ -14,7 +14,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import mega.triple.aaa.R
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme.typography
 import mega.triple.aaa.presentation.feature.settings.components.LanguageChooser
@@ -35,7 +37,7 @@ fun SettingsScreen(
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = "Settings",
+                        text = stringResource(R.string.settings_title),
                         style = typography.ps400size22,
                     )
                 },

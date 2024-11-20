@@ -9,7 +9,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import mega.triple.aaa.R
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme
 import mega.triple.aaa.presentation.feature.settings.ext.ThemeType
 
@@ -21,7 +23,7 @@ fun MeasureChooser(
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
-            "Measure",
+            stringResource(R.string.settings_measure),
             style = AAATheme.typography.ps400size18,
             color = Color.Black,
             modifier = Modifier.padding(horizontal = AAATheme.spaces.size16)
@@ -39,7 +41,7 @@ fun MeasureChooser(
                 modifier = Modifier.padding(vertical = AAATheme.spaces.size8)
             ) {
                 Text(
-                    "Metric",
+                    stringResource(R.string.settings_metric),
                     style = AAATheme.typography.ps700size18
                 )
             }
@@ -50,7 +52,7 @@ fun MeasureChooser(
                 modifier = Modifier.padding(vertical = AAATheme.spaces.size8)
             ) {
                 Text(
-                    "Imperial",
+                    stringResource(R.string.settings_imperial),
                     style = AAATheme.typography.ps700size18
                 )
             }

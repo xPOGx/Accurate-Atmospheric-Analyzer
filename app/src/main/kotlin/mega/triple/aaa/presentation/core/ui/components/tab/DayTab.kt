@@ -16,6 +16,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import mega.triple.aaa.R
+import mega.triple.aaa.presentation.core.ui.theme.AAATheme
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme.colors
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme.shapes
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme.spaces
@@ -32,19 +36,19 @@ fun DayTab(
         modifier = modifier.fillMaxWidth(),
     ) {
         DayTabItem(
-            title = "Today",
+            title = stringResource(R.string.common_today),
             onClick = { onSelect?.invoke(0) },
             selected = selectedIndex == 0,
             modifier = Modifier.weight(1f),
         )
         DayTabItem(
-            title = "Tomorrow",
+            title = stringResource(R.string.common_tomorrow),
             onClick = { onSelect?.invoke(1) },
             selected = selectedIndex == 1,
             modifier = Modifier.weight(1f),
         )
         DayTabItem(
-            title = "5 days",
+            title = stringResource(R.string.common_5_days),
             onClick = { onSelect?.invoke(2) },
             selected = selectedIndex == 2,
             modifier = Modifier.weight(1f),
@@ -84,6 +88,16 @@ fun DayTabItem(
             color = contentColor,
             style = typography.ps400size16,
             modifier = Modifier.padding(vertical = spaces.size8)
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun DayTabPreview() {
+    AAATheme {
+        DayTab(
+            selectedIndex = 0,
         )
     }
 }

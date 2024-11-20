@@ -26,6 +26,7 @@ class DottedCircleProgressBar(context: Context) : View(context) {
         progress: Float = this.progress,
     ) {
         this.progress = progress
+        invalidate()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

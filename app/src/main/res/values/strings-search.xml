@@ -1,0 +1,11 @@
+<resources>
+    <string name="search_choose">Choose %1$s</string>
+    <string name="search_title">Location search</string>
+    <string name="search_go_back">Go back</string>
+    <string name="search_empty_name">Empty Name</string>
+    <string name="search_continent">Continent</string>
+    <string name="search_country">Country</string>
+    <string name="search_city">City</string>
+    <string name="search_item_title">%1$s - %2$s</string>
+    <string name="search_save_changes">Save Changes</string>
+</resources>

@@ -21,7 +21,12 @@ data class DailyForecastUiModel(
                 && hourOfDay < (sun?.timeSet?.toIntOrNull() ?: 18)
     }
 
-    val airQuality by lazy { airAndPollen?.firstOrNull { it.name == "AirQuality" }?.category }
+    val airQuality by lazy { airAndPollen?.firstOrNull { it.name == AIR_QUALITY_KEY }?.category }
 
-    val uvIndex by lazy { airAndPollen?.firstOrNull { it.name == "UVIndex" }?.value }
+    val uvIndex by lazy { airAndPollen?.firstOrNull { it.name == UV_INDEX_KEY }?.value }
+
+    companion object {
+        private const val AIR_QUALITY_KEY = "AirQuality"
+        private const val UV_INDEX_KEY = "UVIndex"
+    }
 }

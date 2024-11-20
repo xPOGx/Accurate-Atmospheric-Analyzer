@@ -1,0 +1,9 @@
+<resources>
+    <string name="home_wind_speed">Wind speed</string>
+    <string name="home_rain_chance">Rain chance</string>
+    <string name="home_air_quality">Air quality</string>
+    <string name="home_uv_index">UV Index</string>
+    <string name="home_sunrise">Sunrise</string>
+    <string name="home_sunset">Sunset</string>
+    <string name="home_moonrise">Moonrise</string>
+</resources>

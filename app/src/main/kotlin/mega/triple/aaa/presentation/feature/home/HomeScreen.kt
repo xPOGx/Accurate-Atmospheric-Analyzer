@@ -25,6 +25,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import mega.triple.aaa.R
 import mega.triple.aaa.presentation.core.common.Constants.STUB_VALUE
@@ -125,7 +126,7 @@ fun HomeScreen(
                     val speedUnit = dayNight?.wind?.speed?.unit
                     val diff = diff(speed, diffDayNight?.wind?.speed?.value)
                     ParameterCard(
-                        title = "Wind speed",
+                        title = stringResource(R.string.home_wind_speed),
                         description = formatSpeed(speed, speedUnit),
                         iconRes = R.drawable.ic_air,
                         extra = diff?.let {
@@ -139,7 +140,7 @@ fun HomeScreen(
                 item(contentType = "AAACardItem") {
                     val diff = diff(dayNight?.rainProbability, diffDayNight?.rainProbability)
                     ParameterCard(
-                        title = "Rain chance",
+                        title = stringResource(R.string.home_rain_chance),
                         description = formatProbability(dayNight?.rainProbability),
                         iconRes = R.drawable.ic_rainy,
                         extra = diff?.let { formatProbability(diff.absoluteValue) to (diff > 0) },
@@ -147,7 +148,7 @@ fun HomeScreen(
                 }
                 item(contentType = "AAACardItem") {
                     ParameterCard(
-                        title = "Air quality",
+                        title = stringResource(R.string.home_air_quality),
                         description = currentData?.airQuality ?: STUB_VALUE,
                         iconRes = R.drawable.ic_waves,
                         extra = null,
@@ -173,7 +174,7 @@ fun HomeScreen(
                             )
                         } else {
                             ParameterCard(
-                                title = "UV Index",
+                                title = stringResource(R.string.home_uv_index),
                                 description = uvIndex.toString(),
                                 iconRes = R.drawable.ic_sun,
                                 extra = diff?.let { diff.toString() to (diff > 0) },
@@ -195,7 +196,7 @@ fun HomeScreen(
                 }
                 item(contentType = "AAACardItem") {
                     ParameterCard(
-                        title = "Sunrise",
+                        title = stringResource(R.string.home_sunrise),
                         description = formatSimpleTime(currentData?.sun?.timeRise),
                         descriptionTextStyle = typography.gs500size14,
                         iconRes = R.drawable.ic_sun,
@@ -205,7 +206,7 @@ fun HomeScreen(
                 }
                 item(contentType = "AAACardItem") {
                     ParameterCard(
-                        title = "Sunset",
+                        title = stringResource(R.string.home_sunset),
                         description = formatSimpleTime(currentData?.sun?.timeSet),
                         descriptionTextStyle = typography.gs500size14,
                         iconRes = R.drawable.ic_sunset,
@@ -215,7 +216,7 @@ fun HomeScreen(
                 }
                 item(contentType = "AAACardItem") {
                     ParameterCard(
-                        title = "Moonrise",
+                        title = stringResource(R.string.home_moonrise),
                         description = formatSimpleTime(currentData?.moon?.timeRise),
                         descriptionTextStyle = typography.gs500size14,
                         iconRes = R.drawable.ic_sunrise,

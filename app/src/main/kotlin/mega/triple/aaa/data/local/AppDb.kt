@@ -14,6 +14,7 @@ import mega.triple.aaa.data.local.model.location.ContinentDbModel
 import mega.triple.aaa.data.local.model.location.CountryDbModel
 
 const val DB_VERSION = 1
+const val DB_NAME = "app_database"
 
 @Database(
     version = DB_VERSION,
@@ -41,7 +42,7 @@ abstract class AppDb : RoomDatabase() {
                 return Room.databaseBuilder(
                     context.applicationContext,
                     AppDb::class.java,
-                    "app_database",
+                    DB_NAME,
                 )
                     .build()
                     .also { instance = it }

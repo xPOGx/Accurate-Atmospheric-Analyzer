@@ -5,7 +5,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import mega.triple.aaa.R
 import mega.triple.aaa.presentation.core.ui.components.card.LocationCard
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme.typography
@@ -27,7 +29,7 @@ fun LocationChooseCard(
             modifier = Modifier.weight(0.3f),
         )
         LocationCard(
-            title = value ?: "Choose ${title.lowercase()}",
+            title = value ?: stringResource(R.string.search_choose, title.lowercase()),
             modifier = Modifier.weight(0.7f)
         ) {
             onClick?.invoke()

@@ -123,7 +123,7 @@ class SearchViewModel @Inject constructor(
                     val continentId = _uiState.value.location.continent?.id
                     if (continentId == null) {
                         _uiState.update {
-                            it.copy(locationList = UI.ERROR(Exception("Continent not chosen")))
+                            it.copy(locationList = UI.ERROR(Exception(CONTINENT_ERROR)))
                         }
                     } else {
                         getCountriesUC(continentId).mapCatching { domainModels ->
@@ -146,8 +146,8 @@ class SearchViewModel @Inject constructor(
                     val countryId = _uiState.value.location.country?.id
                     if (continentId == null || countryId == null) {
                         val error = when {
-                            continentId == null -> "Continent not chosen"
-                            else -> "Country not chosen"
+                            continentId == null -> CONTINENT_ERROR
+                            else -> COUNTRY_ERROR
                         }
                         _uiState.update {
                             it.copy(locationList = UI.ERROR(Exception(error)))
@@ -177,6 +177,11 @@ class SearchViewModel @Inject constructor(
                 .onSuccess { onSaveSuccess.fire() }
                 .onFailure { onToast.send(it.message ?: "Error saving location") }
         }
+    }
+
+    companion object {
+        private const val CONTINENT_ERROR = "Continent not chosen"
+        private const val COUNTRY_ERROR = "Country not chosen"
     }
 }
 

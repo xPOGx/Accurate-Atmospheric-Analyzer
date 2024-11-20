@@ -15,10 +15,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import mega.triple.aaa.R
 import mega.triple.aaa.presentation.core.ui.components.ext.SpacerHeight
 import mega.triple.aaa.presentation.core.ui.components.ext.SpacerWidth
 import mega.triple.aaa.presentation.core.ui.components.icon.CircleBgIcon
+import mega.triple.aaa.presentation.core.ui.theme.AAATheme
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme.colors
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme.spaces
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme.typography
@@ -43,7 +46,7 @@ fun ForecastCard(
                 CircleBgIcon(iconRes = R.drawable.ic_clock)
                 SpacerWidth(spaces.size8)
                 Text(
-                    text = "Hourly forecast",
+                    text = stringResource(R.string.common_hourly_forecast),
                     style = typography.ps400size14,
                 )
             }
@@ -54,7 +57,7 @@ fun ForecastCard(
             ) {
                 (0 until 24).forEach {
                     item(contentType = "AAAForecastItem") {
-                        AAAForecastCardItem(time = it)
+                        ForecastCardItem(time = it)
                     }
                 }
             }
@@ -63,12 +66,12 @@ fun ForecastCard(
 }
 
 @Composable
-fun AAAForecastCardItem(
+fun ForecastCardItem(
     modifier: Modifier = Modifier,
     time: Int,
 ) {
     val now = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-    val text = if (now == time) "Now" else time.toString()
+    val text = if (now == time) stringResource(R.string.common_now) else time.toString()
 
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = modifier) {
         Text(
@@ -86,5 +89,13 @@ fun AAAForecastCardItem(
             text = "5°",
             style = typography.gs400size18,
         )
+    }
+}
+
+@Preview
+@Composable
+private fun ForecastCardPreview() {
+    AAATheme {
+        ForecastCard()
     }
 }

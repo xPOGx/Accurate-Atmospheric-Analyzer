@@ -32,11 +32,8 @@ fun UvIndexView(
             modifier = Modifier.fillMaxSize()
         ) {
             AndroidView(
-                factory = { ctx ->
-                    DottedCircleProgressBar(ctx).apply {
-                        setup(progress = uvIndex)
-                    }
-                },
+                factory = { DottedCircleProgressBar(it) },
+                update = { it.setup(uvIndex) },
                 modifier = Modifier.size(spaces.size100)
             )
         }

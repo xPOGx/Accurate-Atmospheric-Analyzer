@@ -1,0 +1,7 @@
+<resources>
+    <string name="toolbar_in_shadow">In shadow</string>
+    <string name="toolbar_feels_like">Feels like</string>
+    <string name="toolbar_day">Day</string>
+    <string name="toolbar_night">Night</string>
+    <string name="toolbar_unknown_place">Unknown place</string>
+</resources>

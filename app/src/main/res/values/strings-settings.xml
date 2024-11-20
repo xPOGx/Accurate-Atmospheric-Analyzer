@@ -1,0 +1,13 @@
+<resources>
+    <string name="settings_language">Language</string>
+    <string name="settings_english">English</string>
+    <string name="settings_ukrainian">Ukrainian</string>
+    <string name="settings_measure">Measure</string>
+    <string name="settings_metric">Metric</string>
+    <string name="settings_imperial">Imperial</string>
+    <string name="settings_auto">Auto</string>
+    <string name="settings_dynamic">Dynamic</string>
+    <string name="settings_dark">Dark</string>
+    <string name="settings_light">Light</string>
+    <string name="settings_title">Settings</string>
+</resources>

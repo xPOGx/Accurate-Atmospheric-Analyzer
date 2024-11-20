@@ -13,7 +13,6 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -45,8 +44,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -82,6 +83,7 @@ fun TopAppBar(
     onSettings: (() -> Unit)? = null,
 ) {
     val density = LocalDensity.current
+    val context = LocalContext.current
     val cutout = WindowInsets.displayCutout.getTop(density) / density.density
     var min by remember { mutableStateOf((TOOLBAR_HEIGHT_MIN + cutout).dp) }
     var max by remember { mutableStateOf((TOOLBAR_HEIGHT_MAX + cutout).dp) }
@@ -137,8 +139,6 @@ fun TopAppBar(
     val icon = getAccuWeatherIconRes(data?.day?.icon)
     val iconPhrase = data?.day?.iconPhrase ?: STUB_VALUE
 
-    val imageRes = if (isSystemInDarkTheme()) R.drawable.img_bg_toolbar_dark else R.drawable.img_bg_toolbar
-
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -156,7 +156,7 @@ fun TopAppBar(
                 exit = fadeOut(),
             ) {
                 Image(
-                    painter = painterResource(imageRes),
+                    painter = painterResource(R.drawable.img_bg_toolbar),
                     contentScale = ContentScale.Crop,
                     contentDescription = null,
                     modifier = Modifier
@@ -178,7 +178,7 @@ fun TopAppBar(
                         .padding(start = spaces.size24),
                 ) {
                     Text(
-                        text = locationName ?: "Unknown place",
+                        text = locationName ?: stringResource(R.string.toolbar_unknown_place),
                         color = mainColor,
                         style = typography.ps400size22,
                         modifier = Modifier.weight(1f)
@@ -206,7 +206,8 @@ fun TopAppBar(
                 ) {
                     Text(
                         text = formatTemperature(
-                            data?.day?.wetBulbTemperature?.average?.value ?: data?.day?.wetBulbTemperature?.mathAverage,
+                            data?.day?.wetBulbTemperature?.average?.value
+                                ?: data?.day?.wetBulbTemperature?.mathAverage,
                             data?.day?.wetBulbTemperature?.maximum?.unit,
                         ),
                         style = typography.ps400size14.copy(fontSize = animateTempSize.sp),
@@ -221,13 +222,18 @@ fun TopAppBar(
                             .align(Alignment.Bottom)
                     ) {
                         Text(
-                            text = formatFeelTemperature(feelLikeTemp, temperatureUnit),
+                            text = formatFeelTemperature(context, feelLikeTemp, temperatureUnit),
                             style = typography.ps400size18.copy(fontSize = animateFeelSize.sp),
                             color = mainColor,
                         )
                         androidx.compose.animation.AnimatedVisibility(!compact) {
                             Text(
-                                text = formatFeelTemperature(feelLikeShadowTemp, temperatureUnit, inShadow = true),
+                                text = formatFeelTemperature(
+                                    context,
+                                    feelLikeShadowTemp,
+                                    temperatureUnit,
+                                    inShadow = true
+                                ),
                                 style = typography.ps400size18.copy(fontSize = animateFeelSize.sp),
                                 color = mainColor,
                             )
@@ -295,12 +301,22 @@ fun TopAppBar(
                                 horizontalAlignment = Alignment.End,
                             ) {
                                 Text(
-                                    text = formatPartTemperature(data?.temperature?.maximum?.value, true, temperatureUnit),
+                                    text = formatPartTemperature(
+                                        context,
+                                        data?.temperature?.maximum?.value,
+                                        true,
+                                        temperatureUnit
+                                    ),
                                     style = typography.ps700size18,
                                     color = fullColor
                                 )
                                 Text(
-                                    text = formatPartTemperature(data?.temperature?.minimum?.value, false,temperatureUnit),
+                                    text = formatPartTemperature(
+                                        context,
+                                        data?.temperature?.minimum?.value,
+                                        false,
+                                        temperatureUnit
+                                    ),
                                     style = typography.ps700size18,
                                     color = fullColor
                                 )

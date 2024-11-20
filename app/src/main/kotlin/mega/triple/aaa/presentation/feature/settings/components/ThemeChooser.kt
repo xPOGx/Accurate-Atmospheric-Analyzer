@@ -10,7 +10,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import mega.triple.aaa.R
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme
 import mega.triple.aaa.presentation.feature.settings.ext.ThemeType
 
@@ -39,7 +41,7 @@ fun ThemeChooser(
                 modifier = Modifier.padding(vertical = AAATheme.spaces.size8)
             ) {
                 Text(
-                    "Auto",
+                    stringResource(R.string.settings_auto),
                     style = AAATheme.typography.ps700size18
                 )
             }
@@ -50,7 +52,7 @@ fun ThemeChooser(
                 modifier = Modifier.padding(vertical = AAATheme.spaces.size8)
             ) {
                 Text(
-                    "Dynamic",
+                    stringResource(R.string.settings_dynamic),
                     style = AAATheme.typography.ps700size18
                 )
             }
@@ -60,7 +62,7 @@ fun ThemeChooser(
                 modifier = Modifier.padding(vertical = AAATheme.spaces.size8)
             ) {
                 Text(
-                    "Dark",
+                    stringResource(R.string.settings_dark),
                     style = AAATheme.typography.ps700size18
                 )
             }
@@ -70,7 +72,7 @@ fun ThemeChooser(
                 modifier = Modifier.padding(vertical = AAATheme.spaces.size8)
             ) {
                 Text(
-                    "Light",
+                    stringResource(R.string.settings_light),
                     style = AAATheme.typography.ps700size18
                 )
             }

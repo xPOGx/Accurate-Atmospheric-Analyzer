@@ -1,5 +1,11 @@
 package mega.triple.aaa.presentation.core.common
 
+import android.content.Context
+import mega.triple.aaa.R
+import mega.triple.aaa.presentation.core.common.Constants.CELSIUS
+import mega.triple.aaa.presentation.core.common.Constants.CELSIUS_SYMBOL
+import mega.triple.aaa.presentation.core.common.Constants.DATE_PATTEN
+import mega.triple.aaa.presentation.core.common.Constants.FAHRENHEIT
 import mega.triple.aaa.presentation.core.common.Constants.PERCENTAGE
 import mega.triple.aaa.presentation.core.common.Constants.SPACE
 import mega.triple.aaa.presentation.core.common.Constants.STUB_VALUE
@@ -8,13 +14,13 @@ import java.util.Date
 import java.util.Locale
 import kotlin.math.roundToInt
 
-// TODO: constants
 fun formatPartTemperature(
+    context: Context,
     value: Double?,
     isDay: Boolean,
     unit: String?,
 ): String = buildString {
-    append(if (isDay) "Day" else "Night")
+    append(if (isDay) context.getString(R.string.toolbar_day) else context.getString(R.string.toolbar_night))
     append(SPACE)
     append(formatTemperature(value, unit))
 }
@@ -24,13 +30,13 @@ fun formatTemperature(value: Double?, unit: String?): String = buildString {
     append(temperatureSymbol(unit))
 }
 
-// TODO: constants
 fun formatFeelTemperature(
+    context: Context,
     value: Double?,
     unit: String?,
     inShadow: Boolean = false,
 ): String = buildString {
-    append(if (inShadow) "In shadow" else "Feels like")
+    append(if (inShadow) context.getString(R.string.toolbar_in_shadow) else context.getString(R.string.toolbar_feels_like))
     append(SPACE)
     append(value?.roundToInt() ?: STUB_VALUE)
     append(temperatureSymbol(unit))
@@ -57,7 +63,7 @@ fun formatSimpleTime(value: String?): String {
 
 fun formatDate(value: Long): String {
     return try {
-        SimpleDateFormat(Constants.DATE_PATTEN, Locale.getDefault()).format(Date(value))
+        SimpleDateFormat(DATE_PATTEN, Locale.getDefault()).format(Date(value))
     } catch (_: Throwable) {
         STUB_VALUE
     }
@@ -73,5 +79,5 @@ fun formatProbability(value: Int?) = buildString {
     append(PERCENTAGE)
 }
 
-private fun temperatureSymbol(value: String?) =
-    if (value == "C") Constants.CELSIUS else Constants.FAHRENHEIT
+private fun temperatureSymbol(value: String?) = if (value == CELSIUS)
+    CELSIUS_SYMBOL else FAHRENHEIT

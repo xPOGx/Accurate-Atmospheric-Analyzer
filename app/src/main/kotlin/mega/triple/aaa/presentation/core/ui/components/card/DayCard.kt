@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import mega.triple.aaa.R
 import mega.triple.aaa.presentation.core.common.Constants.STUB_VALUE
@@ -51,7 +52,8 @@ fun DayCard(
         ) {
             Column {
                 Text(
-                    if (dateTime.isToday()) "Today" else formatDate(dateTime),
+                    if (dateTime.isToday())
+                        stringResource(R.string.common_today) else formatDate(dateTime),
                     style = typography.ps400size16,
                 )
                 SpacerHeight(spaces.size4)

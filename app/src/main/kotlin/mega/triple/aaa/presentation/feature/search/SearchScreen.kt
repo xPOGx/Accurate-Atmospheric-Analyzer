@@ -30,7 +30,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import mega.triple.aaa.R
+import mega.triple.aaa.presentation.core.common.Constants.STUB_VALUE
 import mega.triple.aaa.presentation.core.ui.components.card.LocationCard
 import mega.triple.aaa.presentation.core.ui.components.ext.SpacerHeight
 import mega.triple.aaa.presentation.core.ui.ext.LocationType
@@ -61,7 +64,7 @@ fun SearchScreen(
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = "Location search",
+                        text = stringResource(R.string.search_title),
                         style = typography.ps400size22,
                     )
                 },
@@ -93,7 +96,7 @@ fun SearchScreen(
                 if (isList) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         LocationCard(
-                            title = "Go back",
+                            title = stringResource(R.string.search_go_back),
                             modifier = Modifier.fillMaxWidth(.5f),
                         ) { editMode = null }
                         uiState.locationList.render {
@@ -104,7 +107,9 @@ fun SearchScreen(
                                 modifier = Modifier.padding(horizontal = spaces.size16)
                             ) {
                                 items(items = it) { (id, title) ->
-                                    LocationCard(title = title ?: "Empty Name") {
+                                    LocationCard(
+                                        title = title ?: stringResource(R.string.search_empty_name)
+                                    ) {
                                         editMode?.let { mode ->
                                             id?.let {
                                                 onAction?.invoke(
@@ -128,7 +133,7 @@ fun SearchScreen(
                         modifier = Modifier.padding(horizontal = spaces.size16),
                     ) {
                         LocationChooseCard(
-                            title = "Continent",
+                            title = stringResource(R.string.search_continent),
                             value = uiState.location.continent?.englishName,
                         ) {
                             editMode = CONTINENT
@@ -136,7 +141,7 @@ fun SearchScreen(
                         }
                         uiState.location.continent?.let {
                             LocationChooseCard(
-                                title = "Country",
+                                title = stringResource(R.string.search_country),
                                 value = uiState.location.country?.englishName,
                             ) {
                                 editMode = COUNTRY
@@ -145,9 +150,13 @@ fun SearchScreen(
                         }
                         uiState.location.country?.let {
                             LocationChooseCard(
-                                title = "City",
+                                title = stringResource(R.string.search_city),
                                 value = uiState.location.city?.let {
-                                    "${it.englishName} - ${it.englishType}"
+                                    stringResource(
+                                        R.string.search_item_title,
+                                        it.englishName ?: STUB_VALUE,
+                                        it.englishType ?: STUB_VALUE,
+                                    )
                                 },
                             ) {
                                 editMode = CITY
@@ -166,7 +175,7 @@ fun SearchScreen(
                     .padding(horizontal = spaces.size16)
                     .padding(bottom = spaces.size24),
             ) {
-                LocationCard(title = "Save Changes") {
+                LocationCard(title = stringResource(R.string.search_save_changes)) {
                     onAction?.invoke(SearchAction.SaveAll)
                 }
             }

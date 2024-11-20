@@ -18,7 +18,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import mega.triple.aaa.R
 import mega.triple.aaa.presentation.core.ui.components.ext.SpacerHeight
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme.colors
@@ -49,7 +51,7 @@ fun ErrorCard(
                     )
             ) {
                 Text(
-                    text = "Error!",
+                    text = stringResource(R.string.common_error),
                     style = typography.ps700size36
                 )
                 SpacerHeight(spaces.size16)
@@ -59,7 +61,7 @@ fun ErrorCard(
                 )
                 onTryAgain?.let {
                     TextButton(onClick = onTryAgain) {
-                        Text(text = "Try again")
+                        Text(text = stringResource(R.string.common_try_again))
                     }
                 }
             }

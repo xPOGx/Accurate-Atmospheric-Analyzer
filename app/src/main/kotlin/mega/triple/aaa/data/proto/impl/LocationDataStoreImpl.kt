@@ -31,8 +31,10 @@ class LocationDataStoreImpl @Inject constructor(
     }
 
     companion object {
+        private const val FILE_NAME = "location.pb"
+
         private val Context.locationDataStore: DataStore<LocationProto> by dataStore(
-            fileName = "location.pb",
+            fileName = FILE_NAME,
             serializer = LocationProtoSerializer,
         )
     }
