@@ -1,49 +1,55 @@
 package mega.triple.aaa
 
+import android.content.res.Configuration
+import android.content.res.Resources
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.Firebase
 import com.google.firebase.analytics.analytics
 import com.google.firebase.analytics.logEvent
 import com.google.firebase.initialize
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import mega.triple.aaa.data.preferences.SettingsDatastore
 import mega.triple.aaa.presentation.core.ui.components.loader.GlobalLoading
 import mega.triple.aaa.presentation.core.ui.ext.render
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme
+import mega.triple.aaa.presentation.core.ui.theme.darkColors
+import mega.triple.aaa.presentation.core.ui.theme.lightColors
 import mega.triple.aaa.presentation.feature.analytic.AAAAnalytic
 import mega.triple.aaa.presentation.feature.search.SearchScreen
 import mega.triple.aaa.presentation.feature.search.SearchViewModel
 import mega.triple.aaa.presentation.feature.settings.ext.ThemeType
 import mega.triple.aaa.presentation.navigation.AAANavHost
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class AAAActivity : ComponentActivity() {
     private val activityStart = System.currentTimeMillis()
 
+    @Inject
+    lateinit var settings: SettingsDatastore
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Fullscreen
-        WindowCompat.getInsetsController(window, window.decorView).apply {
-            systemBarsBehavior =
-                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-            hide(WindowInsetsCompat.Type.systemBars())
+        this.lifecycleScope.launch {
+            settings.getThemeType().collectLatest { settingTheme -> setupEdgeToEdge(settingTheme) }
         }
-
-        // Edge to edge
-        enableEdgeToEdge()
 
         // Firebase
         Firebase.initialize(this)
@@ -109,5 +115,35 @@ class AAAActivity : ComponentActivity() {
             param("end: ", activityEnd)
             param("minutes: ", minutes)
         }
+    }
+
+    private fun setupEdgeToEdge(themeType: ThemeType?) {
+        var isDarkMode: Boolean? = null
+
+        fun isDarkMode(resources: Resources): Boolean {
+            isDarkMode?.let { return it }
+            isDarkMode = when (themeType) {
+                ThemeType.DARK -> true
+                ThemeType.AUTO,
+                ThemeType.DYNAMIC -> (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+
+                else -> false
+            }
+            return isDarkMode
+        }
+
+        // Edge to edge
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.auto(
+                lightScrim = Color.TRANSPARENT,
+                darkScrim = Color.TRANSPARENT,
+                detectDarkMode = ::isDarkMode,
+            ),
+            navigationBarStyle = SystemBarStyle.auto(
+                lightScrim = lightColors().background.toArgb(),
+                darkScrim = darkColors().background.toArgb(),
+                detectDarkMode = ::isDarkMode,
+            ),
+        )
     }
 }
