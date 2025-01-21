@@ -1,7 +1,7 @@
 package mega.triple.aaa.domain.forecast.model
 
 import mega.triple.aaa.data.local.model.forecast.RelativeHumidityDbModel
-import mega.triple.aaa.data.network.response.model.RelativeHumidityResponse
+import mega.triple.aaa.network.response.model.RelativeHumidityResponse
 import mega.triple.aaa.presentation.core.ui.model.forecast.RelativeHumidityUiModel
 
 data class RelativeHumidityDomainModel(

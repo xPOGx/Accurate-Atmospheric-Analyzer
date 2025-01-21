@@ -1,7 +1,6 @@
 package mega.triple.aaa.presentation.core.ui.components.loader
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.CircularProgressIndicator
@@ -21,9 +20,7 @@ fun GlobalLoading(
     val body: @Composable () -> Unit = {
         Box(
             contentAlignment = Alignment.Center,
-            modifier = modifier
-                .fillMaxSize()
-                .displayCutoutPadding()
+            modifier = modifier.fillMaxSize()
         ) {
             CircularProgressIndicator(
                 modifier = Modifier.fillMaxWidth(.2f)

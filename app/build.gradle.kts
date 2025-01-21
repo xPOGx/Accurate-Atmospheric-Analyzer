@@ -19,44 +19,46 @@ plugins {
 }
 
 android {
-    namespace = "mega.triple.aaa"
-    compileSdk = 34
+    with(libs) {
+        namespace = versions.applicationId.get()
+        compileSdk = versions.compileSdk.get().toInt()
 
-    defaultConfig {
-        applicationId = "mega.triple.aaa"
-        minSdk = 24
-        //noinspection OldTargetApi
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        defaultConfig {
+            applicationId = versions.applicationId.get()
+            minSdk = versions.minSdk.get().toInt()
+            //noinspection OldTargetApi
+            targetSdk = versions.targetSdk.get().toInt()
+            versionCode = versions.versionCode.get().toInt()
+            versionName = versions.versionName.get()
 
-        vectorDrawables {
-            useSupportLibrary = true
+            vectorDrawables {
+                useSupportLibrary = true
+            }
         }
-    }
 
-    buildTypes {
-        release {
-            isMinifyEnabled = false
+        buildTypes {
+            release {
+                isMinifyEnabled = false
+            }
         }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
-    }
-    buildFeatures {
-        compose = true
-        buildConfig = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
-    }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        compileOptions {
+            sourceCompatibility = JavaVersion.toVersion(versions.javaVersion.get())
+            targetCompatibility = JavaVersion.toVersion(versions.javaVersion.get())
+        }
+        kotlinOptions {
+            jvmTarget = versions.javaVersion.get()
+        }
+        buildFeatures {
+            compose = true
+            buildConfig = true
+        }
+        composeOptions {
+            kotlinCompilerExtensionVersion = versions.kotlinCompilerExtensionVersion.get()
+        }
+        packaging {
+            resources {
+                excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            }
         }
     }
 }
@@ -99,6 +101,9 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.crashlytics)
+    // Modules
+    implementation(project(libs.versions.projectCommon.get()))
+    implementation(project(libs.versions.projectDataNetwork.get()))
 }
 
 secrets {

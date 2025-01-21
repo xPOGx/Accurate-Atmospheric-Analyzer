@@ -44,6 +44,6 @@ fun UvIndexView(
 @Composable
 private fun UvIndexViewPreview() {
     AAATheme {
-        UvIndexView(2f)
+        UvIndexView(6f)
     }
 }

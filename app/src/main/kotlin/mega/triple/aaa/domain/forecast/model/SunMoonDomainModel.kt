@@ -1,7 +1,7 @@
 package mega.triple.aaa.domain.forecast.model
 
 import mega.triple.aaa.data.local.model.forecast.SunMoonDbModel
-import mega.triple.aaa.data.network.response.model.SunMoonResponse
+import mega.triple.aaa.network.response.model.SunMoonResponse
 import mega.triple.aaa.presentation.core.ui.model.forecast.SunMoonUiModel
 
 data class SunMoonDomainModel(

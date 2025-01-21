@@ -1,10 +1,10 @@
 package mega.triple.aaa.domain.forecast.model
 
 import mega.triple.aaa.data.local.model.forecast.ValueWrapperDbModel
-import mega.triple.aaa.data.network.response.model.ValueWrapper
 import mega.triple.aaa.domain.forecast.model.ValueDomainModel.Companion.toDbModel
 import mega.triple.aaa.domain.forecast.model.ValueDomainModel.Companion.toDomainModel
 import mega.triple.aaa.domain.forecast.model.ValueDomainModel.Companion.toUiModel
+import mega.triple.aaa.network.response.model.ValueWrapper
 import mega.triple.aaa.presentation.core.ui.model.forecast.ValueWrapperUiModel
 
 data class ValueWrapperDomainModel(

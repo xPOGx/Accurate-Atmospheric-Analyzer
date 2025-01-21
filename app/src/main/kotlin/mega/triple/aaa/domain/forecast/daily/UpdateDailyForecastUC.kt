@@ -2,11 +2,11 @@ package mega.triple.aaa.domain.forecast.daily
 
 import kotlinx.coroutines.flow.first
 import mega.triple.aaa.data.local.source.ForecastDbSource
-import mega.triple.aaa.data.network.source.ForecastNetSource
 import mega.triple.aaa.domain.ext.EmptyLocationKey
 import mega.triple.aaa.domain.ext.NullResult
 import mega.triple.aaa.domain.forecast.model.DailyForecastDomainModel.Companion.toDbModel
 import mega.triple.aaa.domain.location.GetLocationUC
+import mega.triple.aaa.network.source.ForecastNetSource
 import mega.triple.aaa.presentation.core.common.ForecastHelper
 import javax.inject.Inject
 

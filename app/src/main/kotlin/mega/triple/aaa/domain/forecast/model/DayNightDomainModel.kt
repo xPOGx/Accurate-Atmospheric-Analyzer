@@ -1,7 +1,6 @@
 package mega.triple.aaa.domain.forecast.model
 
 import mega.triple.aaa.data.local.model.forecast.DayNightDbModel
-import mega.triple.aaa.data.network.response.model.DayNightResponse
 import mega.triple.aaa.domain.forecast.model.DirectionWrapperDomainModel.Companion.toDbModel
 import mega.triple.aaa.domain.forecast.model.DirectionWrapperDomainModel.Companion.toDomainModel
 import mega.triple.aaa.domain.forecast.model.DirectionWrapperDomainModel.Companion.toUiModel
@@ -14,6 +13,7 @@ import mega.triple.aaa.domain.forecast.model.ValueDomainModel.Companion.toUiMode
 import mega.triple.aaa.domain.forecast.model.ValueWrapperDomainModel.Companion.toDbModel
 import mega.triple.aaa.domain.forecast.model.ValueWrapperDomainModel.Companion.toDomainModel
 import mega.triple.aaa.domain.forecast.model.ValueWrapperDomainModel.Companion.toUiModel
+import mega.triple.aaa.network.response.model.DayNightResponse
 import mega.triple.aaa.presentation.core.ui.model.forecast.DayNightUiModel
 
 data class DayNightDomainModel(

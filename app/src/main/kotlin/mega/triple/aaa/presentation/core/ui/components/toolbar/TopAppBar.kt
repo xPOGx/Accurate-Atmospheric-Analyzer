@@ -19,14 +19,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.displayCutout
-import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeightIn
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
@@ -84,15 +84,15 @@ fun TopAppBar(
 ) {
     val density = LocalDensity.current
     val context = LocalContext.current
-    val cutout = WindowInsets.displayCutout.getTop(density) / density.density
-    var min by remember { mutableStateOf((TOOLBAR_HEIGHT_MIN + cutout).dp) }
-    var max by remember { mutableStateOf((TOOLBAR_HEIGHT_MAX + cutout).dp) }
+    val statusBars = WindowInsets.statusBars.getTop(density) / density.density
+    var min by remember { mutableStateOf((TOOLBAR_HEIGHT_MIN + statusBars).dp) }
+    var max by remember { mutableStateOf((TOOLBAR_HEIGHT_MAX + statusBars).dp) }
 
-    LaunchedEffect(cutout) {
-        val newMin = (TOOLBAR_HEIGHT_MIN + cutout).dp
+    LaunchedEffect(statusBars) {
+        val newMin = (TOOLBAR_HEIGHT_MIN + statusBars).dp
         if (newMin != min) {
             min = newMin
-            max = (TOOLBAR_HEIGHT_MAX + cutout).dp
+            max = (TOOLBAR_HEIGHT_MAX + statusBars).dp
         }
     }
 
@@ -168,10 +168,10 @@ fun TopAppBar(
                 verticalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
                     .fillMaxSize()
-                    .displayCutoutPadding(),
+                    .statusBarsPadding(),
             ) {
                 Row(
-                    verticalAlignment = Alignment.Top,
+                    verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Absolute.SpaceBetween,
                     modifier = Modifier
                         .fillMaxWidth()

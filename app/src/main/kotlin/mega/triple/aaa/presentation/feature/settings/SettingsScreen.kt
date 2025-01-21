@@ -2,7 +2,6 @@ package mega.triple.aaa.presentation.feature.settings
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -49,7 +48,6 @@ fun SettingsScreen(
                         )
                     }
                 },
-                modifier = Modifier.displayCutoutPadding(),
             )
         },
         modifier = modifier,

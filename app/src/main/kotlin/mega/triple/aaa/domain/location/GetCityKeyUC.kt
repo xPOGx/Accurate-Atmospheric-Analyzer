@@ -1,7 +1,7 @@
 package mega.triple.aaa.domain.location
 
-import mega.triple.aaa.data.network.source.LocationNetSource
 import mega.triple.aaa.domain.ext.validateNotNull
+import mega.triple.aaa.network.source.LocationNetSource
 import javax.inject.Inject
 
 class GetCityKeyUC @Inject constructor(

@@ -1,7 +1,7 @@
 package mega.triple.aaa.domain.forecast.model
 
 import mega.triple.aaa.data.local.model.forecast.ValueDbModel
-import mega.triple.aaa.data.network.response.model.ValueResponse
+import mega.triple.aaa.network.response.model.ValueResponse
 import mega.triple.aaa.presentation.core.ui.model.forecast.ValueUiModel
 
 data class ValueDomainModel(
