@@ -7,8 +7,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
+import mega.triple.aaa.common.ext.safeLaunch
 import mega.triple.aaa.preference.SettingsDatastore
-import mega.triple.aaa.presentation.core.common.safeLaunch
 import mega.triple.aaa.presentation.core.ui.ext.SingleEvent
 import mega.triple.aaa.presentation.feature.settings.ext.SettingsAction
 import mega.triple.aaa.presentation.feature.settings.ext.ThemeType

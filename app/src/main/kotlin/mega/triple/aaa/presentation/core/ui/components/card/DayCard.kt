@@ -19,13 +19,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import mega.triple.aaa.R
-import mega.triple.aaa.presentation.core.common.Constants.STUB_VALUE
-import mega.triple.aaa.presentation.core.common.formatDate
-import mega.triple.aaa.presentation.core.common.formatTemperature
-import mega.triple.aaa.presentation.core.common.isToday
+import mega.triple.aaa.common.ext.Constants.STUB_VALUE
+import mega.triple.aaa.common.ext.isToday
 import mega.triple.aaa.presentation.core.ui.components.ext.SpacerHeight
 import mega.triple.aaa.presentation.core.ui.components.ext.SpacerWidth
 import mega.triple.aaa.presentation.core.ui.components.icon.CircleBgIcon
+import mega.triple.aaa.presentation.core.ui.ext.formatDate
+import mega.triple.aaa.presentation.core.ui.ext.formatTemperature
 import mega.triple.aaa.presentation.core.ui.ext.getAccuWeatherIconRes
 import mega.triple.aaa.presentation.core.ui.model.forecast.DailyForecastUiModel
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme.colors

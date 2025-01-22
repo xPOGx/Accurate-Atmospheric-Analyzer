@@ -9,7 +9,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.consumeAsFlow
-import mega.triple.aaa.presentation.core.common.safeLaunch
+import mega.triple.aaa.common.ext.safeLaunch
 
 class SingleEvent : Flow<Unit> {
     private val channel = Channel<Unit>(Channel.BUFFERED)

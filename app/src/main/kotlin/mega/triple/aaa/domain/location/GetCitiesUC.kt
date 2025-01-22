@@ -1,11 +1,11 @@
 package mega.triple.aaa.domain.location
 
 import kotlinx.coroutines.flow.first
-import mega.triple.aaa.data.local.source.LocationDbSource
 import mega.triple.aaa.domain.ext.EmptyDatabase
 import mega.triple.aaa.domain.location.model.CityDomainModel
 import mega.triple.aaa.domain.location.model.CityDomainModel.Companion.toDbModel
 import mega.triple.aaa.domain.location.model.CityDomainModel.Companion.toDomainModel
+import mega.triple.aaa.local.source.LocationDbSource
 import mega.triple.aaa.network.source.LocationNetSource
 import javax.inject.Inject
 

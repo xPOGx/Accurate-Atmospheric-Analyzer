@@ -32,7 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import mega.triple.aaa.R
-import mega.triple.aaa.presentation.core.common.Constants.STUB_VALUE
+import mega.triple.aaa.common.ext.Constants.STUB_VALUE
 import mega.triple.aaa.presentation.core.ui.components.card.LocationCard
 import mega.triple.aaa.presentation.core.ui.components.ext.SpacerHeight
 import mega.triple.aaa.presentation.core.ui.ext.LocationType

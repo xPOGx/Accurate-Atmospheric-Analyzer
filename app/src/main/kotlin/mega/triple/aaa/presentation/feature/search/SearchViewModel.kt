@@ -6,12 +6,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import mega.triple.aaa.common.ext.safeLaunch
 import mega.triple.aaa.domain.location.GetCitiesUC
 import mega.triple.aaa.domain.location.GetContinentsUC
 import mega.triple.aaa.domain.location.GetCountriesUC
 import mega.triple.aaa.domain.location.SetLocationUC
 import mega.triple.aaa.domain.location.model.LocationDomainModel.Companion.toDomainModel
-import mega.triple.aaa.presentation.core.common.safeLaunch
 import mega.triple.aaa.presentation.core.ui.ext.LocationType
 import mega.triple.aaa.presentation.core.ui.ext.LocationType.CITY
 import mega.triple.aaa.presentation.core.ui.ext.LocationType.CONTINENT

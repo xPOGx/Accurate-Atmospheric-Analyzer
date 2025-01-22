@@ -1,0 +1,17 @@
+package mega.triple.aaa.local.dao.location
+
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
+import mega.triple.aaa.local.model.location.CountryDbModel
+
+@Dao
+interface CountryDao {
+    @Query("SELECT * FROM countries WHERE continent_id = :continentId")
+    fun getCountries(continentId: String): Flow<List<CountryDbModel>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertCountries(list: List<CountryDbModel>)
+}

@@ -1,6 +1,6 @@
 package mega.triple.aaa.presentation.core.ui.model.location
 
-import mega.triple.aaa.presentation.core.common.Constants
+import mega.triple.aaa.common.ext.Constants
 
 data class LocationUiModel(
     val continent: ContinentUiModel? = null,

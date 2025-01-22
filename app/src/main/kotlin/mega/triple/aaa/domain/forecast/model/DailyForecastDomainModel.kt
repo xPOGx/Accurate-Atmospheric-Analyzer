@@ -1,6 +1,5 @@
 package mega.triple.aaa.domain.forecast.model
 
-import mega.triple.aaa.data.local.model.forecast.daily.DailyForecastDbModel
 import mega.triple.aaa.domain.ext.validateNotNull
 import mega.triple.aaa.domain.forecast.model.CategoryDomainModel.Companion.toDbModel
 import mega.triple.aaa.domain.forecast.model.CategoryDomainModel.Companion.toDomainModel
@@ -14,6 +13,7 @@ import mega.triple.aaa.domain.forecast.model.SunMoonDomainModel.Companion.toUiMo
 import mega.triple.aaa.domain.forecast.model.ValueWrapperDomainModel.Companion.toDbModel
 import mega.triple.aaa.domain.forecast.model.ValueWrapperDomainModel.Companion.toDomainModel
 import mega.triple.aaa.domain.forecast.model.ValueWrapperDomainModel.Companion.toUiModel
+import mega.triple.aaa.local.model.forecast.daily.DailyForecastDbModel
 import mega.triple.aaa.network.response.daily.DailyForecastResponse
 import mega.triple.aaa.presentation.core.ui.model.forecast.DailyForecastUiModel
 

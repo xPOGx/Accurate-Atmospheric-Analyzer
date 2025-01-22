@@ -1,6 +1,6 @@
 package mega.triple.aaa.domain.forecast.model
 
-import mega.triple.aaa.data.local.model.forecast.CategoryDbModel
+import mega.triple.aaa.local.model.forecast.CategoryDbModel
 import mega.triple.aaa.network.response.model.CategoryResponse
 import mega.triple.aaa.presentation.core.ui.model.forecast.CategoryUiModel
 

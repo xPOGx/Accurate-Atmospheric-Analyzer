@@ -21,7 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import mega.triple.aaa.R
-import mega.triple.aaa.presentation.core.common.Constants
+import mega.triple.aaa.common.ext.Constants
 import mega.triple.aaa.presentation.core.ui.components.ext.SpacerHeight
 import mega.triple.aaa.presentation.core.ui.components.ext.SpacerWidth
 import mega.triple.aaa.presentation.core.ui.components.icon.CircleBgIcon

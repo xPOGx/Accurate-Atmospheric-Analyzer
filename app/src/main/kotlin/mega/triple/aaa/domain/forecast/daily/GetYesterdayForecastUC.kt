@@ -1,10 +1,10 @@
 package mega.triple.aaa.domain.forecast.daily
 
 import kotlinx.coroutines.flow.first
-import mega.triple.aaa.data.local.source.ForecastDbSource
 import mega.triple.aaa.domain.ext.NullResult
 import mega.triple.aaa.domain.forecast.model.DailyForecastDomainModel
 import mega.triple.aaa.domain.forecast.model.DailyForecastDomainModel.Companion.toDomainModel
+import mega.triple.aaa.local.source.ForecastDbSource
 import javax.inject.Inject
 
 class GetYesterdayForecastUC @Inject constructor(

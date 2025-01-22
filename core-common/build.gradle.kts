@@ -31,4 +31,8 @@ dependencies {
     // HILT
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
+    // Firebase
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics)
 }

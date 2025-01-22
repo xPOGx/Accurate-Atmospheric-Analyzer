@@ -7,11 +7,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
+import mega.triple.aaa.common.ext.safeLaunch
+import mega.triple.aaa.domain.ext.ForecastFlows
+import mega.triple.aaa.domain.ext.ForecastHelper
 import mega.triple.aaa.domain.location.GetLocationUC
 import mega.triple.aaa.domain.location.model.LocationDomainModel.Companion.toUiModel
-import mega.triple.aaa.presentation.core.common.ForecastFlows
-import mega.triple.aaa.presentation.core.common.ForecastHelper
-import mega.triple.aaa.presentation.core.common.safeLaunch
 import mega.triple.aaa.presentation.core.ui.ext.UI
 import mega.triple.aaa.presentation.core.ui.model.location.LocationUiModel
 import javax.inject.Inject

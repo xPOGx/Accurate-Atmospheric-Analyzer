@@ -41,6 +41,7 @@ projectCommon = ":core-common"
 projectDataNetwork = ":data-network"
 projectDataProto = ":data-proto"
 projectDataPreference = ":data-preference"
+projectDataLocal = ":data-local"
 
 [libraries]
 # Core
