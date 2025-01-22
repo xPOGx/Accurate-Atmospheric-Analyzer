@@ -45,6 +45,11 @@ projectDataLocal = ":data-local"
 projectDomain = ":domain"
 projectCoreUi = ":core-ui"
 projectCoreStrings = ":core-strings"
+projectFeatureMain = ":feature-main"
+projectFeatureHome = ":feature-home"
+projectFeatureSearch = ":feature-search"
+projectFeatureSettings = ":feature-settings"
+projectFeatureSync = ":feature-sync"
 
 [libraries]
 # Core

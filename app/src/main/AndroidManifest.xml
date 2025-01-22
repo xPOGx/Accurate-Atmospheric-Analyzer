@@ -15,7 +15,7 @@
         android:theme="@style/Theme.AccurateAtmosphericAnalyzer"
         tools:targetApi="31">
         <activity
-            android:name=".activity.AAAActivity"
+            android:name=".main.AAAActivity"
             android:exported="true"
             android:theme="@style/Theme.AccurateAtmosphericAnalyzer">
             <intent-filter>

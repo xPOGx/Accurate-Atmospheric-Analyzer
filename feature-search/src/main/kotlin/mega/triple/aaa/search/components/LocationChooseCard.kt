@@ -1,0 +1,54 @@
+package mega.triple.aaa.search.components
+
+import androidx.compose.foundation.layout.Row
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import mega.triple.aaa.strings.R.string
+import mega.triple.aaa.ui.components.card.LocationCard
+import mega.triple.aaa.ui.theme.AAATheme
+import mega.triple.aaa.ui.theme.AAATheme.typography
+
+@Composable
+fun LocationChooseCard(
+    modifier: Modifier = Modifier,
+    title: String,
+    value: String? = null,
+    onClick: (() -> Unit)? = null,
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier,
+    ) {
+        Text(
+            text = title,
+            style = typography.ps400size16,
+            modifier = Modifier.weight(0.3f),
+        )
+        LocationCard(
+            title = value ?: stringResource(string.search_choose, title.lowercase()),
+            modifier = Modifier.weight(0.7f)
+        ) {
+            onClick?.invoke()
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun LocationChooseCardPreview() {
+    AAATheme {
+        LocationChooseCard(title = "Title")
+    }
+}
+
+@Preview
+@Composable
+private fun LocationChooseCardPreviewValue() {
+    AAATheme {
+        LocationChooseCard(title = "Title", value = "Value")
+    }
+}
