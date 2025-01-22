@@ -24,8 +24,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import mega.triple.aaa.domain.pref.model.ThemeTypeDomainModel.Companion.toUiModel
+import mega.triple.aaa.domain.pref.theme.GetThemeUC
 import mega.triple.aaa.main.navigation.AAANavHost
-import mega.triple.aaa.preference.SettingsDatastore
 import mega.triple.aaa.search.SearchScreen
 import mega.triple.aaa.search.SearchViewModel
 import mega.triple.aaa.ui.components.loader.GlobalLoading
@@ -41,13 +41,13 @@ class AAAActivity : ComponentActivity() {
     private val activityStart = System.currentTimeMillis()
 
     @Inject
-    lateinit var settings: SettingsDatastore
+    lateinit var getThemeUC: GetThemeUC
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         this.lifecycleScope.launch {
-            settings.getThemeType().collectLatest { settingTheme ->
+            getThemeUC().collectLatest { settingTheme ->
                 setupEdgeToEdge(settingTheme.toUiModel())
             }
         }

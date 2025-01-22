@@ -13,7 +13,7 @@ import mega.triple.aaa.common.ext.safeLaunch
 import mega.triple.aaa.domain.location.GetLocationUC
 import mega.triple.aaa.domain.location.model.LocationDomainModel.Companion.toUiModel
 import mega.triple.aaa.domain.pref.model.ThemeTypeDomainModel.Companion.toUiModel
-import mega.triple.aaa.preference.SettingsDatastore
+import mega.triple.aaa.domain.pref.theme.GetThemeUC
 import mega.triple.aaa.ui.ext.UI
 import mega.triple.aaa.ui.model.ThemeTypeUiModel
 import mega.triple.aaa.ui.model.location.LocationUiModel
@@ -22,15 +22,13 @@ import javax.inject.Inject
 @HiltViewModel
 class AAAViewModel @Inject constructor(
     private val getLocationUC: GetLocationUC,
-    settingsDatastore: SettingsDatastore,
+    getThemeUC: GetThemeUC,
 ) : ViewModel() {
     // FLOWS
     private val _location: MutableStateFlow<UI<LocationUiModel?>> = MutableStateFlow(UI.LOADING)
     val location = _location.asStateFlow()
 
-    val themeType: Flow<ThemeTypeUiModel> = settingsDatastore.getThemeType().map {
-        it.toUiModel()
-    }
+    val themeType: Flow<ThemeTypeUiModel> = getThemeUC().map { it.toUiModel() }
 
     init {
         subscribeLocation()

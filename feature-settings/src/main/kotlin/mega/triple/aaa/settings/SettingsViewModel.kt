@@ -8,9 +8,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import mega.triple.aaa.common.ext.safeLaunch
-import mega.triple.aaa.domain.pref.model.ThemeTypeDomainModel.Companion.toPrefModel
+import mega.triple.aaa.domain.pref.model.ThemeTypeDomainModel.Companion.toDomainModel
 import mega.triple.aaa.domain.pref.model.ThemeTypeDomainModel.Companion.toUiModel
-import mega.triple.aaa.preference.SettingsDatastore
+import mega.triple.aaa.domain.pref.theme.GetThemeUC
+import mega.triple.aaa.domain.pref.theme.SetThemeUC
 import mega.triple.aaa.settings.ext.SettingsAction
 import mega.triple.aaa.ui.ext.SingleEvent
 import mega.triple.aaa.ui.model.ThemeTypeUiModel
@@ -18,7 +19,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val settingsDatastore: SettingsDatastore,
+    private val getThemeUC: GetThemeUC,
+    private val setThemeUC: SetThemeUC,
 ) : ViewModel() {
     // FLOWS
     private val _uiState: MutableStateFlow<SettingsUiState> = MutableStateFlow(SettingsUiState())
@@ -35,13 +37,13 @@ class SettingsViewModel @Inject constructor(
         SettingsAction.OnNavigateBack -> onNavigationBack.fire()
         is SettingsAction.OnThemeChange -> {
             viewModelScope.safeLaunch {
-                settingsDatastore.setThemeType(action.theme.toPrefModel())
+                setThemeUC(action.theme.toDomainModel())
             }
         }
     }
 
     private fun subscribeThemeType() = viewModelScope.safeLaunch {
-        settingsDatastore.getThemeType().collectLatest { type ->
+        getThemeUC().collectLatest { type ->
             _uiState.update { it.copy(themeTypeUiModel = type.toUiModel()) }
         }
     }
