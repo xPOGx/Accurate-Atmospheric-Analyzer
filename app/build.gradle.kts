@@ -103,6 +103,7 @@ dependencies {
     implementation(project(libs.versions.projectCommon.get()))
     implementation(project(libs.versions.projectDataNetwork.get()))
     implementation(project(libs.versions.projectDataProto.get()))
+    implementation(project(libs.versions.projectDataPreference.get()))
 }
 
 secrets {

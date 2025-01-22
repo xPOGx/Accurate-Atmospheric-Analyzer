@@ -40,6 +40,7 @@ kotlinCompilerExtensionVersion = "1.5.1"
 projectCommon = ":core-common"
 projectDataNetwork = ":data-network"
 projectDataProto = ":data-proto"
+projectDataPreference = ":data-preference"
 
 [libraries]
 # Core

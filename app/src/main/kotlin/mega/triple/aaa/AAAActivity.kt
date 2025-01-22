@@ -24,7 +24,7 @@ import com.google.firebase.initialize
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import mega.triple.aaa.data.preferences.SettingsDatastore
+import mega.triple.aaa.preference.SettingsDatastore
 import mega.triple.aaa.presentation.core.ui.components.loader.GlobalLoading
 import mega.triple.aaa.presentation.core.ui.ext.render
 import mega.triple.aaa.presentation.core.ui.theme.AAATheme
@@ -34,6 +34,7 @@ import mega.triple.aaa.presentation.feature.analytic.AAAAnalytic
 import mega.triple.aaa.presentation.feature.search.SearchScreen
 import mega.triple.aaa.presentation.feature.search.SearchViewModel
 import mega.triple.aaa.presentation.feature.settings.ext.ThemeType
+import mega.triple.aaa.presentation.feature.settings.ext.ThemeType.Companion.toThemeType
 import mega.triple.aaa.presentation.navigation.AAANavHost
 import javax.inject.Inject
 
@@ -48,7 +49,9 @@ class AAAActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         this.lifecycleScope.launch {
-            settings.getThemeType().collectLatest { settingTheme -> setupEdgeToEdge(settingTheme) }
+            settings.getThemeType().collectLatest { settingTheme ->
+                setupEdgeToEdge(settingTheme.toThemeType())
+            }
         }
 
         // Firebase

@@ -1,4 +1,4 @@
-package mega.triple.aaa.data.preferences
+package mega.triple.aaa.preference
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -9,7 +9,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import mega.triple.aaa.presentation.feature.settings.ext.ThemeType
+import mega.triple.aaa.preference.model.ThemeTypePrefModel
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -17,16 +17,18 @@ import javax.inject.Singleton
 class SettingsDatastore @Inject constructor(
     @ApplicationContext private val context: Context,
 ) {
-    private val Context.settings: DataStore<Preferences> by preferencesDataStore(SETTINGS_DATASTORE)
+    private val Context.settings: DataStore<Preferences> by preferencesDataStore(
+        SETTINGS_DATASTORE
+    )
     private val preferences = context.settings
     private val data = preferences.data
 
-    fun getThemeType(): Flow<ThemeType> = data.map { pref ->
+    fun getThemeType(): Flow<ThemeTypePrefModel> = data.map { pref ->
         val value = pref[themeTypePrefKey]
-        ThemeType.entries.firstOrNull { it.type == value } ?: ThemeType.LIGHT
+        ThemeTypePrefModel.entries.firstOrNull { it.type == value } ?: ThemeTypePrefModel.LIGHT
     }
 
-    suspend fun setThemeType(type: ThemeType) {
+    suspend fun setThemeType(type: ThemeTypePrefModel) {
         preferences.edit { pref ->
             pref[themeTypePrefKey] = type.type
         }
