@@ -1,0 +1,48 @@
+package mega.triple.aaa.domain.location.impl
+
+import kotlinx.coroutines.flow.first
+import mega.triple.aaa.domain.forecast.daily.UpdateDailyForecastUC
+import mega.triple.aaa.domain.location.SetLocationUC
+import mega.triple.aaa.domain.location.model.LocationDomainModel
+import mega.triple.aaa.domain.location.model.LocationDomainModel.Companion.toProtoModel
+import mega.triple.aaa.proto.LocationDataStore
+import javax.inject.Inject
+
+class SetLocationUCImpl @Inject constructor(
+    private val locationDataStore: LocationDataStore,
+    private val getCityKeyUC: GetCityKeyUCImpl,
+    private val getLocationUC: GetLocationUCImpl,
+    private val updateDailyForecastUC: UpdateDailyForecastUC,
+) : SetLocationUC {
+    override suspend operator fun invoke(domainModel: LocationDomainModel): Result<Unit> {
+        return try {
+            val location = getLocationUC().first()
+            if (location?.continent?.id == domainModel.continent?.id &&
+                location?.country?.id == domainModel.country?.id &&
+                location?.city?.id == domainModel.city?.id
+            ) {
+                return Result.success(Unit)
+            }
+
+            getCityKeyUC(
+                countryId = domainModel.country!!.id,
+                cityId = domainModel.city!!.id!!,
+                cityName = domainModel.city.englishName!!,
+            ).onSuccess { key ->
+                val newModel = domainModel.copy(
+                    city = domainModel.city.copy(
+                        locationKey = key
+                    )
+                )
+                locationDataStore.saveLocation(newModel.toProtoModel())
+            }.onFailure {
+                throw it
+            }
+
+            updateDailyForecastUC()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+}

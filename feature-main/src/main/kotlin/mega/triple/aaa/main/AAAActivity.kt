@@ -23,8 +23,8 @@ import com.google.firebase.analytics.logEvent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import mega.triple.aaa.domain.pref.model.ThemeTypeDomainModel.Companion.toUiModel
-import mega.triple.aaa.domain.pref.theme.GetThemeUC
+import mega.triple.aaa.domain.theme.model.ThemeTypeDomainModel.Companion.toUiModel
+import mega.triple.aaa.domain.theme.GetThemeUC
 import mega.triple.aaa.main.navigation.AAANavHost
 import mega.triple.aaa.search.SearchScreen
 import mega.triple.aaa.search.SearchViewModel
