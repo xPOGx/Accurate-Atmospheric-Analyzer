@@ -1,11 +1,11 @@
-package mega.triple.aaa.data.proto.di
+package mega.triple.aaa.proto.di
 
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import mega.triple.aaa.data.proto.LocationDataStore
-import mega.triple.aaa.data.proto.impl.LocationDataStoreImpl
+import mega.triple.aaa.proto.LocationDataStore
+import mega.triple.aaa.proto.impl.LocationDataStoreImpl
 
 @Module
 @InstallIn(SingletonComponent::class)

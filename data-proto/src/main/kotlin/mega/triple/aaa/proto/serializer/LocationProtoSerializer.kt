@@ -1,4 +1,4 @@
-package mega.triple.aaa.data.proto.serializer
+package mega.triple.aaa.proto.serializer
 
 import androidx.datastore.core.CorruptionException
 import androidx.datastore.core.Serializer

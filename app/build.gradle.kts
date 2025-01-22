@@ -11,8 +11,6 @@ plugins {
     alias(libs.plugins.ksp)
     // 3d party
     alias(libs.plugins.secrets.gradle.plugin)
-    // Datastore
-    alias(libs.plugins.protobuf)
     // Firebase
     alias(libs.plugins.firebase)
     alias(libs.plugins.firebase.crashlytic)
@@ -83,7 +81,7 @@ dependencies {
     implementation(libs.worker.hilt)
     ksp(libs.worker.hiltCompiler)
     // Network
-    implementation(libs.bundles.network)
+    implementation(libs.io.ktor.serialization.json)
     implementation(libs.kotlinx.serialization.json)
     // HILT
     implementation(libs.hilt.android)
@@ -104,6 +102,7 @@ dependencies {
     // Modules
     implementation(project(libs.versions.projectCommon.get()))
     implementation(project(libs.versions.projectDataNetwork.get()))
+    implementation(project(libs.versions.projectDataProto.get()))
 }
 
 secrets {
@@ -121,19 +120,4 @@ secrets {
     // "sdk.dir" is ignored by default.
     ignoreList.add("keyToIgnore") // Ignore the key "keyToIgnore"
     ignoreList.add("sdk.*")       // Ignore all keys matching the regexp "sdk.*"
-}
-
-protobuf {
-    protoc {
-        artifact = "com.google.protobuf:protoc:3.14.0"
-    }
-    generateProtoTasks {
-        all().forEach { task ->
-            task.builtins {
-                create("java") {
-                    option("lite")
-                }
-            }
-        }
-    }
 }

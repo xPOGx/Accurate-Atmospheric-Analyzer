@@ -3,9 +3,9 @@ package mega.triple.aaa.domain.location
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
-import mega.triple.aaa.data.proto.LocationDataStore
 import mega.triple.aaa.domain.location.model.LocationDomainModel
 import mega.triple.aaa.domain.location.model.LocationDomainModel.Companion.toDomainModel
+import mega.triple.aaa.proto.LocationDataStore
 import javax.inject.Inject
 
 class GetLocationUC @Inject constructor(

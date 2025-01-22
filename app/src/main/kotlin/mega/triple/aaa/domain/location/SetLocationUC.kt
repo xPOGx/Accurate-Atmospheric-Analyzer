@@ -1,10 +1,10 @@
 package mega.triple.aaa.domain.location
 
 import kotlinx.coroutines.flow.first
-import mega.triple.aaa.data.proto.LocationDataStore
 import mega.triple.aaa.domain.forecast.daily.UpdateDailyForecastUC
 import mega.triple.aaa.domain.location.model.LocationDomainModel
 import mega.triple.aaa.domain.location.model.LocationDomainModel.Companion.toProtoModel
+import mega.triple.aaa.proto.LocationDataStore
 import javax.inject.Inject
 
 class SetLocationUC @Inject constructor(
