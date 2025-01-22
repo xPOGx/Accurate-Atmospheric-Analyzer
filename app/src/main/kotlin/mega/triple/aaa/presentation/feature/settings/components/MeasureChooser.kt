@@ -11,49 +11,53 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import mega.triple.aaa.R
-import mega.triple.aaa.presentation.core.ui.theme.AAATheme
-import mega.triple.aaa.presentation.feature.settings.ext.ThemeType
+import mega.triple.aaa.strings.R.string
+import mega.triple.aaa.ui.model.ThemeTypeUiModel
+import mega.triple.aaa.ui.theme.AAATheme
+import mega.triple.aaa.ui.theme.AAATheme.colors
+import mega.triple.aaa.ui.theme.AAATheme.spaces
+import mega.triple.aaa.ui.theme.AAATheme.typography
 
+// TODO add measure model
 @Composable
 fun MeasureChooser(
     modifier: Modifier = Modifier,
-    index: ThemeType = ThemeType.AUTO,
-    onClick: ((ThemeType) -> Unit)? = null,
+    index: ThemeTypeUiModel = ThemeTypeUiModel.AUTO,
+    onClick: ((ThemeTypeUiModel) -> Unit)? = null,
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
-            stringResource(R.string.settings_measure),
-            style = AAATheme.typography.ps400size18,
+            stringResource(string.settings_measure),
+            style = typography.ps400size18,
             color = Color.Black,
-            modifier = Modifier.padding(horizontal = AAATheme.spaces.size16)
+            modifier = Modifier.padding(horizontal = spaces.size16)
         )
         TabRow(
             selectedTabIndex = index.type,
-            containerColor = AAATheme.colors.tabContainer,
-            contentColor = AAATheme.colors.tabContent,
+            containerColor = colors.tabContainer,
+            contentColor = colors.tabContent,
             modifier = modifier
         ) {
             Tab(
-                selected = index == ThemeType.AUTO,
+                selected = index == ThemeTypeUiModel.AUTO,
                 enabled = false,
-                onClick = { onClick?.invoke(ThemeType.AUTO) },
-                modifier = Modifier.padding(vertical = AAATheme.spaces.size8)
+                onClick = { onClick?.invoke(ThemeTypeUiModel.AUTO) },
+                modifier = Modifier.padding(vertical = spaces.size8)
             ) {
                 Text(
-                    stringResource(R.string.settings_metric),
-                    style = AAATheme.typography.ps700size18
+                    stringResource(string.settings_metric),
+                    style = typography.ps700size18
                 )
             }
             Tab(
-                selected = index == ThemeType.DYNAMIC,
+                selected = index == ThemeTypeUiModel.DYNAMIC,
                 enabled = false,
-                onClick = { onClick?.invoke(ThemeType.DYNAMIC) },
-                modifier = Modifier.padding(vertical = AAATheme.spaces.size8)
+                onClick = { onClick?.invoke(ThemeTypeUiModel.DYNAMIC) },
+                modifier = Modifier.padding(vertical = spaces.size8)
             ) {
                 Text(
-                    stringResource(R.string.settings_imperial),
-                    style = AAATheme.typography.ps700size18
+                    stringResource(string.settings_imperial),
+                    style = typography.ps700size18
                 )
             }
         }

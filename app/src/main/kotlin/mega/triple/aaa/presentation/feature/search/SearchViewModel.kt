@@ -11,19 +11,17 @@ import mega.triple.aaa.domain.location.GetCitiesUC
 import mega.triple.aaa.domain.location.GetContinentsUC
 import mega.triple.aaa.domain.location.GetCountriesUC
 import mega.triple.aaa.domain.location.SetLocationUC
+import mega.triple.aaa.domain.location.model.CityDomainModel.Companion.toUiModel
+import mega.triple.aaa.domain.location.model.ContinentDomainModel.Companion.toUiModel
+import mega.triple.aaa.domain.location.model.CountryDomainModel.Companion.toUiModel
 import mega.triple.aaa.domain.location.model.LocationDomainModel.Companion.toDomainModel
-import mega.triple.aaa.presentation.core.ui.ext.LocationType
-import mega.triple.aaa.presentation.core.ui.ext.LocationType.CITY
-import mega.triple.aaa.presentation.core.ui.ext.LocationType.CONTINENT
-import mega.triple.aaa.presentation.core.ui.ext.LocationType.COUNTRY
-import mega.triple.aaa.presentation.core.ui.ext.SingleEvent
-import mega.triple.aaa.presentation.core.ui.ext.UI
-import mega.triple.aaa.presentation.core.ui.ext.UIEvent
-import mega.triple.aaa.presentation.core.ui.model.location.CityUiModel.Companion.toUiModel
-import mega.triple.aaa.presentation.core.ui.model.location.ContinentUiModel.Companion.toUiModel
-import mega.triple.aaa.presentation.core.ui.model.location.CountryUiModel.Companion.toUiModel
-import mega.triple.aaa.presentation.core.ui.model.location.LocationUiModel
 import mega.triple.aaa.presentation.feature.search.ext.SearchAction
+import mega.triple.aaa.ui.ext.LocationType
+import mega.triple.aaa.ui.ext.LocationType.*
+import mega.triple.aaa.ui.ext.SingleEvent
+import mega.triple.aaa.ui.ext.UI
+import mega.triple.aaa.ui.ext.UIEvent
+import mega.triple.aaa.ui.model.location.LocationUiModel
 import javax.inject.Inject
 
 @HiltViewModel

@@ -15,14 +15,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import mega.triple.aaa.R
-import mega.triple.aaa.presentation.core.ui.theme.AAATheme
-import mega.triple.aaa.presentation.core.ui.theme.AAATheme.typography
 import mega.triple.aaa.presentation.feature.settings.components.LanguageChooser
 import mega.triple.aaa.presentation.feature.settings.components.MeasureChooser
 import mega.triple.aaa.presentation.feature.settings.components.ThemeChooser
 import mega.triple.aaa.presentation.feature.settings.ext.SettingsAction
 import mega.triple.aaa.presentation.feature.settings.ext.SettingsAction.OnNavigateBack
+import mega.triple.aaa.strings.R.string
+import mega.triple.aaa.ui.theme.AAATheme
+import mega.triple.aaa.ui.theme.AAATheme.typography
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,7 +36,7 @@ fun SettingsScreen(
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = stringResource(R.string.settings_title),
+                        text = stringResource(string.settings_title),
                         style = typography.ps400size22,
                     )
                 },
@@ -57,7 +57,7 @@ fun SettingsScreen(
             modifier = Modifier.padding(innerPadding)
         ) {
             ThemeChooser(
-                index = uiState.themeType,
+                index = uiState.themeTypeUiModel,
                 onClick = { onAction?.invoke(SettingsAction.OnThemeChange(it)) }
             )
             LanguageChooser()

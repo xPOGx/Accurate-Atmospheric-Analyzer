@@ -38,5 +38,5 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
     // Modules
-    implementation(project(libs.versions.projectCommon.get()))
+    implementation(project(libs.versions.projectCoreCommon.get()))
 }

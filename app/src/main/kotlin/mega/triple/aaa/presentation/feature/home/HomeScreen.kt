@@ -27,26 +27,27 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import mega.triple.aaa.R
 import mega.triple.aaa.common.ext.Constants.STUB_VALUE
 import mega.triple.aaa.common.ext.diff
 import mega.triple.aaa.common.ext.getTimeDiff
 import mega.triple.aaa.domain.ext.ForecastFlows
-import mega.triple.aaa.presentation.core.ui.components.card.DayCard
-import mega.triple.aaa.presentation.core.ui.components.card.ForecastCard
-import mega.triple.aaa.presentation.core.ui.components.card.ParameterCard
-import mega.triple.aaa.presentation.core.ui.components.tab.DayTab
-import mega.triple.aaa.presentation.core.ui.components.toolbar.TopAppBar
-import mega.triple.aaa.presentation.core.ui.components.view.UvIndexView
-import mega.triple.aaa.presentation.core.ui.ext.formatProbability
-import mega.triple.aaa.presentation.core.ui.ext.formatSimpleTime
-import mega.triple.aaa.presentation.core.ui.ext.formatSpeed
-import mega.triple.aaa.presentation.core.ui.ext.noRippleClickable
-import mega.triple.aaa.presentation.core.ui.model.location.LocationUiModel
-import mega.triple.aaa.presentation.core.ui.theme.AAATheme
-import mega.triple.aaa.presentation.core.ui.theme.AAATheme.colors
-import mega.triple.aaa.presentation.core.ui.theme.AAATheme.spaces
-import mega.triple.aaa.presentation.core.ui.theme.AAATheme.typography
+import mega.triple.aaa.strings.R.string
+import mega.triple.aaa.ui.R.drawable
+import mega.triple.aaa.ui.components.card.DayCard
+import mega.triple.aaa.ui.components.card.ForecastCard
+import mega.triple.aaa.ui.components.card.ParameterCard
+import mega.triple.aaa.ui.components.tab.DayTab
+import mega.triple.aaa.ui.components.toolbar.TopAppBar
+import mega.triple.aaa.ui.components.view.UvIndexView
+import mega.triple.aaa.ui.ext.formatProbability
+import mega.triple.aaa.ui.ext.formatSimpleTime
+import mega.triple.aaa.ui.ext.formatSpeed
+import mega.triple.aaa.ui.ext.noRippleClickable
+import mega.triple.aaa.ui.model.location.LocationUiModel
+import mega.triple.aaa.ui.theme.AAATheme
+import mega.triple.aaa.ui.theme.AAATheme.colors
+import mega.triple.aaa.ui.theme.AAATheme.spaces
+import mega.triple.aaa.ui.theme.AAATheme.typography
 import kotlin.math.absoluteValue
 
 @Composable
@@ -126,9 +127,9 @@ fun HomeScreen(
                     val speedUnit = dayNight?.wind?.speed?.unit
                     val diff = diff(speed, diffDayNight?.wind?.speed?.value)
                     ParameterCard(
-                        title = stringResource(R.string.home_wind_speed),
+                        title = stringResource(string.home_wind_speed),
                         description = formatSpeed(speed, speedUnit),
-                        iconRes = R.drawable.ic_air,
+                        iconRes = drawable.ic_air,
                         extra = diff?.let {
                             formatSpeed(
                                 it.absoluteValue,
@@ -140,17 +141,17 @@ fun HomeScreen(
                 item(contentType = "AAACardItem") {
                     val diff = diff(dayNight?.rainProbability, diffDayNight?.rainProbability)
                     ParameterCard(
-                        title = stringResource(R.string.home_rain_chance),
+                        title = stringResource(string.home_rain_chance),
                         description = formatProbability(dayNight?.rainProbability),
-                        iconRes = R.drawable.ic_rainy,
+                        iconRes = drawable.ic_rainy,
                         extra = diff?.let { formatProbability(diff.absoluteValue) to (diff > 0) },
                     )
                 }
                 item(contentType = "AAACardItem") {
                     ParameterCard(
-                        title = stringResource(R.string.home_air_quality),
+                        title = stringResource(string.home_air_quality),
                         description = currentData?.airQuality ?: STUB_VALUE,
-                        iconRes = R.drawable.ic_waves,
+                        iconRes = drawable.ic_waves,
                         extra = null,
                     )
                 }
@@ -174,9 +175,9 @@ fun HomeScreen(
                             )
                         } else {
                             ParameterCard(
-                                title = stringResource(R.string.home_uv_index),
+                                title = stringResource(string.home_uv_index),
                                 description = uvIndex.toString(),
-                                iconRes = R.drawable.ic_sun,
+                                iconRes = drawable.ic_sun,
                                 extra = diff?.let { diff.toString() to (diff > 0) },
                                 modifier = Modifier.noRippleClickable { uvCustomVisible = true }
                             )
@@ -196,30 +197,30 @@ fun HomeScreen(
                 }
                 item(contentType = "AAACardItem") {
                     ParameterCard(
-                        title = stringResource(R.string.home_sunrise),
+                        title = stringResource(string.home_sunrise),
                         description = formatSimpleTime(currentData?.sun?.timeRise),
                         descriptionTextStyle = typography.gs500size14,
-                        iconRes = R.drawable.ic_sun,
+                        iconRes = drawable.ic_sun,
                         extra = getTimeDiff(currentData?.sun?.epochRise) to null,
                         extraModifier = Modifier.padding(bottom = spaces.size12)
                     )
                 }
                 item(contentType = "AAACardItem") {
                     ParameterCard(
-                        title = stringResource(R.string.home_sunset),
+                        title = stringResource(string.home_sunset),
                         description = formatSimpleTime(currentData?.sun?.timeSet),
                         descriptionTextStyle = typography.gs500size14,
-                        iconRes = R.drawable.ic_sunset,
+                        iconRes = drawable.ic_sunset,
                         extra = getTimeDiff(currentData?.sun?.epochSet) to null,
                         extraModifier = Modifier.padding(bottom = spaces.size12),
                     )
                 }
                 item(contentType = "AAACardItem") {
                     ParameterCard(
-                        title = stringResource(R.string.home_moonrise),
+                        title = stringResource(string.home_moonrise),
                         description = formatSimpleTime(currentData?.moon?.timeRise),
                         descriptionTextStyle = typography.gs500size14,
-                        iconRes = R.drawable.ic_sunrise,
+                        iconRes = drawable.ic_sunrise,
                         extra = getTimeDiff(currentData?.moon?.epochRise) to null,
                         extraModifier = Modifier.padding(bottom = spaces.size12)
                     )

@@ -12,68 +12,71 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import mega.triple.aaa.R
-import mega.triple.aaa.presentation.core.ui.theme.AAATheme
-import mega.triple.aaa.presentation.feature.settings.ext.ThemeType
+import mega.triple.aaa.strings.R.string
+import mega.triple.aaa.ui.model.ThemeTypeUiModel
+import mega.triple.aaa.ui.theme.AAATheme
+import mega.triple.aaa.ui.theme.AAATheme.colors
+import mega.triple.aaa.ui.theme.AAATheme.spaces
+import mega.triple.aaa.ui.theme.AAATheme.typography
 
 @Composable
 fun ThemeChooser(
     modifier: Modifier = Modifier,
-    index: ThemeType = ThemeType.LIGHT,
-    onClick: ((ThemeType) -> Unit)? = null,
+    index: ThemeTypeUiModel = ThemeTypeUiModel.LIGHT,
+    onClick: ((ThemeTypeUiModel) -> Unit)? = null,
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
             "Theme",
-            style = AAATheme.typography.ps400size18,
+            style = typography.ps400size18,
             color = Color.Black,
-            modifier = Modifier.padding(horizontal = AAATheme.spaces.size16)
+            modifier = Modifier.padding(horizontal = spaces.size16)
         )
         TabRow(
             selectedTabIndex = index.type,
-            containerColor = AAATheme.colors.tabContainer,
-            contentColor = AAATheme.colors.tabContent,
+            containerColor = colors.tabContainer,
+            contentColor = colors.tabContent,
             modifier = modifier
         ) {
             Tab(
-                selected = index == ThemeType.AUTO,
-                onClick = { onClick?.invoke(ThemeType.AUTO) },
-                modifier = Modifier.padding(vertical = AAATheme.spaces.size8)
+                selected = index == ThemeTypeUiModel.AUTO,
+                onClick = { onClick?.invoke(ThemeTypeUiModel.AUTO) },
+                modifier = Modifier.padding(vertical = spaces.size8)
             ) {
                 Text(
-                    stringResource(R.string.settings_auto),
-                    style = AAATheme.typography.ps700size18
+                    stringResource(string.settings_auto),
+                    style = typography.ps700size18
                 )
             }
             Tab(
-                selected = index == ThemeType.DYNAMIC,
+                selected = index == ThemeTypeUiModel.DYNAMIC,
                 enabled = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S,
-                onClick = { onClick?.invoke(ThemeType.DYNAMIC) },
-                modifier = Modifier.padding(vertical = AAATheme.spaces.size8)
+                onClick = { onClick?.invoke(ThemeTypeUiModel.DYNAMIC) },
+                modifier = Modifier.padding(vertical = spaces.size8)
             ) {
                 Text(
-                    stringResource(R.string.settings_dynamic),
-                    style = AAATheme.typography.ps700size18
+                    stringResource(string.settings_dynamic),
+                    style = typography.ps700size18
                 )
             }
             Tab(
-                selected = index == ThemeType.DARK,
-                onClick = { onClick?.invoke(ThemeType.DARK) },
-                modifier = Modifier.padding(vertical = AAATheme.spaces.size8)
+                selected = index == ThemeTypeUiModel.DARK,
+                onClick = { onClick?.invoke(ThemeTypeUiModel.DARK) },
+                modifier = Modifier.padding(vertical = spaces.size8)
             ) {
                 Text(
-                    stringResource(R.string.settings_dark),
-                    style = AAATheme.typography.ps700size18
+                    stringResource(string.settings_dark),
+                    style = typography.ps700size18
                 )
             }
             Tab(
-                selected = index == ThemeType.LIGHT,
-                onClick = { onClick?.invoke(ThemeType.LIGHT) },
-                modifier = Modifier.padding(vertical = AAATheme.spaces.size8)
+                selected = index == ThemeTypeUiModel.LIGHT,
+                onClick = { onClick?.invoke(ThemeTypeUiModel.LIGHT) },
+                modifier = Modifier.padding(vertical = spaces.size8)
             ) {
                 Text(
-                    stringResource(R.string.settings_light),
-                    style = AAATheme.typography.ps700size18
+                    stringResource(string.settings_light),
+                    style = typography.ps700size18
                 )
             }
         }

@@ -8,12 +8,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import mega.triple.aaa.common.ext.safeLaunch
+import mega.triple.aaa.domain.pref.model.ThemeTypeDomainModel.Companion.toPrefModel
+import mega.triple.aaa.domain.pref.model.ThemeTypeDomainModel.Companion.toUiModel
 import mega.triple.aaa.preference.SettingsDatastore
-import mega.triple.aaa.presentation.core.ui.ext.SingleEvent
 import mega.triple.aaa.presentation.feature.settings.ext.SettingsAction
-import mega.triple.aaa.presentation.feature.settings.ext.ThemeType
-import mega.triple.aaa.presentation.feature.settings.ext.ThemeType.Companion.toThemeType
-import mega.triple.aaa.presentation.feature.settings.ext.ThemeType.Companion.toThemeTypePref
+import mega.triple.aaa.ui.ext.SingleEvent
+import mega.triple.aaa.ui.model.ThemeTypeUiModel
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,18 +35,18 @@ class SettingsViewModel @Inject constructor(
         SettingsAction.OnNavigateBack -> onNavigationBack.fire()
         is SettingsAction.OnThemeChange -> {
             viewModelScope.safeLaunch {
-                settingsDatastore.setThemeType(action.theme.toThemeTypePref())
+                settingsDatastore.setThemeType(action.theme.toPrefModel())
             }
         }
     }
 
     private fun subscribeThemeType() = viewModelScope.safeLaunch {
         settingsDatastore.getThemeType().collectLatest { type ->
-            _uiState.update { it.copy(themeType = type.toThemeType()) }
+            _uiState.update { it.copy(themeTypeUiModel = type.toUiModel()) }
         }
     }
 }
 
 data class SettingsUiState(
-    val themeType: ThemeType = ThemeType.LIGHT,
+    val themeTypeUiModel: ThemeTypeUiModel = ThemeTypeUiModel.LIGHT,
 )

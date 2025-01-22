@@ -12,8 +12,8 @@ import mega.triple.aaa.domain.ext.ForecastFlows
 import mega.triple.aaa.domain.ext.ForecastHelper
 import mega.triple.aaa.domain.location.GetLocationUC
 import mega.triple.aaa.domain.location.model.LocationDomainModel.Companion.toUiModel
-import mega.triple.aaa.presentation.core.ui.ext.UI
-import mega.triple.aaa.presentation.core.ui.model.location.LocationUiModel
+import mega.triple.aaa.ui.ext.UI
+import mega.triple.aaa.ui.model.location.LocationUiModel
 import javax.inject.Inject
 
 @HiltViewModel

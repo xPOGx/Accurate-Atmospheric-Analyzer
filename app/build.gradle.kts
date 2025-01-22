@@ -4,8 +4,6 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     // In kotlin 2+ need compose plugin
     alias(libs.plugins.jetbrains.kotlin.compose)
-    // Serialization
-    alias(libs.plugins.jetbrains.kotlin.serialization)
     // HILT
     alias(libs.plugins.dagger.hilt)
     alias(libs.plugins.ksp)
@@ -80,36 +78,26 @@ dependencies {
     implementation(libs.worker.startup)
     implementation(libs.worker.hilt)
     ksp(libs.worker.hiltCompiler)
-    // Network
-    implementation(libs.io.ktor.serialization.json)
-    implementation(libs.kotlinx.serialization.json)
     // HILT
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
-    // Room
-    implementation(libs.androidx.room.runtime)
-    implementation(libs.androidx.room.ktx)
-    ksp(libs.androidx.room.compiler)
-    // Datastore
-    implementation(libs.androidx.datastore)
-    implementation(libs.androidx.datastore.preferences)
-    implementation(libs.protobuf.javalite)
     // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.crashlytics)
     // Modules
-    implementation(project(libs.versions.projectCommon.get()))
+    implementation(project(libs.versions.projectCoreCommon.get()))
     implementation(project(libs.versions.projectDataNetwork.get()))
     implementation(project(libs.versions.projectDataProto.get()))
     implementation(project(libs.versions.projectDataPreference.get()))
     implementation(project(libs.versions.projectDataLocal.get()))
+    implementation(project(libs.versions.projectDomain.get()))
+    implementation(project(libs.versions.projectCoreUi.get()))
+    implementation(project(libs.versions.projectCoreStrings.get()))
 }
 
 secrets {
     propertiesFileName = "secrets.properties"
     defaultPropertiesFileName = "local.defaults.properties"
-    ignoreList.add("keyToIgnore")
-    ignoreList.add("sdk.*")
 }

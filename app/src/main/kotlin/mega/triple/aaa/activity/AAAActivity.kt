@@ -24,18 +24,18 @@ import com.google.firebase.initialize
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import mega.triple.aaa.analytic.AAAAnalytic
+import mega.triple.aaa.common.analytic.AAAAnalytic
+import mega.triple.aaa.domain.pref.model.ThemeTypeDomainModel.Companion.toUiModel
 import mega.triple.aaa.preference.SettingsDatastore
-import mega.triple.aaa.presentation.core.ui.components.loader.GlobalLoading
-import mega.triple.aaa.presentation.core.ui.ext.render
-import mega.triple.aaa.presentation.core.ui.theme.AAATheme
-import mega.triple.aaa.presentation.core.ui.theme.darkColors
-import mega.triple.aaa.presentation.core.ui.theme.lightColors
 import mega.triple.aaa.presentation.feature.search.SearchScreen
 import mega.triple.aaa.presentation.feature.search.SearchViewModel
-import mega.triple.aaa.presentation.feature.settings.ext.ThemeType
-import mega.triple.aaa.presentation.feature.settings.ext.ThemeType.Companion.toThemeType
 import mega.triple.aaa.presentation.navigation.AAANavHost
+import mega.triple.aaa.ui.components.loader.GlobalLoading
+import mega.triple.aaa.ui.ext.render
+import mega.triple.aaa.ui.model.ThemeTypeUiModel
+import mega.triple.aaa.ui.theme.AAATheme
+import mega.triple.aaa.ui.theme.darkColors
+import mega.triple.aaa.ui.theme.lightColors
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -50,7 +50,7 @@ class AAAActivity : ComponentActivity() {
 
         this.lifecycleScope.launch {
             settings.getThemeType().collectLatest { settingTheme ->
-                setupEdgeToEdge(settingTheme.toThemeType())
+                setupEdgeToEdge(settingTheme.toUiModel())
             }
         }
 
@@ -65,7 +65,7 @@ class AAAActivity : ComponentActivity() {
             val navHostController = rememberNavController()
             val mainViewModel = hiltViewModel<AAAViewModel>()
             val location by mainViewModel.location.collectAsStateWithLifecycle()
-            val themeType by mainViewModel.themeType.collectAsStateWithLifecycle(ThemeType.LIGHT)
+            val themeType by mainViewModel.themeTypeUiModel.collectAsStateWithLifecycle(ThemeTypeUiModel.LIGHT)
 
             val context = LocalContext.current
 
@@ -120,15 +120,15 @@ class AAAActivity : ComponentActivity() {
         }
     }
 
-    private fun setupEdgeToEdge(themeType: ThemeType?) {
+    private fun setupEdgeToEdge(themeType: ThemeTypeUiModel?) {
         var isDarkMode: Boolean? = null
 
         fun isDarkMode(resources: Resources): Boolean {
             isDarkMode?.let { return it }
             isDarkMode = when (themeType) {
-                ThemeType.DARK -> true
-                ThemeType.AUTO,
-                ThemeType.DYNAMIC -> (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+                ThemeTypeUiModel.DARK -> true
+                ThemeTypeUiModel.AUTO,
+                ThemeTypeUiModel.DYNAMIC -> (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
 
                 else -> false
             }

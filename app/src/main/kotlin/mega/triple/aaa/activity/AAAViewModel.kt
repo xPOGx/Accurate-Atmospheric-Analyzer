@@ -12,11 +12,11 @@ import kotlinx.coroutines.flow.update
 import mega.triple.aaa.common.ext.safeLaunch
 import mega.triple.aaa.domain.location.GetLocationUC
 import mega.triple.aaa.domain.location.model.LocationDomainModel.Companion.toUiModel
+import mega.triple.aaa.domain.pref.model.ThemeTypeDomainModel.Companion.toUiModel
 import mega.triple.aaa.preference.SettingsDatastore
-import mega.triple.aaa.presentation.core.ui.ext.UI
-import mega.triple.aaa.presentation.core.ui.model.location.LocationUiModel
-import mega.triple.aaa.presentation.feature.settings.ext.ThemeType
-import mega.triple.aaa.presentation.feature.settings.ext.ThemeType.Companion.toThemeType
+import mega.triple.aaa.ui.ext.UI
+import mega.triple.aaa.ui.model.ThemeTypeUiModel
+import mega.triple.aaa.ui.model.location.LocationUiModel
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,7 +28,9 @@ class AAAViewModel @Inject constructor(
     private val _location: MutableStateFlow<UI<LocationUiModel?>> = MutableStateFlow(UI.LOADING)
     val location = _location.asStateFlow()
 
-    val themeType: Flow<ThemeType> = settingsDatastore.getThemeType().map { it.toThemeType() }
+    val themeTypeUiModel: Flow<ThemeTypeUiModel> = settingsDatastore.getThemeType().map {
+        it.toUiModel()
+    }
 
     init {
         subscribeLocation()

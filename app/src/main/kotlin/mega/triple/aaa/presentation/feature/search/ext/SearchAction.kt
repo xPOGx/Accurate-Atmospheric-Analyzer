@@ -1,6 +1,6 @@
 package mega.triple.aaa.presentation.feature.search.ext
 
-import mega.triple.aaa.presentation.core.ui.ext.LocationType
+import mega.triple.aaa.ui.ext.LocationType
 
 sealed class SearchAction {
     data class SaveContinent(val continentId: String) : SearchAction()

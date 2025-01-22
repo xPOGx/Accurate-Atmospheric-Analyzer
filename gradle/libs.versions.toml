@@ -37,11 +37,14 @@ versionCode = "1"
 versionName = "0.0.1"
 kotlinCompilerExtensionVersion = "1.5.1"
 #projects
-projectCommon = ":core-common"
+projectCoreCommon = ":core-common"
 projectDataNetwork = ":data-network"
 projectDataProto = ":data-proto"
 projectDataPreference = ":data-preference"
 projectDataLocal = ":data-local"
+projectDomain = ":domain"
+projectCoreUi = ":core-ui"
+projectCoreStrings = ":core-strings"
 
 [libraries]
 # Core

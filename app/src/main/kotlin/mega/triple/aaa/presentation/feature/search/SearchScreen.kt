@@ -31,22 +31,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import mega.triple.aaa.R
 import mega.triple.aaa.common.ext.Constants.STUB_VALUE
-import mega.triple.aaa.presentation.core.ui.components.card.LocationCard
-import mega.triple.aaa.presentation.core.ui.components.ext.SpacerHeight
-import mega.triple.aaa.presentation.core.ui.ext.LocationType
-import mega.triple.aaa.presentation.core.ui.ext.LocationType.CITY
-import mega.triple.aaa.presentation.core.ui.ext.LocationType.CONTINENT
-import mega.triple.aaa.presentation.core.ui.ext.LocationType.COUNTRY
-import mega.triple.aaa.presentation.core.ui.ext.render
-import mega.triple.aaa.presentation.core.ui.theme.AAATheme
-import mega.triple.aaa.presentation.core.ui.theme.AAATheme.colors
-import mega.triple.aaa.presentation.core.ui.theme.AAATheme.spaces
-import mega.triple.aaa.presentation.core.ui.theme.AAATheme.typography
 import mega.triple.aaa.presentation.feature.search.components.LocationChooseCard
 import mega.triple.aaa.presentation.feature.search.ext.SearchAction
 import mega.triple.aaa.presentation.feature.search.ext.SearchAction.OnNavigateBack
+import mega.triple.aaa.strings.R.string
+import mega.triple.aaa.ui.components.card.LocationCard
+import mega.triple.aaa.ui.components.ext.SpacerHeight
+import mega.triple.aaa.ui.ext.LocationType
+import mega.triple.aaa.ui.ext.LocationType.*
+import mega.triple.aaa.ui.ext.render
+import mega.triple.aaa.ui.theme.AAATheme
+import mega.triple.aaa.ui.theme.AAATheme.colors
+import mega.triple.aaa.ui.theme.AAATheme.spaces
+import mega.triple.aaa.ui.theme.AAATheme.typography
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -63,7 +61,7 @@ fun SearchScreen(
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = stringResource(R.string.search_title),
+                        text = stringResource(string.search_title),
                         style = typography.ps400size22,
                     )
                 },
@@ -94,7 +92,7 @@ fun SearchScreen(
                 if (isList) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         LocationCard(
-                            title = stringResource(R.string.search_go_back),
+                            title = stringResource(string.search_go_back),
                             modifier = Modifier.fillMaxWidth(.5f),
                         ) { editMode = null }
                         uiState.locationList.render {
@@ -106,7 +104,7 @@ fun SearchScreen(
                             ) {
                                 items(items = it) { (id, title) ->
                                     LocationCard(
-                                        title = title ?: stringResource(R.string.search_empty_name)
+                                        title = title ?: stringResource(string.search_empty_name)
                                     ) {
                                         editMode?.let { mode ->
                                             id?.let {
@@ -131,7 +129,7 @@ fun SearchScreen(
                         modifier = Modifier.padding(horizontal = spaces.size16),
                     ) {
                         LocationChooseCard(
-                            title = stringResource(R.string.search_continent),
+                            title = stringResource(string.search_continent),
                             value = uiState.location.continent?.englishName,
                         ) {
                             editMode = CONTINENT
@@ -139,7 +137,7 @@ fun SearchScreen(
                         }
                         uiState.location.continent?.let {
                             LocationChooseCard(
-                                title = stringResource(R.string.search_country),
+                                title = stringResource(string.search_country),
                                 value = uiState.location.country?.englishName,
                             ) {
                                 editMode = COUNTRY
@@ -148,10 +146,10 @@ fun SearchScreen(
                         }
                         uiState.location.country?.let {
                             LocationChooseCard(
-                                title = stringResource(R.string.search_city),
+                                title = stringResource(string.search_city),
                                 value = uiState.location.city?.let {
                                     stringResource(
-                                        R.string.search_item_title,
+                                        string.search_item_title,
                                         it.englishName ?: STUB_VALUE,
                                         it.englishType ?: STUB_VALUE,
                                     )
@@ -173,7 +171,7 @@ fun SearchScreen(
                     .padding(horizontal = spaces.size16)
                     .padding(bottom = spaces.size24),
             ) {
-                LocationCard(title = stringResource(R.string.search_save_changes)) {
+                LocationCard(title = stringResource(string.search_save_changes)) {
                     onAction?.invoke(SearchAction.SaveAll)
                 }
             }

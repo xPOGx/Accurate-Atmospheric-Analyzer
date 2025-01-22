@@ -14,8 +14,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import mega.triple.aaa.presentation.core.ui.components.loader.GlobalLoading
-import mega.triple.aaa.presentation.core.ui.ext.render
 import mega.triple.aaa.presentation.feature.home.HomeScreen
 import mega.triple.aaa.presentation.feature.home.HomeViewModel
 import mega.triple.aaa.presentation.feature.search.SearchScreen
@@ -23,6 +21,8 @@ import mega.triple.aaa.presentation.feature.search.SearchViewModel
 import mega.triple.aaa.presentation.feature.settings.SettingsScreen
 import mega.triple.aaa.presentation.feature.settings.SettingsViewModel
 import mega.triple.aaa.presentation.navigation.ext.Routes
+import mega.triple.aaa.ui.components.loader.GlobalLoading
+import mega.triple.aaa.ui.ext.render
 
 @Composable
 fun AAANavHost(
