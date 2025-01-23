@@ -8,9 +8,8 @@ import mega.triple.aaa.domain.location.model.ContinentDomainModel.Companion.toDb
 import mega.triple.aaa.domain.location.model.ContinentDomainModel.Companion.toDomainModel
 import mega.triple.aaa.local.source.LocationDbSource
 import mega.triple.aaa.network.source.LocationNetSource
-import javax.inject.Inject
 
-class GetContinentsUCImpl @Inject constructor(
+class GetContinentsUCImpl(
     private val locationDbSource: LocationDbSource,
     private val locationNetSource: LocationNetSource,
 ) : GetContinentsUC {

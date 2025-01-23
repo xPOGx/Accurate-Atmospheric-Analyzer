@@ -4,9 +4,8 @@ import kotlinx.coroutines.flow.Flow
 import mega.triple.aaa.local.dao.forecast.DailyForecastDao
 import mega.triple.aaa.local.model.forecast.daily.DailyForecastDbModel
 import mega.triple.aaa.local.source.ForecastDbSource
-import javax.inject.Inject
 
-class ForecastDbSourceImpl @Inject constructor(
+class ForecastDbSourceImpl(
     private val dailyForecastDao: DailyForecastDao,
 ) : ForecastDbSource {
     override fun getDailyForecasts(): Flow<List<DailyForecastDbModel>> =

@@ -6,17 +6,13 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import mega.triple.aaa.preference.SettingsDatastore
 import mega.triple.aaa.preference.model.ThemeTypePrefModel
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class SettingsDatastoreImpl @Inject constructor(
-    @ApplicationContext private val context: Context,
+class SettingsDatastoreImpl(
+    context: Context,
 ) : SettingsDatastore {
     private val Context.settings: DataStore<Preferences> by preferencesDataStore(
         SETTINGS_DATASTORE

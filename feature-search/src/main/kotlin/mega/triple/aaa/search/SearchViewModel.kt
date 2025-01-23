@@ -2,7 +2,6 @@ package mega.triple.aaa.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -22,10 +21,8 @@ import mega.triple.aaa.ui.ext.SingleEvent
 import mega.triple.aaa.ui.ext.UI
 import mega.triple.aaa.ui.ext.UIEvent
 import mega.triple.aaa.ui.model.location.LocationUiModel
-import javax.inject.Inject
 
-@HiltViewModel
-class SearchViewModel @Inject constructor(
+class SearchViewModel(
     private val getContinentsUC: GetContinentsUC,
     private val getCountriesUC: GetCountriesUC,
     private val getCitiesUC: GetCitiesUC,

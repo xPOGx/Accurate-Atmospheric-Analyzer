@@ -13,18 +13,16 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.Firebase
 import com.google.firebase.analytics.analytics
 import com.google.firebase.analytics.logEvent
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import mega.triple.aaa.domain.theme.model.ThemeTypeDomainModel.Companion.toUiModel
 import mega.triple.aaa.domain.theme.GetThemeUC
+import mega.triple.aaa.domain.theme.model.ThemeTypeDomainModel.Companion.toUiModel
 import mega.triple.aaa.main.navigation.AAANavHost
 import mega.triple.aaa.search.SearchScreen
 import mega.triple.aaa.search.SearchViewModel
@@ -34,14 +32,13 @@ import mega.triple.aaa.ui.model.ThemeTypeUiModel
 import mega.triple.aaa.ui.theme.AAATheme
 import mega.triple.aaa.ui.theme.darkColors
 import mega.triple.aaa.ui.theme.lightColors
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
+import org.koin.androidx.compose.koinViewModel
 
-@AndroidEntryPoint
 class AAAActivity : ComponentActivity() {
     private val activityStart = System.currentTimeMillis()
 
-    @Inject
-    lateinit var getThemeUC: GetThemeUC
+    private val getThemeUC: GetThemeUC by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +52,7 @@ class AAAActivity : ComponentActivity() {
         // Content
         setContent {
             val navHostController = rememberNavController()
-            val mainViewModel = hiltViewModel<AAAViewModel>()
+            val mainViewModel = koinViewModel<AAAViewModel>()
             val location by mainViewModel.location.collectAsStateWithLifecycle()
             val themeType by mainViewModel.themeType.collectAsStateWithLifecycle(ThemeTypeUiModel.LIGHT)
 
@@ -69,7 +66,7 @@ class AAAActivity : ComponentActivity() {
                         if (isValid) {
                             AAANavHost(navHostController = navHostController)
                         } else {
-                            val viewModel = hiltViewModel<SearchViewModel>()
+                            val viewModel = koinViewModel<SearchViewModel>()
                             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
                             with(viewModel) {

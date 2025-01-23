@@ -7,9 +7,8 @@ import mega.triple.aaa.network.response.location.CityResponse
 import mega.triple.aaa.network.response.location.ContinentResponse
 import mega.triple.aaa.network.response.location.CountryResponse
 import mega.triple.aaa.network.source.LocationNetSource
-import javax.inject.Inject
 
-class LocationNetSourceImpl @Inject constructor(
+class LocationNetSourceImpl(
     private val apiService: LocationService
 ) : LocationNetSource {
     override suspend fun getContinents(

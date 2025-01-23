@@ -7,7 +7,7 @@ import mega.triple.aaa.local.model.forecast.CategoryDbModel
 
 class CategoryDbModelListConverter {
     @TypeConverter
-    fun fromCategories(categories: List<CategoryDbModel>?) : String? {
+    fun fromCategories(categories: List<CategoryDbModel>?): String? {
         if (categories.isNullOrEmpty()) {
             return null
         }

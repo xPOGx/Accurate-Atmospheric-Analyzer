@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -23,6 +22,7 @@ import mega.triple.aaa.settings.SettingsScreen
 import mega.triple.aaa.settings.SettingsViewModel
 import mega.triple.aaa.ui.components.loader.GlobalLoading
 import mega.triple.aaa.ui.ext.render
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun AAANavHost(
@@ -35,7 +35,7 @@ fun AAANavHost(
         modifier = modifier,
     ) {
         composable(route = Routes.HOME) {
-            val viewModel = hiltViewModel<HomeViewModel>()
+            val viewModel = koinViewModel<HomeViewModel>()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
             uiState.location.render(
@@ -54,7 +54,7 @@ fun AAANavHost(
             enterTransition = { slideInHorizontally { it } },
             exitTransition = { slideOutHorizontally { it } },
         ) {
-            val viewModel = hiltViewModel<SearchViewModel>()
+            val viewModel = koinViewModel<SearchViewModel>()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
             val context = LocalContext.current
@@ -80,7 +80,7 @@ fun AAANavHost(
             enterTransition = { slideInVertically { -it } },
             exitTransition = { slideOutVertically { -it } },
         ) {
-            val viewModel = hiltViewModel<SettingsViewModel>()
+            val viewModel = koinViewModel<SettingsViewModel>()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
             with(viewModel) {

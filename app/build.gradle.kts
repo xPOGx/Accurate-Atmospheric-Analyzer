@@ -2,12 +2,11 @@ plugins {
     // CORE
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    // HILT
-    alias(libs.plugins.dagger.hilt)
+    // Ksp
     alias(libs.plugins.ksp)
     // Gradle secrets
     alias(libs.plugins.secrets.gradle.plugin)
-    // Firebase
+    // Firebase only application
     alias(libs.plugins.firebase)
     alias(libs.plugins.firebase.crashlytic)
 }
@@ -53,6 +52,9 @@ android {
                 excludes += "/META-INF/{AL2.0,LGPL2.1}"
             }
         }
+        ksp {
+            arg("KOIN_CONFIG_CHECK", "true")
+        }
     }
 }
 
@@ -60,9 +62,11 @@ dependencies {
     // CORE
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
-    // HILT
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
+    // Koin
+    implementation(libs.koin.android)
+    implementation(libs.koin.annotatinos)
+    implementation(libs.koin.androidx.worker)
+    ksp(libs.koin.compiler)
     // WorkManager
     implementation(libs.worker.hilt)
     // Firebase
@@ -70,8 +74,18 @@ dependencies {
     implementation(libs.firebase.analytics)
     // Modules
     implementation(project(libs.versions.projectCoreCommon.get()))
+    implementation(project(libs.versions.projectCoreStrings.get()))
+    implementation(project(libs.versions.projectCoreUi.get()))
+    implementation(project(libs.versions.projectDataNetwork.get()))
+    implementation(project(libs.versions.projectDataProto.get()))
+    implementation(project(libs.versions.projectDataPreference.get()))
+    implementation(project(libs.versions.projectDataLocal.get()))
+    implementation(project(libs.versions.projectDomain.get()))
     implementation(project(libs.versions.projectFeatureMain.get()))
     implementation(project(libs.versions.projectFeatureSync.get()))
+    implementation(project(libs.versions.projectFeatureHome.get()))
+    implementation(project(libs.versions.projectFeatureSearch.get()))
+    implementation(project(libs.versions.projectFeatureSettings.get()))
 }
 
 secrets {

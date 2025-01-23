@@ -2,23 +2,20 @@ package mega.triple.aaa.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import mega.triple.aaa.common.ext.safeLaunch
-import mega.triple.aaa.domain.theme.model.ThemeTypeDomainModel.Companion.toDomainModel
-import mega.triple.aaa.domain.theme.model.ThemeTypeDomainModel.Companion.toUiModel
 import mega.triple.aaa.domain.theme.GetThemeUC
 import mega.triple.aaa.domain.theme.SetThemeUC
+import mega.triple.aaa.domain.theme.model.ThemeTypeDomainModel.Companion.toDomainModel
+import mega.triple.aaa.domain.theme.model.ThemeTypeDomainModel.Companion.toUiModel
 import mega.triple.aaa.settings.ext.SettingsAction
 import mega.triple.aaa.ui.ext.SingleEvent
 import mega.triple.aaa.ui.model.ThemeTypeUiModel
-import javax.inject.Inject
 
-@HiltViewModel
-class SettingsViewModel @Inject constructor(
+class SettingsViewModel(
     private val getThemeUC: GetThemeUC,
     private val setThemeUC: SetThemeUC,
 ) : ViewModel() {

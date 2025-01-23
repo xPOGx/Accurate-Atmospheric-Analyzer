@@ -1,12 +1,11 @@
 package mega.triple.aaa.domain.theme.impl
 
+import mega.triple.aaa.domain.theme.SetThemeUC
 import mega.triple.aaa.domain.theme.model.ThemeTypeDomainModel
 import mega.triple.aaa.domain.theme.model.ThemeTypeDomainModel.Companion.toPrefModel
-import mega.triple.aaa.domain.theme.SetThemeUC
 import mega.triple.aaa.preference.SettingsDatastore
-import javax.inject.Inject
 
-class SetThemeUCImpl @Inject constructor(
+class SetThemeUCImpl(
     private val settingsDatastore: SettingsDatastore,
 ) : SetThemeUC {
     override suspend operator fun invoke(domainModel: ThemeTypeDomainModel): Result<Unit> {

@@ -1,15 +1,10 @@
 package mega.triple.aaa.proto.di
 
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 import mega.triple.aaa.proto.LocationDataStore
 import mega.triple.aaa.proto.impl.LocationDataStoreImpl
+import org.koin.android.ext.koin.androidContext
+import org.koin.dsl.module
 
-@Module
-@InstallIn(SingletonComponent::class)
-abstract class ProtoModule {
-    @Binds
-    abstract fun bindLocationDataStore(dataStore: LocationDataStoreImpl): LocationDataStore
+val dataProtoModule = module {
+    single<LocationDataStore> { LocationDataStoreImpl(androidContext()) }
 }

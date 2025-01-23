@@ -1,7 +1,6 @@
 package mega.triple.aaa.ui.ext
 
 import android.content.Context
-import mega.triple.aaa.strings.R
 import mega.triple.aaa.common.ext.Constants
 import mega.triple.aaa.common.ext.Constants.CELSIUS
 import mega.triple.aaa.common.ext.Constants.CELSIUS_SYMBOL
@@ -10,6 +9,7 @@ import mega.triple.aaa.common.ext.Constants.FAHRENHEIT
 import mega.triple.aaa.common.ext.Constants.PERCENTAGE
 import mega.triple.aaa.common.ext.Constants.SPACE
 import mega.triple.aaa.common.ext.Constants.STUB_VALUE
+import mega.triple.aaa.strings.R
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale

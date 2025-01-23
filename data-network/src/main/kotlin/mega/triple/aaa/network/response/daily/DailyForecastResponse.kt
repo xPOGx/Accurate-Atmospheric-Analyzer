@@ -1,7 +1,6 @@
 package mega.triple.aaa.network.response.daily
 
 
-import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import mega.triple.aaa.network.response.model.CategoryResponse

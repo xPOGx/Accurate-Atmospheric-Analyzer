@@ -1,8 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
-    // HILT
-    alias(libs.plugins.dagger.hilt)
+    // Ksp
     alias(libs.plugins.ksp)
     // In kotlin 2+ need compose plugin
     alias(libs.plugins.jetbrains.kotlin.compose)
@@ -30,6 +29,9 @@ android {
         composeOptions {
             kotlinCompilerExtensionVersion = versions.kotlinCompilerExtensionVersion.get()
         }
+        ksp {
+            arg("KOIN_CONFIG_CHECK", "true")
+        }
     }
 }
 
@@ -37,9 +39,10 @@ dependencies {
     // CORE
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
-    // HILT
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
+    // Koin
+    implementation(libs.koin.android)
+    implementation(libs.koin.annotatinos)
+    ksp(libs.koin.compiler)
     // COMPOSE
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)

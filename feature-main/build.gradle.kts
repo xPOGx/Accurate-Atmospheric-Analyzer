@@ -1,8 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
-    // HILT
-    alias(libs.plugins.dagger.hilt)
+    // Ksp
     alias(libs.plugins.ksp)
     // In kotlin 2+ need compose plugin
     alias(libs.plugins.jetbrains.kotlin.compose)
@@ -23,6 +22,9 @@ android {
         kotlinOptions {
             jvmTarget = versions.javaVersion.get()
         }
+        ksp {
+            arg("KOIN_CONFIG_CHECK", "true")
+        }
     }
 }
 
@@ -31,10 +33,11 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
-    // HILT
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
-    implementation(libs.androidx.hilt.navigation.compose)
+    // Koin
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
+    implementation(libs.koin.annotatinos)
+    ksp(libs.koin.compiler)
     // COMPOSE
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
@@ -52,7 +55,6 @@ dependencies {
     implementation(project(libs.versions.projectCoreStrings.get()))
     implementation(project(libs.versions.projectCoreUi.get()))
     implementation(project(libs.versions.projectDomain.get()))
-    implementation(project(libs.versions.projectDataPreference.get())) // TODO remove
     implementation(project(libs.versions.projectFeatureHome.get()))
     implementation(project(libs.versions.projectFeatureSearch.get()))
     implementation(project(libs.versions.projectFeatureSettings.get()))

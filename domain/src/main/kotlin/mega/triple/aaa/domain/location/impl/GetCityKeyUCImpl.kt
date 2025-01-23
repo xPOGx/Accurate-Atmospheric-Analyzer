@@ -3,9 +3,8 @@ package mega.triple.aaa.domain.location.impl
 import mega.triple.aaa.domain.ext.validateNotNull
 import mega.triple.aaa.domain.location.GetCityKeyUC
 import mega.triple.aaa.network.source.LocationNetSource
-import javax.inject.Inject
 
-class GetCityKeyUCImpl @Inject constructor(
+class GetCityKeyUCImpl(
     private val locationNetSource: LocationNetSource,
 ) : GetCityKeyUC {
     override suspend operator fun invoke(

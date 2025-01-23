@@ -6,9 +6,8 @@ import mega.triple.aaa.domain.forecast.daily.GetYesterdayForecastUC
 import mega.triple.aaa.domain.forecast.model.DailyForecastDomainModel
 import mega.triple.aaa.domain.forecast.model.DailyForecastDomainModel.Companion.toDomainModel
 import mega.triple.aaa.local.source.ForecastDbSource
-import javax.inject.Inject
 
-class GetYesterdayForecastUCImpl @Inject constructor(
+class GetYesterdayForecastUCImpl(
     private val dbSource: ForecastDbSource,
 ) : GetYesterdayForecastUC {
     override suspend operator fun invoke(): Result<DailyForecastDomainModel> {

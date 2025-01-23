@@ -1,9 +1,6 @@
 package mega.triple.aaa.domain.di
 
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import mega.triple.aaa.domain.ext.ForecastHelper
 import mega.triple.aaa.domain.forecast.daily.Get5DayForecastUC
 import mega.triple.aaa.domain.forecast.daily.GetTodayForecastUC
 import mega.triple.aaa.domain.forecast.daily.GetTomorrowForecastUC
@@ -30,49 +27,26 @@ import mega.triple.aaa.domain.theme.GetThemeUC
 import mega.triple.aaa.domain.theme.SetThemeUC
 import mega.triple.aaa.domain.theme.impl.GetThemeUCImpl
 import mega.triple.aaa.domain.theme.impl.SetThemeUCImpl
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.bind
+import org.koin.dsl.module
 
-@Module
-@InstallIn(SingletonComponent::class)
-abstract class DomainModule {
+val domainModule = module {
+    single { ForecastHelper(get(), get(), get(), get()) }
     // Location
-    @Binds
-    abstract fun bindGetCitiesUC(useCase: GetCitiesUCImpl): GetCitiesUC
-
-    @Binds
-    abstract fun bindGetCityKeyUC(useCase: GetCityKeyUCImpl): GetCityKeyUC
-
-    @Binds
-    abstract fun bindGetContinentsUC(useCase: GetContinentsUCImpl): GetContinentsUC
-
-    @Binds
-    abstract fun bindGetCountriesUC(useCase: GetCountriesUCImpl): GetCountriesUC
-
-    @Binds
-    abstract fun bindGetLocationUC(useCase: GetLocationUCImpl): GetLocationUC
-
-    @Binds
-    abstract fun bindSetLocationUC(useCase: SetLocationUCImpl): SetLocationUC
-
+    singleOf(::GetCitiesUCImpl) bind GetCitiesUC::class
+    singleOf(::GetCityKeyUCImpl) bind GetCityKeyUC::class
+    singleOf(::GetContinentsUCImpl) bind GetContinentsUC::class
+    singleOf(::GetCountriesUCImpl) bind GetCountriesUC::class
+    singleOf(::GetLocationUCImpl) bind GetLocationUC::class
+    singleOf(::SetLocationUCImpl) bind SetLocationUC::class
     // Daily forecast
-    @Binds
-    abstract fun bindGet5DayForecastUC(useCase: Get5DayForecastUCImpl): Get5DayForecastUC
-
-    @Binds
-    abstract fun bindGetTodayForecastUC(useCase: GetTodayForecastUCImpl): GetTodayForecastUC
-
-    @Binds
-    abstract fun bindGetTomorrowForecastUC(useCase: GetTomorrowForecastUCImpl): GetTomorrowForecastUC
-
-    @Binds
-    abstract fun bindGetYesterdayForecastUC(useCase: GetYesterdayForecastUCImpl): GetYesterdayForecastUC
-
-    @Binds
-    abstract fun bindUpdateDailyForecastUC(useCase: UpdateDailyForecastUCImpl): UpdateDailyForecastUC
-
+    singleOf(::Get5DayForecastUCImpl) bind Get5DayForecastUC::class
+    singleOf(::GetTodayForecastUCImpl) bind GetTodayForecastUC::class
+    singleOf(::GetTomorrowForecastUCImpl) bind GetTomorrowForecastUC::class
+    singleOf(::GetYesterdayForecastUCImpl) bind GetYesterdayForecastUC::class
+    singleOf(::UpdateDailyForecastUCImpl) bind UpdateDailyForecastUC::class
     // Theme
-    @Binds
-    abstract fun bindGetThemeUC(useCase: GetThemeUCImpl): GetThemeUC
-
-    @Binds
-    abstract fun bindSetThemeUC(useCase: SetThemeUCImpl): SetThemeUC
+    singleOf(::GetThemeUCImpl) bind GetThemeUC::class
+    singleOf(::SetThemeUCImpl) bind SetThemeUC::class
 }

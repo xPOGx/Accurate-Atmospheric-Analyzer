@@ -10,9 +10,8 @@ import mega.triple.aaa.network.NetworkHelper.PARAM_API_KEY
 import mega.triple.aaa.network.NetworkHelper.PARAM_LANGUAGE
 import mega.triple.aaa.network.NetworkHelper.PARAM_QUERY
 import mega.triple.aaa.network.api.LocationService
-import javax.inject.Inject
 
-class LocationServiceImpl @Inject constructor(
+class LocationServiceImpl(
     private val client: HttpClient,
     buildConfigModelProvider: BuildConfigModelProvider,
 ) : LocationService {

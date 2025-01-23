@@ -8,9 +8,8 @@ import mega.triple.aaa.local.model.location.CityDbModel
 import mega.triple.aaa.local.model.location.ContinentDbModel
 import mega.triple.aaa.local.model.location.CountryDbModel
 import mega.triple.aaa.local.source.LocationDbSource
-import javax.inject.Inject
 
-class LocationDbSourceImpl @Inject constructor(
+class LocationDbSourceImpl(
     private val continentDao: ContinentDao,
     private val countryDao: CountryDao,
     private val cityDao: CityDao,

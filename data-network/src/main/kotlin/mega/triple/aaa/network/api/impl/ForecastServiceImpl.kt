@@ -11,9 +11,8 @@ import mega.triple.aaa.network.NetworkHelper.PARAM_DETAILS
 import mega.triple.aaa.network.NetworkHelper.PARAM_LANGUAGE
 import mega.triple.aaa.network.NetworkHelper.PARAM_METRIC
 import mega.triple.aaa.network.api.ForecastService
-import javax.inject.Inject
 
-class ForecastServiceImpl @Inject constructor(
+class ForecastServiceImpl(
     private val client: HttpClient,
     buildConfigModelProvider: BuildConfigModelProvider,
 ) : ForecastService {

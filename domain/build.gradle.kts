@@ -1,8 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
-    // HILT
-    alias(libs.plugins.dagger.hilt)
+    // Ksp
     alias(libs.plugins.ksp)
 }
 
@@ -22,6 +21,9 @@ android {
         kotlinOptions {
             jvmTarget = versions.javaVersion.get()
         }
+        ksp {
+            arg("KOIN_CONFIG_CHECK", "true")
+        }
     }
 }
 
@@ -29,9 +31,10 @@ dependencies {
     // CORE
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
-    // HILT
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
+    // Koin
+    implementation(libs.koin.android)
+    implementation(libs.koin.annotatinos)
+    ksp(libs.koin.compiler)
     // Proto
     implementation(libs.protobuf.javalite)
     // Modules

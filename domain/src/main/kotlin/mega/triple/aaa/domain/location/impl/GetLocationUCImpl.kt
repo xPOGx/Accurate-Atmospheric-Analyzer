@@ -7,9 +7,8 @@ import mega.triple.aaa.domain.location.GetLocationUC
 import mega.triple.aaa.domain.location.model.LocationDomainModel
 import mega.triple.aaa.domain.location.model.LocationDomainModel.Companion.toDomainModel
 import mega.triple.aaa.proto.LocationDataStore
-import javax.inject.Inject
 
-class GetLocationUCImpl @Inject constructor(
+class GetLocationUCImpl(
     private val locationDataStore: LocationDataStore,
 ) : GetLocationUC {
     override operator fun invoke(): Flow<LocationDomainModel?> {

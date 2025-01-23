@@ -3,8 +3,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     // Serialization
     alias(libs.plugins.jetbrains.kotlin.serialization)
-    // HILT
-    alias(libs.plugins.dagger.hilt)
+    // Ksp
     alias(libs.plugins.ksp)
 }
 
@@ -24,6 +23,9 @@ android {
         kotlinOptions {
             jvmTarget = versions.javaVersion.get()
         }
+        ksp {
+            arg("KOIN_CONFIG_CHECK", "true")
+        }
     }
 }
 
@@ -34,9 +36,10 @@ dependencies {
     // Network
     implementation(libs.bundles.network)
     implementation(libs.kotlinx.serialization.json)
-    // HILT
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
+    // Koin
+    implementation(libs.koin.android)
+    implementation(libs.koin.annotatinos)
+    ksp(libs.koin.compiler)
     // Modules
     implementation(project(libs.versions.projectCoreCommon.get()))
 }

@@ -4,31 +4,31 @@ option java_package = "mega.triple.aaa.data.proto";
 option java_multiple_files = true;
 
 message LocationProto {
-  ContinentProto continent = 1;
-  CountryProto country = 2;
-  CityProto city = 3;
+    ContinentProto continent = 1;
+    CountryProto country = 2;
+    CityProto city = 3;
 }
 
 message ContinentProto {
-  string id = 1;
-  string english_name = 2;
-  string localized_name = 3;
+    string id = 1;
+    string english_name = 2;
+    string localized_name = 3;
 }
 
 message CountryProto {
-  string id = 1;
-  string continent_id = 2;
-  string english_name = 3;
-  string localized_name = 4;
+    string id = 1;
+    string continent_id = 2;
+    string english_name = 3;
+    string localized_name = 4;
 }
 
 message CityProto {
-  string id = 1;
-  string location_key = 2;
-  string country_id = 3;
-  string english_name = 4;
-  string english_type = 5;
-  int32 level = 6;
-  string localized_name = 7;
-  string localized_type = 8;
+    string id = 1;
+    string location_key = 2;
+    string country_id = 3;
+    string english_name = 4;
+    string english_type = 5;
+    int32 level = 6;
+    string localized_name = 7;
+    string localized_type = 8;
 }

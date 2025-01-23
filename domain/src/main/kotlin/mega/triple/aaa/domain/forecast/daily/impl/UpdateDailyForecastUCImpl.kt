@@ -9,9 +9,8 @@ import mega.triple.aaa.domain.forecast.model.DailyForecastDomainModel.Companion.
 import mega.triple.aaa.domain.location.GetLocationUC
 import mega.triple.aaa.local.source.ForecastDbSource
 import mega.triple.aaa.network.source.ForecastNetSource
-import javax.inject.Inject
 
-class UpdateDailyForecastUCImpl @Inject constructor(
+class UpdateDailyForecastUCImpl(
     private val dbSource: ForecastDbSource,
     private val netSource: ForecastNetSource,
     private val locationUC: GetLocationUC,

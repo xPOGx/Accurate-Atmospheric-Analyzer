@@ -2,7 +2,6 @@ package mega.triple.aaa.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -14,10 +13,8 @@ import mega.triple.aaa.domain.location.GetLocationUC
 import mega.triple.aaa.domain.location.model.LocationDomainModel.Companion.toUiModel
 import mega.triple.aaa.ui.ext.UI
 import mega.triple.aaa.ui.model.location.LocationUiModel
-import javax.inject.Inject
 
-@HiltViewModel
-class HomeViewModel @Inject constructor(
+class HomeViewModel(
     private val getLocationUC: GetLocationUC,
     private val forecastHelper: ForecastHelper,
 ) : ViewModel() {

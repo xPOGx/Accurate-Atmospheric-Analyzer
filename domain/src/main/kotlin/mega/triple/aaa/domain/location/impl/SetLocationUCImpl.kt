@@ -2,16 +2,17 @@ package mega.triple.aaa.domain.location.impl
 
 import kotlinx.coroutines.flow.first
 import mega.triple.aaa.domain.forecast.daily.UpdateDailyForecastUC
+import mega.triple.aaa.domain.location.GetCityKeyUC
+import mega.triple.aaa.domain.location.GetLocationUC
 import mega.triple.aaa.domain.location.SetLocationUC
 import mega.triple.aaa.domain.location.model.LocationDomainModel
 import mega.triple.aaa.domain.location.model.LocationDomainModel.Companion.toProtoModel
 import mega.triple.aaa.proto.LocationDataStore
-import javax.inject.Inject
 
-class SetLocationUCImpl @Inject constructor(
+class SetLocationUCImpl(
     private val locationDataStore: LocationDataStore,
-    private val getCityKeyUC: GetCityKeyUCImpl,
-    private val getLocationUC: GetLocationUCImpl,
+    private val getCityKeyUC: GetCityKeyUC,
+    private val getLocationUC: GetLocationUC,
     private val updateDailyForecastUC: UpdateDailyForecastUC,
 ) : SetLocationUC {
     override suspend operator fun invoke(domainModel: LocationDomainModel): Result<Unit> {

@@ -3,16 +3,14 @@ package mega.triple.aaa.proto.impl
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import mega.triple.aaa.data.proto.LocationProto
 import mega.triple.aaa.proto.LocationDataStore
 import mega.triple.aaa.proto.serializer.LocationProtoSerializer
-import javax.inject.Inject
 
-class LocationDataStoreImpl @Inject constructor(
-    @ApplicationContext context: Context,
+class LocationDataStoreImpl(
+    context: Context,
 ) : LocationDataStore {
     private val dataStore: DataStore<LocationProto> = context.locationDataStore
 
