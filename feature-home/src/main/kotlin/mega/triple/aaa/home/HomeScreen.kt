@@ -31,6 +31,7 @@ import mega.triple.aaa.common.ext.Constants.STUB_VALUE
 import mega.triple.aaa.common.ext.diff
 import mega.triple.aaa.common.ext.getTimeDiff
 import mega.triple.aaa.domain.ext.ForecastFlows
+import mega.triple.aaa.home.ext.HomeAction
 import mega.triple.aaa.strings.R.string
 import mega.triple.aaa.ui.R.drawable
 import mega.triple.aaa.ui.components.card.DayCard
@@ -55,8 +56,7 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     location: LocationUiModel? = null,
     forecastFlows: ForecastFlows = ForecastFlows(),
-    navigateToSearch: (() -> Unit)? = null,
-    navigateToSettings: (() -> Unit)? = null,
+    onAction: ((HomeAction) -> Unit)? = null,
 ) {
     val gridState = rememberLazyGridState()
     var selectedIndex by remember { mutableIntStateOf(0) }
@@ -96,8 +96,8 @@ fun HomeScreen(
                 compact = compact,
                 selectedIndex = selectedIndex,
                 onSelect = changeIndex,
-                onSearch = navigateToSearch,
-                onSettings = navigateToSettings,
+                onSearch = { onAction?.invoke(HomeAction.OnNavigateSearch) },
+                onSettings = { onAction?.invoke(HomeAction.OnNavigateSettings) },
             )
         },
         modifier = modifier.fillMaxSize(),

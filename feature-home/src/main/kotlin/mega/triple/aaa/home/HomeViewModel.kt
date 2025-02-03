@@ -11,6 +11,8 @@ import mega.triple.aaa.domain.ext.ForecastFlows
 import mega.triple.aaa.domain.ext.ForecastHelper
 import mega.triple.aaa.domain.location.GetLocationUC
 import mega.triple.aaa.domain.location.model.LocationDomainModel.Companion.toUiModel
+import mega.triple.aaa.home.ext.HomeAction
+import mega.triple.aaa.ui.ext.SingleEvent
 import mega.triple.aaa.ui.ext.UI
 import mega.triple.aaa.ui.model.location.LocationUiModel
 
@@ -21,6 +23,9 @@ class HomeViewModel(
     // FLOWS
     private val _uiState: MutableStateFlow<HomeUiState> = MutableStateFlow(HomeUiState())
     val uiState = _uiState.asStateFlow()
+    // Events
+    val onNavigateToSettings = SingleEvent()
+    val onNavigateToSearch = SingleEvent()
 
     init {
         subscribeLocation()
@@ -43,6 +48,13 @@ class HomeViewModel(
             _uiState.update {
                 it.copy(forecastFlows = flows)
             }
+        }
+    }
+
+    fun onAction(action: HomeAction) {
+        when (action) {
+            HomeAction.OnNavigateSearch -> onNavigateToSearch.fire()
+            HomeAction.OnNavigateSettings -> onNavigateToSettings.fire()
         }
     }
 }

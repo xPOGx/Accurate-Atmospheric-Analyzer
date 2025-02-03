@@ -23,14 +23,15 @@ dependencyResolutionManagement {
 
 rootProject.name = "Accurate Atmospheric Analyzer"
 include(":app")
-include(":core-common")
 include(":data-network")
 include(":data-proto")
 include(":data-preference")
 include(":data-local")
 include(":domain")
+include(":core-common")
 include(":core-ui")
 include(":core-strings")
+include(":core-navigation")
 include(":feature-main")
 include(":feature-home")
 include(":feature-search")

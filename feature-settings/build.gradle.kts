@@ -5,6 +5,8 @@ plugins {
     alias(libs.plugins.ksp)
     // In kotlin 2+ need compose plugin
     alias(libs.plugins.jetbrains.kotlin.compose)
+    // Serialization
+    alias(libs.plugins.jetbrains.kotlin.serialization)
 }
 
 android {
@@ -35,6 +37,7 @@ dependencies {
     // Koin
     implementation(libs.koin.android)
     implementation(libs.koin.annotatinos)
+    implementation(libs.koin.androidx.compose)
     ksp(libs.koin.compiler)
     // COMPOSE
     implementation(platform(libs.androidx.compose.bom))
@@ -45,9 +48,12 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    // Serialization
+    implementation(libs.kotlinx.serialization.json)
     // Modules
     implementation(project(libs.versions.projectCoreCommon.get()))
     implementation(project(libs.versions.projectDomain.get()))
     implementation(project(libs.versions.projectCoreUi.get()))
     implementation(project(libs.versions.projectCoreStrings.get()))
+    implementation(project(libs.versions.projectCoreNavigation.get()))
 }

@@ -64,7 +64,7 @@ class AAAActivity : ComponentActivity() {
                 ) {
                     AnimatedContent(targetState = it != null, label = "MainScreen") { isValid ->
                         if (isValid) {
-                            AAANavHost(navHostController = navHostController)
+                            AAANavHost(navController = navHostController)
                         } else {
                             val viewModel = koinViewModel<SearchViewModel>()
                             val uiState by viewModel.uiState.collectAsStateWithLifecycle()

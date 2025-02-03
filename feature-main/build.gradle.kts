@@ -5,6 +5,8 @@ plugins {
     alias(libs.plugins.ksp)
     // In kotlin 2+ need compose plugin
     alias(libs.plugins.jetbrains.kotlin.compose)
+    // Serialization
+    alias(libs.plugins.jetbrains.kotlin.serialization)
 }
 
 android {
@@ -50,10 +52,13 @@ dependencies {
     // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
+    // Serialization
+    implementation(libs.kotlinx.serialization.json)
     // Modules
     implementation(project(libs.versions.projectCoreCommon.get()))
     implementation(project(libs.versions.projectCoreStrings.get()))
     implementation(project(libs.versions.projectCoreUi.get()))
+    implementation(project(libs.versions.projectCoreNavigation.get()))
     implementation(project(libs.versions.projectDomain.get()))
     implementation(project(libs.versions.projectFeatureHome.get()))
     implementation(project(libs.versions.projectFeatureSearch.get()))
