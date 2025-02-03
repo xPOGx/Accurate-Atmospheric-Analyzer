@@ -11,8 +11,10 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,6 +30,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -59,6 +62,7 @@ import mega.triple.aaa.common.ext.Constants.TOOLBAR_HEIGHT_MIN
 import mega.triple.aaa.strings.R
 import mega.triple.aaa.ui.R.drawable
 import mega.triple.aaa.ui.components.ext.SpacerHeight
+import mega.triple.aaa.ui.components.ext.SpacerWidth
 import mega.triple.aaa.ui.components.tab.DayTab
 import mega.triple.aaa.ui.ext.formatFeelTemperature
 import mega.triple.aaa.ui.ext.formatPartTemperature
@@ -72,6 +76,7 @@ import mega.triple.aaa.ui.theme.AAATheme.shapes
 import mega.triple.aaa.ui.theme.AAATheme.spaces
 import mega.triple.aaa.ui.theme.AAATheme.typography
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TopAppBar(
     modifier: Modifier = Modifier,
@@ -79,9 +84,11 @@ fun TopAppBar(
     selectedIndex: Int,
     locationName: String? = null,
     data: DailyForecastUiModel? = null,
+    isError: Boolean = false,
     onSelect: ((Int) -> Unit)? = null,
     onSearch: (() -> Unit)? = null,
     onSettings: (() -> Unit)? = null,
+    onUpdateAll: (() -> Unit)? = null,
 ) {
     val density = LocalDensity.current
     val context = LocalContext.current
@@ -277,49 +284,70 @@ fun TopAppBar(
                         }
                     },
                 ) { small ->
-                    if (small) {
-                        DayTab(
-                            selectedIndex = selectedIndex,
-                            onSelect = onSelect,
-                            modifier = Modifier
-                                .padding(horizontal = spaces.size16)
-                                .padding(bottom = spaces.size12)
-                        )
-                    } else {
-                        Row(
-                            verticalAlignment = Alignment.Bottom,
-                            modifier = Modifier
-                                .padding(horizontal = spaces.size24)
-                                .padding(bottom = spaces.size16),
-                        ) {
-                            Text(
-                                text = formatTime(data?.date),
-                                style = typography.ps400size18,
-                                color = fullColor
+                    Column {
+                        if (small) {
+                            DayTab(
+                                selectedIndex = selectedIndex,
+                                onSelect = onSelect,
+                                modifier = Modifier
+                                    .padding(horizontal = spaces.size16)
+                                    .padding(bottom = spaces.size12)
                             )
-                            Spacer(modifier = Modifier.weight(1f))
-                            Column(
-                                horizontalAlignment = Alignment.End,
+                        } else {
+                            Row(
+                                verticalAlignment = Alignment.Bottom,
+                                modifier = Modifier
+                                    .padding(horizontal = spaces.size24)
+                                    .padding(bottom = spaces.size16),
                             ) {
                                 Text(
-                                    text = formatPartTemperature(
-                                        context,
-                                        data?.temperature?.maximum?.value,
-                                        true,
-                                        temperatureUnit
-                                    ),
-                                    style = typography.ps700size18,
+                                    text = formatTime(data?.date),
+                                    style = typography.ps400size18,
                                     color = fullColor
                                 )
-                                Text(
-                                    text = formatPartTemperature(
-                                        context,
-                                        data?.temperature?.minimum?.value,
-                                        false,
-                                        temperatureUnit
-                                    ),
-                                    style = typography.ps700size18,
-                                    color = fullColor
+                                Spacer(modifier = Modifier.weight(1f))
+                                Column(
+                                    horizontalAlignment = Alignment.End,
+                                ) {
+                                    Text(
+                                        text = formatPartTemperature(
+                                            context,
+                                            data?.temperature?.maximum?.value,
+                                            true,
+                                            temperatureUnit
+                                        ),
+                                        style = typography.ps700size18,
+                                        color = fullColor
+                                    )
+                                    Text(
+                                        text = formatPartTemperature(
+                                            context,
+                                            data?.temperature?.minimum?.value,
+                                            false,
+                                            temperatureUnit
+                                        ),
+                                        style = typography.ps700size18,
+                                        color = fullColor
+                                    )
+                                }
+                            }
+                        }
+                        if (isError) {
+                            Row(
+                                modifier = Modifier
+                                    .combinedClickable(
+                                        onLongClick = { onUpdateAll?.invoke() },
+                                        onClick = { /* ignore */ },
+                                    ).fillMaxWidth()
+                                    .background(colors.changeDecrease),
+                                horizontalArrangement = Arrangement.Center,
+                                verticalAlignment = Alignment.CenterVertically,
+                            ) {
+                                Text("Something wrong")
+                                SpacerWidth(spaces.size16)
+                                Icon(
+                                    imageVector = Icons.Default.Refresh,
+                                    contentDescription = null
                                 )
                             }
                         }
@@ -337,6 +365,7 @@ private fun TopAppBarPreview() {
         TopAppBar(
             compact = false,
             selectedIndex = 0,
+            isError = true,
         )
     }
 }
@@ -348,6 +377,7 @@ private fun TopAppBarPreviewCompact() {
         TopAppBar(
             compact = true,
             selectedIndex = 0,
+            isError = true,
         )
     }
 }

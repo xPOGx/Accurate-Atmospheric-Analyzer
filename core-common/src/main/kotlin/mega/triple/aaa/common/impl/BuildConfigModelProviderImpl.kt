@@ -2,9 +2,8 @@ package mega.triple.aaa.common.impl
 
 import mega.triple.aaa.common.BuildConfigModelProvider
 import mega.triple.aaa.common.model.BuildConfigModel
-import javax.inject.Inject
 
-class BuildConfigModelProviderImpl @Inject constructor() : BuildConfigModelProvider {
+class BuildConfigModelProviderImpl : BuildConfigModelProvider {
     private lateinit var model: BuildConfigModel
 
     override fun provide(): BuildConfigModel {

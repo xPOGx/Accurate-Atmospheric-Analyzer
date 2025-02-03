@@ -2,7 +2,6 @@ package mega.triple.aaa.domain.forecast.daily.impl
 
 import kotlinx.coroutines.flow.first
 import mega.triple.aaa.domain.ext.EmptyLocationKey
-import mega.triple.aaa.domain.ext.ForecastHelper
 import mega.triple.aaa.domain.ext.NullResult
 import mega.triple.aaa.domain.forecast.daily.UpdateDailyForecastUC
 import mega.triple.aaa.domain.forecast.model.DailyForecastDomainModel.Companion.toDbModel
@@ -14,7 +13,6 @@ class UpdateDailyForecastUCImpl(
     private val dbSource: ForecastDbSource,
     private val netSource: ForecastNetSource,
     private val locationUC: GetLocationUC,
-    private val forecastHelper: ForecastHelper,
 ) : UpdateDailyForecastUC {
     override suspend operator fun invoke(): Result<Unit> {
         val locationKey = locationUC().first()?.city?.locationKey
@@ -26,7 +24,6 @@ class UpdateDailyForecastUCImpl(
                     wrapper.dailyForecasts?.map { it.toDbModel() } ?: throw NullResult()
                 }.onSuccess {
                     dbSource.insertDailyForecasts(it)
-                    forecastHelper.initFlows()
                 }.onFailure {
                     throw it
                 }

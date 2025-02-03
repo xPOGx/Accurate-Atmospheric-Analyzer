@@ -6,6 +6,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -51,6 +52,7 @@ import mega.triple.aaa.ui.theme.AAATheme.spaces
 import mega.triple.aaa.ui.theme.AAATheme.typography
 import kotlin.math.absoluteValue
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
@@ -95,9 +97,11 @@ fun HomeScreen(
                 data = currentData,
                 compact = compact,
                 selectedIndex = selectedIndex,
+                isError = forecastFlows.isAllEmpty,
                 onSelect = changeIndex,
                 onSearch = { onAction?.invoke(HomeAction.OnNavigateSearch) },
                 onSettings = { onAction?.invoke(HomeAction.OnNavigateSettings) },
+                onUpdateAll = { onAction?.invoke(HomeAction.UpdateAllData) },
             )
         },
         modifier = modifier.fillMaxSize(),

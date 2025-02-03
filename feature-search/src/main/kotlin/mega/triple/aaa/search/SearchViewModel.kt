@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import mega.triple.aaa.common.ext.safeLaunch
+import mega.triple.aaa.domain.forecast.daily.UpdateDailyForecastUC
 import mega.triple.aaa.domain.location.GetCitiesUC
 import mega.triple.aaa.domain.location.GetContinentsUC
 import mega.triple.aaa.domain.location.GetCountriesUC
@@ -27,6 +28,7 @@ class SearchViewModel(
     private val getCountriesUC: GetCountriesUC,
     private val getCitiesUC: GetCitiesUC,
     private val setLocationUC: SetLocationUC,
+    private val updateDailyForecastUC: UpdateDailyForecastUC,
 ) : ViewModel() {
     // FLOWS
     private val _uiState: MutableStateFlow<SearchUiState> = MutableStateFlow(SearchUiState())
@@ -169,7 +171,14 @@ class SearchViewModel(
     private fun saveAll() {
         viewModelScope.safeLaunch {
             setLocationUC(_uiState.value.location.toDomainModel())
-                .onSuccess { onSaveSuccess.fire() }
+                .onSuccess {
+                    updateDailyForecastUC()
+                        .onSuccess {
+                            onSaveSuccess.fire()
+                        }.onFailure {
+                            onToast.send(it.message ?: "Error updating forecast")
+                        }
+                }
                 .onFailure { onToast.send(it.message ?: "Error saving location") }
         }
     }

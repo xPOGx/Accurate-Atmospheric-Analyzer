@@ -1,5 +1,6 @@
 package mega.triple.aaa.home.navigation
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
@@ -33,13 +34,18 @@ fun NavGraphBuilder.homeNavigationGraph(
             }
 
             uiState.location.render(
-                onLoading = { GlobalLoading(withBackground = false) }
+                onLoading = { GlobalLoading() }
             ) { location ->
-                HomeScreen(
-                    location = location,
-                    forecastFlows = uiState.forecastFlows,
-                    onAction = viewModel::onAction,
-                )
+                Box {
+                    if (uiState.forecastFlows.isLoading) {
+                        GlobalLoading(withBackground = true)
+                    }
+                    HomeScreen(
+                        location = location,
+                        forecastFlows = uiState.forecastFlows,
+                        onAction = viewModel::onAction,
+                    )
+                }
             }
         }
     }

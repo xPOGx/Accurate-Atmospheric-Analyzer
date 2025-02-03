@@ -28,14 +28,16 @@ fun getTimeDiff(value: Long?): String {
     val now = Calendar.getInstance().apply {
         timeZone = TimeZone.getTimeZone(TIME_ZONE_UA)
     }
-    val otherHour = other.get(Calendar.HOUR_OF_DAY)
-    val nowHour = now.get(Calendar.HOUR_OF_DAY)
+    val otherMinute = other.timeInMillis / 1000 / 60
+    val otherHour = otherMinute / 60
+    val nowMinute = now.timeInMillis / 1000 / 60
+    val nowHour = nowMinute / 60
     return if (other.timeInMillis > now.timeInMillis) {
         var diff = otherHour - nowHour
         val symbol = if (diff > 0) {
             HOUR_SHORT
         } else {
-            diff = other.get(Calendar.MINUTE) - now.get(Calendar.MINUTE)
+            diff = otherMinute - nowMinute
             MINUTE_SHORT
         }
         "in $diff$symbol"
@@ -44,7 +46,7 @@ fun getTimeDiff(value: Long?): String {
         val symbol = if (diff > 0) {
             HOUR_SHORT
         } else {
-            diff = now.get(Calendar.MINUTE) - other.get(Calendar.MINUTE)
+            diff = nowMinute - otherMinute
             MINUTE_SHORT
         }
         "$diff$symbol ago"

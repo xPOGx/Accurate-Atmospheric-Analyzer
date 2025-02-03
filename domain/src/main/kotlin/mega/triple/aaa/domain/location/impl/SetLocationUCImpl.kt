@@ -1,7 +1,6 @@
 package mega.triple.aaa.domain.location.impl
 
 import kotlinx.coroutines.flow.first
-import mega.triple.aaa.domain.forecast.daily.UpdateDailyForecastUC
 import mega.triple.aaa.domain.location.GetCityKeyUC
 import mega.triple.aaa.domain.location.GetLocationUC
 import mega.triple.aaa.domain.location.SetLocationUC
@@ -13,7 +12,6 @@ class SetLocationUCImpl(
     private val locationDataStore: LocationDataStore,
     private val getCityKeyUC: GetCityKeyUC,
     private val getLocationUC: GetLocationUC,
-    private val updateDailyForecastUC: UpdateDailyForecastUC,
 ) : SetLocationUC {
     override suspend operator fun invoke(domainModel: LocationDomainModel): Result<Unit> {
         return try {
@@ -40,7 +38,6 @@ class SetLocationUCImpl(
                 throw it
             }
 
-            updateDailyForecastUC()
             Result.success(Unit)
         } catch (e: Exception) {
             Result.failure(e)

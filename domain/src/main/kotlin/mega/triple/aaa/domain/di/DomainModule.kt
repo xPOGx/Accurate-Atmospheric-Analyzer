@@ -32,7 +32,7 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val domainModule = module {
-    single { ForecastHelper(get(), get(), get(), get()) }
+    single { ForecastHelper(get(), get(), get(), get(), get()) }
     // Location
     singleOf(::GetCitiesUCImpl) bind GetCitiesUC::class
     singleOf(::GetCityKeyUCImpl) bind GetCityKeyUC::class

@@ -51,10 +51,15 @@ class HomeViewModel(
         }
     }
 
+    private fun updateAll() = viewModelScope.safeLaunch {
+        forecastHelper.reinit()
+    }
+
     fun onAction(action: HomeAction) {
         when (action) {
             HomeAction.OnNavigateSearch -> onNavigateToSearch.fire()
             HomeAction.OnNavigateSettings -> onNavigateToSettings.fire()
+            HomeAction.UpdateAllData -> updateAll()
         }
     }
 }

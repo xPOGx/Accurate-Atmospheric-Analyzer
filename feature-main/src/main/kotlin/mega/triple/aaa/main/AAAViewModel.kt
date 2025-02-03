@@ -16,9 +16,8 @@ import mega.triple.aaa.domain.theme.model.ThemeTypeDomainModel.Companion.toUiMod
 import mega.triple.aaa.ui.ext.UI
 import mega.triple.aaa.ui.model.ThemeTypeUiModel
 import mega.triple.aaa.ui.model.location.LocationUiModel
-import javax.inject.Inject
 
-class AAAViewModel @Inject constructor(
+class AAAViewModel(
     private val getLocationUC: GetLocationUC,
     getThemeUC: GetThemeUC,
 ) : ViewModel() {
