@@ -2,15 +2,9 @@ package mega.triple.aaa.ui.ext
 
 import android.content.Context
 import mega.triple.aaa.common.ext.Constants
-import mega.triple.aaa.common.ext.Constants.CELSIUS
-import mega.triple.aaa.common.ext.Constants.CELSIUS_SYMBOL
-import mega.triple.aaa.common.ext.Constants.DATE_PATTEN
-import mega.triple.aaa.common.ext.Constants.FAHRENHEIT
-import mega.triple.aaa.common.ext.Constants.PERCENTAGE
-import mega.triple.aaa.common.ext.Constants.SPACE
-import mega.triple.aaa.common.ext.Constants.STUB_VALUE
-import mega.triple.aaa.strings.R
+import mega.triple.aaa.strings.R.string
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 import kotlin.math.roundToInt
@@ -21,13 +15,13 @@ fun formatPartTemperature(
     isDay: Boolean,
     unit: String?,
 ): String = buildString {
-    append(if (isDay) context.getString(R.string.toolbar_day) else context.getString(R.string.toolbar_night))
-    append(SPACE)
+    append(if (isDay) context.getString(string.toolbar_day) else context.getString(string.toolbar_night))
+    append(Constants.SPACE)
     append(formatTemperature(value, unit))
 }
 
 fun formatTemperature(value: Double?, unit: String?): String = buildString {
-    append(value?.roundToInt() ?: STUB_VALUE)
+    append(value?.roundToInt() ?: Constants.STUB_VALUE)
     append(temperatureSymbol(unit))
 }
 
@@ -37,9 +31,9 @@ fun formatFeelTemperature(
     unit: String?,
     inShadow: Boolean = false,
 ): String = buildString {
-    append(if (inShadow) context.getString(R.string.toolbar_in_shadow) else context.getString(R.string.toolbar_feels_like))
-    append(SPACE)
-    append(value?.roundToInt() ?: STUB_VALUE)
+    append(if (inShadow) context.getString(string.toolbar_in_shadow) else context.getString(string.toolbar_feels_like))
+    append(Constants.SPACE)
+    append(value?.roundToInt() ?: Constants.STUB_VALUE)
     append(temperatureSymbol(unit))
 }
 
@@ -62,29 +56,52 @@ fun formatSimpleTime(value: String?): String {
         date ?: throw Throwable()
         SimpleDateFormat(Constants.SIMPLE_PATTERN, Locale.getDefault()).format(date)
     } catch (_: Throwable) {
-        STUB_VALUE
+        Constants.STUB_VALUE
     }
 }
 
 fun formatDate(value: Long): String {
     return try {
-        SimpleDateFormat(DATE_PATTEN, Locale.getDefault()).format(Date(value))
+        SimpleDateFormat(Constants.DATE_PATTEN, Locale.getDefault()).format(Date(value))
     } catch (_: Throwable) {
-        STUB_VALUE
+        Constants.STUB_VALUE
     }
 }
 
 fun formatSpeed(value: Double?, unit: String?) = buildString {
-    append(value?.roundToInt() ?: STUB_VALUE)
+    append(value?.roundToInt() ?: Constants.STUB_VALUE)
     append(unit)
 }
 
 fun formatProbability(value: Int?) = buildString {
-    append(value ?: STUB_VALUE)
-    append(PERCENTAGE)
+    append(value ?: Constants.STUB_VALUE)
+    append(Constants.PERCENTAGE)
+}
+
+fun formatLastUpdateTime(context: Context, date: Calendar?): String {
+    return when {
+        date == null -> context.getString(string.pull_to_refresh_first_time)
+        else -> buildString {
+            append(context.getString(string.pull_to_refresh_last_time))
+            append(
+                listOf(
+                    date.get(Calendar.HOUR_OF_DAY),
+                    date.get(Calendar.MINUTE),
+                ).joinToString(Constants.COLON)
+            )
+            append(Constants.SPACE)
+            append(
+                listOf(
+                    date.get(Calendar.DAY_OF_MONTH),
+                    date.get(Calendar.MONTH + 1),
+                    date.get(Calendar.YEAR),
+                ).joinToString(Constants.PERIOD)
+            )
+        }
+    }
 }
 
 private fun temperatureSymbol(value: String?) = when (value) {
-    CELSIUS -> CELSIUS_SYMBOL
-    else -> FAHRENHEIT
+    Constants.CELSIUS -> Constants.CELSIUS_SYMBOL
+    else -> Constants.FAHRENHEIT
 }

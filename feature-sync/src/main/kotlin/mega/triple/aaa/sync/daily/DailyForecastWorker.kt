@@ -7,12 +7,11 @@ import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkerParameters
-import dagger.assisted.AssistedInject
 import mega.triple.aaa.domain.forecast.daily.UpdateDailyForecastUC
 import org.koin.core.component.KoinComponent
 import java.util.concurrent.TimeUnit
 
-class DailyForecastWorker @AssistedInject constructor(
+class DailyForecastWorker(
     appContext: Context,
     workerParams: WorkerParameters,
     private val updateDailyForecastUC: UpdateDailyForecastUC,

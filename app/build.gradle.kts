@@ -67,8 +67,6 @@ dependencies {
     implementation(libs.koin.annotatinos)
     implementation(libs.koin.androidx.worker)
     ksp(libs.koin.compiler)
-    // WorkManager
-    implementation(libs.worker.hilt)
     // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)

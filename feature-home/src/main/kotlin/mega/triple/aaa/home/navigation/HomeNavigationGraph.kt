@@ -1,7 +1,9 @@
 package mega.triple.aaa.home.navigation
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -11,6 +13,7 @@ import mega.triple.aaa.home.HomeScreen
 import mega.triple.aaa.home.HomeViewModel
 import mega.triple.aaa.navigation.NavigationDirection
 import mega.triple.aaa.ui.components.loader.GlobalLoading
+import mega.triple.aaa.ui.ext.UiText.Companion.asString
 import mega.triple.aaa.ui.ext.render
 import org.koin.androidx.compose.koinViewModel
 
@@ -23,6 +26,7 @@ fun NavGraphBuilder.homeNavigationGraph(
         composable<HomeDirection.Home> {
             val viewModel = koinViewModel<HomeViewModel>()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+            val context = LocalContext.current
 
             with(viewModel) {
                 onNavigateToSearch.collectEffect {
@@ -30,6 +34,9 @@ fun NavGraphBuilder.homeNavigationGraph(
                 }
                 onNavigateToSettings.collectEffect {
                     navController.navigate(NavigationDirection.Settings)
+                }
+                onToast.collectEffect { msg ->
+                    Toast.makeText(context, msg.asString(context), Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -43,6 +50,8 @@ fun NavGraphBuilder.homeNavigationGraph(
                     HomeScreen(
                         location = location,
                         forecastFlows = uiState.forecastFlows,
+                        lastUpdateDate = uiState.lastUpdatedDate,
+                        isRefreshing = uiState.isRefreshing,
                         onAction = viewModel::onAction,
                     )
                 }

@@ -17,6 +17,8 @@ object Constants {
     const val PERCENTAGE = "%"
     const val HOUR_SHORT = "h"
     const val MINUTE_SHORT = "m"
+    const val PERIOD = "."
+    const val COLON = ":"
 
     const val ISO_PATTERN = "yyyy-MM-dd'T'HH:mm:ssZ"
     const val ISO_PATTERN_WITHOUT_TIMEZONE = "yyyy-MM-dd'T'HH:mm:ss"

@@ -1,7 +1,15 @@
 <resources>
+    <!--  Toolbar  -->
     <string name="toolbar_in_shadow">In shadow</string>
     <string name="toolbar_feels_like">Feels like</string>
     <string name="toolbar_day">Day</string>
     <string name="toolbar_night">Night</string>
     <string name="toolbar_unknown_place">Unknown place</string>
+    <!--  Pull To Refresh  -->
+    <string name="pull_to_refresh_pull">Pull to Refresh</string>
+    <string name="pull_to_refresh_release">Release to Refresh</string>
+    <string name="pull_to_refresh_up_to_date">UP TO DATE</string>
+    <string name="pull_to_refresh_updated">Updated!</string>
+    <string name="pull_to_refresh_first_time">Never updated</string>
+    <string name="pull_to_refresh_last_time">Last time updated\n</string>
 </resources>

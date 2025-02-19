@@ -4,4 +4,5 @@ sealed class HomeAction {
     object OnNavigateSearch : HomeAction()
     object OnNavigateSettings : HomeAction()
     object UpdateAllData : HomeAction()
+    object Refresh : HomeAction()
 }

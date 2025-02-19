@@ -21,8 +21,8 @@ import com.google.firebase.analytics.analytics
 import com.google.firebase.analytics.logEvent
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import mega.triple.aaa.domain.theme.GetThemeUC
-import mega.triple.aaa.domain.theme.model.ThemeTypeDomainModel.Companion.toUiModel
+import mega.triple.aaa.domain.settings.GetThemeUC
+import mega.triple.aaa.domain.settings.model.ThemeTypeDomainModel.Companion.toUiModel
 import mega.triple.aaa.main.navigation.AAANavHost
 import mega.triple.aaa.search.SearchScreen
 import mega.triple.aaa.search.SearchViewModel

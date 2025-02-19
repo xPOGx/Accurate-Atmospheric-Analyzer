@@ -1,8 +1,8 @@
-package mega.triple.aaa.domain.theme.impl
+package mega.triple.aaa.domain.settings.impl
 
-import mega.triple.aaa.domain.theme.SetThemeUC
-import mega.triple.aaa.domain.theme.model.ThemeTypeDomainModel
-import mega.triple.aaa.domain.theme.model.ThemeTypeDomainModel.Companion.toPrefModel
+import mega.triple.aaa.domain.settings.SetThemeUC
+import mega.triple.aaa.domain.settings.model.ThemeTypeDomainModel
+import mega.triple.aaa.domain.settings.model.ThemeTypeDomainModel.Companion.toPrefModel
 import mega.triple.aaa.preference.SettingsDatastore
 
 class SetThemeUCImpl(

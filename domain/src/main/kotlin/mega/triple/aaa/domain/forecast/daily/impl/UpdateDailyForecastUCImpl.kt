@@ -6,6 +6,7 @@ import mega.triple.aaa.domain.ext.NullResult
 import mega.triple.aaa.domain.forecast.daily.UpdateDailyForecastUC
 import mega.triple.aaa.domain.forecast.model.DailyForecastDomainModel.Companion.toDbModel
 import mega.triple.aaa.domain.location.GetLocationUC
+import mega.triple.aaa.domain.settings.SetLastUpdateUC
 import mega.triple.aaa.local.source.ForecastDbSource
 import mega.triple.aaa.network.source.ForecastNetSource
 
@@ -13,6 +14,7 @@ class UpdateDailyForecastUCImpl(
     private val dbSource: ForecastDbSource,
     private val netSource: ForecastNetSource,
     private val locationUC: GetLocationUC,
+    private val setLastUpdateUC: SetLastUpdateUC,
 ) : UpdateDailyForecastUC {
     override suspend operator fun invoke(): Result<Unit> {
         val locationKey = locationUC().first()?.city?.locationKey
@@ -24,6 +26,7 @@ class UpdateDailyForecastUCImpl(
                     wrapper.dailyForecasts?.map { it.toDbModel() } ?: throw NullResult()
                 }.onSuccess {
                     dbSource.insertDailyForecasts(it)
+                    setLastUpdateUC(System.currentTimeMillis())
                 }.onFailure {
                     throw it
                 }

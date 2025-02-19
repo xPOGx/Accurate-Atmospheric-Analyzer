@@ -6,7 +6,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,7 +16,10 @@ import androidx.compose.foundation.lazy.grid.LazyGridItemSpanScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -26,6 +28,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import mega.triple.aaa.common.ext.Constants.STUB_VALUE
@@ -38,6 +41,7 @@ import mega.triple.aaa.ui.R.drawable
 import mega.triple.aaa.ui.components.card.DayCard
 import mega.triple.aaa.ui.components.card.ForecastCard
 import mega.triple.aaa.ui.components.card.ParameterCard
+import mega.triple.aaa.ui.components.pulltorefresh.PullToRefreshWrapper
 import mega.triple.aaa.ui.components.tab.DayTab
 import mega.triple.aaa.ui.components.toolbar.TopAppBar
 import mega.triple.aaa.ui.components.view.UvIndexView
@@ -50,14 +54,18 @@ import mega.triple.aaa.ui.theme.AAATheme
 import mega.triple.aaa.ui.theme.AAATheme.colors
 import mega.triple.aaa.ui.theme.AAATheme.spaces
 import mega.triple.aaa.ui.theme.AAATheme.typography
+import java.util.Calendar
 import kotlin.math.absoluteValue
+import kotlin.math.min
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
     location: LocationUiModel? = null,
     forecastFlows: ForecastFlows = ForecastFlows(),
+    lastUpdateDate: Calendar? = null,
+    isRefreshing: Boolean = false,
     onAction: ((HomeAction) -> Unit)? = null,
 ) {
     val gridState = rememberLazyGridState()
@@ -73,14 +81,12 @@ fun HomeScreen(
     val listMode = selectedIndex == 2
 
     val currentData = when (selectedIndex) {
-        0 -> forecastFlows.today
         1 -> forecastFlows.tomorrow
-        else -> forecastFlows.forecast.firstOrNull()
+        else -> forecastFlows.today
     }
     val diffData = when (selectedIndex) {
         0 -> forecastFlows.yesterday
-        1 -> forecastFlows.today
-        else -> null
+        else -> forecastFlows.today
     }
 
     val dayNight = if (currentData?.isDay == true) currentData.day else currentData?.night
@@ -88,6 +94,9 @@ fun HomeScreen(
 
     val line = if (listMode) 1 else 2
     val allLine: LazyGridItemSpanScope.() -> GridItemSpan = { GridItemSpan(line) }
+
+    val state = rememberPullToRefreshState()
+    val threshold = PullToRefreshDefaults.PositionalThreshold
 
     Scaffold(
         containerColor = colors.background,
@@ -106,128 +115,143 @@ fun HomeScreen(
         },
         modifier = modifier.fillMaxSize(),
     ) { innerPadding ->
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(line),
-            state = gridState,
-            contentPadding = PaddingValues(vertical = spaces.size12, horizontal = spaces.size16),
-            verticalArrangement = Arrangement.spacedBy(spaces.size12),
-            horizontalArrangement = Arrangement.spacedBy(spaces.size16),
-            modifier = Modifier.padding(innerPadding)
+        PullToRefreshWrapper(
+            state = state,
+            isRefreshing = isRefreshing,
+            threshold = threshold,
+            lastUpdateDate = lastUpdateDate,
+            onRefresh = { onAction?.invoke(HomeAction.Refresh) },
+            modifier = Modifier.padding(innerPadding),
         ) {
-            if (listMode) {
-                items(items = forecastFlows.forecast) {
-                    DayCard(data = it)
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(line),
+                state = gridState,
+                contentPadding = PaddingValues(
+                    vertical = spaces.size12,
+                    horizontal = spaces.size16
+                ),
+                verticalArrangement = Arrangement.spacedBy(spaces.size12),
+                horizontalArrangement = Arrangement.spacedBy(spaces.size16),
+                modifier = Modifier.graphicsLayer {
+                    translationY = state.distanceFraction * threshold.roundToPx()
+                    alpha = 1f - min(0.5f, state.distanceFraction)
                 }
-            } else {
-                item(span = allLine) {
-                    DayTab(
-                        selectedIndex = selectedIndex,
-                        onSelect = changeIndex,
-                        modifier = Modifier
-                    )
-                }
-                item(contentType = "AAACardItem") {
-                    val speed = dayNight?.wind?.speed?.value
-                    val speedUnit = dayNight?.wind?.speed?.unit
-                    val diff = diff(speed, diffDayNight?.wind?.speed?.value)
-                    ParameterCard(
-                        title = stringResource(string.home_wind_speed),
-                        description = formatSpeed(speed, speedUnit),
-                        iconRes = drawable.ic_air,
-                        extra = diff?.let {
-                            formatSpeed(
-                                it.absoluteValue,
-                                speedUnit
-                            ) to (it > 0)
-                        },
-                    )
-                }
-                item(contentType = "AAACardItem") {
-                    val diff = diff(dayNight?.rainProbability, diffDayNight?.rainProbability)
-                    ParameterCard(
-                        title = stringResource(string.home_rain_chance),
-                        description = formatProbability(dayNight?.rainProbability),
-                        iconRes = drawable.ic_rainy,
-                        extra = diff?.let { formatProbability(diff.absoluteValue) to (diff > 0) },
-                    )
-                }
-                item(contentType = "AAACardItem") {
-                    ParameterCard(
-                        title = stringResource(string.home_air_quality),
-                        description = currentData?.airQuality ?: STUB_VALUE,
-                        iconRes = drawable.ic_waves,
-                        extra = null,
-                    )
-                }
-                item(contentType = "AAACardItem") {
-                    val uvIndex = currentData?.uvIndex
-                    val diff = diff(uvIndex, diffData?.uvIndex)
-                    AnimatedContent(
-                        targetState = uvCustomVisible,
-                        label = "uvCustomVisible",
-                        transitionSpec = {
-                            (fadeIn() + slideInHorizontally { it })
-                                .togetherWith(fadeOut() + slideOutHorizontally { it })
-                        }
-                    ) {
-                        if (it) {
-                            UvIndexView(
-                                uvIndex = uvIndex?.toFloat() ?: 0f,
-                                modifier = Modifier.noRippleClickable {
-                                    uvCustomVisible = false
-                                }
-                            )
-                        } else {
-                            ParameterCard(
-                                title = stringResource(string.home_uv_index),
-                                description = uvIndex.toString(),
-                                iconRes = drawable.ic_sun,
-                                extra = diff?.let { diff.toString() to (diff > 0) },
-                                modifier = Modifier.noRippleClickable { uvCustomVisible = true }
-                            )
+            ) {
+                if (listMode) {
+                    items(items = forecastFlows.forecast) {
+                        DayCard(data = it)
+                    }
+                } else {
+                    item(span = allLine) {
+                        DayTab(
+                            selectedIndex = selectedIndex,
+                            onSelect = changeIndex,
+                            modifier = Modifier
+                        )
+                    }
+                    item(contentType = "AAACardItem") {
+                        val speed = dayNight?.wind?.speed?.value
+                        val speedUnit = dayNight?.wind?.speed?.unit
+                        val diff = diff(speed, diffDayNight?.wind?.speed?.value)
+                        ParameterCard(
+                            title = stringResource(string.home_wind_speed),
+                            description = formatSpeed(speed, speedUnit),
+                            iconRes = drawable.ic_air,
+                            extra = diff?.let {
+                                formatSpeed(
+                                    it.absoluteValue,
+                                    speedUnit
+                                ) to (it > 0)
+                            },
+                        )
+                    }
+                    item(contentType = "AAACardItem") {
+                        val diff = diff(dayNight?.rainProbability, diffDayNight?.rainProbability)
+                        ParameterCard(
+                            title = stringResource(string.home_rain_chance),
+                            description = formatProbability(dayNight?.rainProbability),
+                            iconRes = drawable.ic_rainy,
+                            extra = diff?.let { formatProbability(diff.absoluteValue) to (diff > 0) },
+                        )
+                    }
+                    item(contentType = "AAACardItem") {
+                        ParameterCard(
+                            title = stringResource(string.home_air_quality),
+                            description = currentData?.airQuality ?: STUB_VALUE,
+                            iconRes = drawable.ic_waves,
+                            extra = null,
+                        )
+                    }
+                    item(contentType = "AAACardItem") {
+                        val uvIndex = currentData?.uvIndex
+                        val diff = diff(uvIndex, diffData?.uvIndex)
+                        AnimatedContent(
+                            targetState = uvCustomVisible,
+                            label = "uvCustomVisible",
+                            transitionSpec = {
+                                (fadeIn() + slideInHorizontally { it })
+                                    .togetherWith(fadeOut() + slideOutHorizontally { it })
+                            }
+                        ) {
+                            if (it) {
+                                UvIndexView(
+                                    uvIndex = uvIndex?.toFloat() ?: 0f,
+                                    modifier = Modifier.noRippleClickable {
+                                        uvCustomVisible = false
+                                    }
+                                )
+                            } else {
+                                ParameterCard(
+                                    title = stringResource(string.home_uv_index),
+                                    description = uvIndex.toString(),
+                                    iconRes = drawable.ic_sun,
+                                    extra = diff?.let { diff.toString() to (diff > 0) },
+                                    modifier = Modifier.noRippleClickable { uvCustomVisible = true }
+                                )
+                            }
                         }
                     }
-                }
-                item(span = allLine) {
-                    ForecastCard()
-                }
-                // TODO Day forecast card
-                item(span = allLine) {
-                    ForecastCard()
-                }
-                // TODO Chance of rain card
-                item(span = allLine) {
-                    ForecastCard()
-                }
-                item(contentType = "AAACardItem") {
-                    ParameterCard(
-                        title = stringResource(string.home_sunrise),
-                        description = formatSimpleTime(currentData?.sun?.timeRise),
-                        descriptionTextStyle = typography.gs500size14,
-                        iconRes = drawable.ic_sun,
-                        extra = getTimeDiff(currentData?.sun?.epochRise) to null,
-                        extraModifier = Modifier.padding(bottom = spaces.size12)
-                    )
-                }
-                item(contentType = "AAACardItem") {
-                    ParameterCard(
-                        title = stringResource(string.home_sunset),
-                        description = formatSimpleTime(currentData?.sun?.timeSet),
-                        descriptionTextStyle = typography.gs500size14,
-                        iconRes = drawable.ic_sunset,
-                        extra = getTimeDiff(currentData?.sun?.epochSet) to null,
-                        extraModifier = Modifier.padding(bottom = spaces.size12),
-                    )
-                }
-                item(contentType = "AAACardItem") {
-                    ParameterCard(
-                        title = stringResource(string.home_moonrise),
-                        description = formatSimpleTime(currentData?.moon?.timeRise),
-                        descriptionTextStyle = typography.gs500size14,
-                        iconRes = drawable.ic_sunrise,
-                        extra = getTimeDiff(currentData?.moon?.epochRise) to null,
-                        extraModifier = Modifier.padding(bottom = spaces.size12)
-                    )
+                    item(span = allLine) {
+                        ForecastCard()
+                    }
+                    // TODO Day forecast card
+                    item(span = allLine) {
+                        ForecastCard()
+                    }
+                    // TODO Chance of rain card
+                    item(span = allLine) {
+                        ForecastCard()
+                    }
+                    item(contentType = "AAACardItem") {
+                        ParameterCard(
+                            title = stringResource(string.home_sunrise),
+                            description = formatSimpleTime(currentData?.sun?.timeRise),
+                            descriptionTextStyle = typography.gs500size14,
+                            iconRes = drawable.ic_sun,
+                            extra = getTimeDiff(currentData?.sun?.epochRise) to null,
+                            extraModifier = Modifier.padding(bottom = spaces.size12)
+                        )
+                    }
+                    item(contentType = "AAACardItem") {
+                        ParameterCard(
+                            title = stringResource(string.home_sunset),
+                            description = formatSimpleTime(currentData?.sun?.timeSet),
+                            descriptionTextStyle = typography.gs500size14,
+                            iconRes = drawable.ic_sunset,
+                            extra = getTimeDiff(currentData?.sun?.epochSet) to null,
+                            extraModifier = Modifier.padding(bottom = spaces.size12),
+                        )
+                    }
+                    item(contentType = "AAACardItem") {
+                        ParameterCard(
+                            title = stringResource(string.home_moonrise),
+                            description = formatSimpleTime(currentData?.moon?.timeRise),
+                            descriptionTextStyle = typography.gs500size14,
+                            iconRes = drawable.ic_sunrise,
+                            extra = getTimeDiff(currentData?.moon?.epochRise) to null,
+                            extraModifier = Modifier.padding(bottom = spaces.size12)
+                        )
+                    }
                 }
             }
         }

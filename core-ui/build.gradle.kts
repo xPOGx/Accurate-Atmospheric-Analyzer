@@ -52,6 +52,8 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    // 3rd party
+    implementation(libs.lottie.compose)
     // Modules
     implementation(project(libs.versions.projectCoreCommon.get()))
     implementation(project(libs.versions.projectCoreStrings.get()))

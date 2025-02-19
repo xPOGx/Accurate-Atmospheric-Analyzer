@@ -9,7 +9,7 @@ plugins {
 
 android {
     with(libs) {
-        namespace = "${versions.applicationId.get()}.temp"
+        namespace = "${versions.applicationId.get()}.sync"
         compileSdk = versions.compileSdk.get().toInt()
 
         defaultConfig {
@@ -35,7 +35,6 @@ dependencies {
     // Koin
     implementation(libs.koin.android)
     implementation(libs.koin.annotatinos)
-    implementation(libs.koin.androidx.worker)
     ksp(libs.koin.compiler)
     // COMPOSE
     implementation(platform(libs.androidx.compose.bom))
@@ -49,8 +48,7 @@ dependencies {
     // WorkManager
     implementation(libs.worker.lib)
     implementation(libs.worker.startup)
-    implementation(libs.worker.hilt)
-    ksp(libs.worker.hiltCompiler)
+    implementation(libs.koin.androidx.worker)
     // Modules
     implementation(project(libs.versions.projectCoreCommon.get()))
     implementation(project(libs.versions.projectDomain.get()))

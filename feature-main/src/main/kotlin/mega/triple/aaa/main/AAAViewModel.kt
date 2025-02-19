@@ -11,8 +11,8 @@ import kotlinx.coroutines.flow.update
 import mega.triple.aaa.common.ext.safeLaunch
 import mega.triple.aaa.domain.location.GetLocationUC
 import mega.triple.aaa.domain.location.model.LocationDomainModel.Companion.toUiModel
-import mega.triple.aaa.domain.theme.GetThemeUC
-import mega.triple.aaa.domain.theme.model.ThemeTypeDomainModel.Companion.toUiModel
+import mega.triple.aaa.domain.settings.GetThemeUC
+import mega.triple.aaa.domain.settings.model.ThemeTypeDomainModel.Companion.toUiModel
 import mega.triple.aaa.ui.ext.UI
 import mega.triple.aaa.ui.model.ThemeTypeUiModel
 import mega.triple.aaa.ui.model.location.LocationUiModel

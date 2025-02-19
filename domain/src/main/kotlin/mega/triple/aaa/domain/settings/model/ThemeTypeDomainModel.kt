@@ -1,4 +1,4 @@
-package mega.triple.aaa.domain.theme.model
+package mega.triple.aaa.domain.settings.model
 
 import mega.triple.aaa.preference.model.ThemeTypePrefModel
 import mega.triple.aaa.ui.model.ThemeTypeUiModel

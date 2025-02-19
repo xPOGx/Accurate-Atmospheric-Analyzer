@@ -234,7 +234,7 @@ fun TopAppBar(
                             style = typography.ps400size18.copy(fontSize = animateFeelSize.sp),
                             color = mainColor,
                         )
-                        androidx.compose.animation.AnimatedVisibility(!compact) {
+                        AnimatedVisibility(!compact) {
                             Text(
                                 text = formatFeelTemperature(
                                     context,

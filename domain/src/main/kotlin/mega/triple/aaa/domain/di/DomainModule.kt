@@ -23,10 +23,14 @@ import mega.triple.aaa.domain.location.impl.GetContinentsUCImpl
 import mega.triple.aaa.domain.location.impl.GetCountriesUCImpl
 import mega.triple.aaa.domain.location.impl.GetLocationUCImpl
 import mega.triple.aaa.domain.location.impl.SetLocationUCImpl
-import mega.triple.aaa.domain.theme.GetThemeUC
-import mega.triple.aaa.domain.theme.SetThemeUC
-import mega.triple.aaa.domain.theme.impl.GetThemeUCImpl
-import mega.triple.aaa.domain.theme.impl.SetThemeUCImpl
+import mega.triple.aaa.domain.settings.GetLastUpdateUC
+import mega.triple.aaa.domain.settings.GetThemeUC
+import mega.triple.aaa.domain.settings.SetLastUpdateUC
+import mega.triple.aaa.domain.settings.SetThemeUC
+import mega.triple.aaa.domain.settings.impl.GetLastUpdateUCImpl
+import mega.triple.aaa.domain.settings.impl.GetThemeUCImpl
+import mega.triple.aaa.domain.settings.impl.SetLastUpdateUCImpl
+import mega.triple.aaa.domain.settings.impl.SetThemeUCImpl
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -49,4 +53,7 @@ val domainModule = module {
     // Theme
     singleOf(::GetThemeUCImpl) bind GetThemeUC::class
     singleOf(::SetThemeUCImpl) bind SetThemeUC::class
+    // Last Update Date
+    singleOf(::GetLastUpdateUCImpl) bind GetLastUpdateUC::class
+    singleOf(::SetLastUpdateUCImpl) bind SetLastUpdateUC::class
 }

@@ -1,7 +1,7 @@
-package mega.triple.aaa.domain.theme
+package mega.triple.aaa.domain.settings
 
 import kotlinx.coroutines.flow.Flow
-import mega.triple.aaa.domain.theme.model.ThemeTypeDomainModel
+import mega.triple.aaa.domain.settings.model.ThemeTypeDomainModel
 
 interface GetThemeUC {
     operator fun invoke(): Flow<ThemeTypeDomainModel>

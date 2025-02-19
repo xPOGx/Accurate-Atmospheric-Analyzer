@@ -7,10 +7,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import mega.triple.aaa.common.ext.safeLaunch
-import mega.triple.aaa.domain.theme.GetThemeUC
-import mega.triple.aaa.domain.theme.SetThemeUC
-import mega.triple.aaa.domain.theme.model.ThemeTypeDomainModel.Companion.toDomainModel
-import mega.triple.aaa.domain.theme.model.ThemeTypeDomainModel.Companion.toUiModel
+import mega.triple.aaa.domain.settings.GetThemeUC
+import mega.triple.aaa.domain.settings.SetThemeUC
+import mega.triple.aaa.domain.settings.model.ThemeTypeDomainModel.Companion.toDomainModel
+import mega.triple.aaa.domain.settings.model.ThemeTypeDomainModel.Companion.toUiModel
 import mega.triple.aaa.settings.ext.SettingsAction
 import mega.triple.aaa.ui.ext.SingleEvent
 import mega.triple.aaa.ui.model.ThemeTypeUiModel
