@@ -6,6 +6,7 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import mega.triple.aaa.ui.components.card.ErrorCard
+import mega.triple.aaa.ui.ext.UiText.Companion.asString
 
 sealed class UI<out T> {
     data object LOADING : UI<Nothing>()
@@ -13,7 +14,7 @@ sealed class UI<out T> {
     class READY<out T>(val data: T) : UI<T>()
 
     class ERROR(
-        val e: Throwable,
+        val uiText: UiText,
         val onTryAgain: (() -> Unit)? = null,
     ) : UI<Nothing>()
 }
@@ -24,9 +25,9 @@ fun <T> UI<T>.render(
     onLoading: @Composable () -> Unit = {
         LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
     },
-    onError: @Composable (Throwable, (() -> Unit)?) -> Unit = { e, action ->
+    onError: @Composable (UiText, (() -> Unit)?) -> Unit = { uiText, action ->
         ErrorCard(
-            errorMsg = e.message ?: "Unknown error",
+            errorMsg = uiText.asString(),
             onTryAgain = action,
         )
     },
@@ -35,6 +36,6 @@ fun <T> UI<T>.render(
     when (this) {
         UI.LOADING -> onLoading()
         is UI.READY -> onDone(this.data)
-        is UI.ERROR -> onError(this.e, this.onTryAgain)
+        is UI.ERROR -> onError(this.uiText, this.onTryAgain)
     }
 }

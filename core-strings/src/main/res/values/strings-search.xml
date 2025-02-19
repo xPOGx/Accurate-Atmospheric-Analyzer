@@ -8,4 +8,8 @@
     <string name="search_city">City</string>
     <string name="search_item_title">%1$s - %2$s</string>
     <string name="search_save_changes">Save Changes</string>
+    <string name="search_error_update">Error updating forecast</string>
+    <string name="search_error_save">Error saving location</string>
+    <string name="search_error_continent">Continent not chosen</string>
+    <string name="search_error_country">Country not chosen</string>
 </resources>

@@ -11,6 +11,7 @@ import androidx.navigation.navigation
 import mega.triple.aaa.navigation.NavigationDirection
 import mega.triple.aaa.search.SearchScreen
 import mega.triple.aaa.search.SearchViewModel
+import mega.triple.aaa.ui.ext.UiText.Companion.asString
 import org.koin.androidx.compose.koinViewModel
 
 fun NavGraphBuilder.searchNavigationGraph(
@@ -32,7 +33,7 @@ fun NavGraphBuilder.searchNavigationGraph(
                 }
                 onNavigationBack.collectEffect { navController.navigateUp() }
                 onToast.collectEffect { msg ->
-                    Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, msg.asString(context), Toast.LENGTH_LONG).show()
                 }
             }
 

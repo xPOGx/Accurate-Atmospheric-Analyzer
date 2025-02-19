@@ -16,11 +16,14 @@ import mega.triple.aaa.domain.location.model.ContinentDomainModel.Companion.toUi
 import mega.triple.aaa.domain.location.model.CountryDomainModel.Companion.toUiModel
 import mega.triple.aaa.domain.location.model.LocationDomainModel.Companion.toDomainModel
 import mega.triple.aaa.search.ext.SearchAction
+import mega.triple.aaa.strings.R.string
 import mega.triple.aaa.ui.ext.LocationType
 import mega.triple.aaa.ui.ext.LocationType.*
 import mega.triple.aaa.ui.ext.SingleEvent
 import mega.triple.aaa.ui.ext.UI
 import mega.triple.aaa.ui.ext.UIEvent
+import mega.triple.aaa.ui.ext.UiText
+import mega.triple.aaa.ui.ext.asUiText
 import mega.triple.aaa.ui.model.location.LocationUiModel
 
 class SearchViewModel(
@@ -37,7 +40,7 @@ class SearchViewModel(
     // EVENTS
     val onNavigationBack = SingleEvent()
     val onSaveSuccess = SingleEvent()
-    val onToast = UIEvent<String>()
+    val onToast = UIEvent<UiText>()
 
     fun onAction(action: SearchAction) {
         when (action) {
@@ -111,7 +114,7 @@ class SearchViewModel(
                         _uiState.update { it.copy(locationList = UI.READY(locationList)) }
                     }.onFailure { e ->
                         _uiState.update {
-                            it.copy(locationList = UI.ERROR(e) { loadList(type) })
+                            it.copy(locationList = UI.ERROR(e.asUiText()) { loadList(type) })
                         }
                     }
                 }
@@ -120,7 +123,9 @@ class SearchViewModel(
                     val continentId = _uiState.value.location.continent?.id
                     if (continentId == null) {
                         _uiState.update {
-                            it.copy(locationList = UI.ERROR(Exception(CONTINENT_ERROR)))
+                            it.copy(
+                                locationList = UI.ERROR(UiText.Resource(string.search_error_continent))
+                            )
                         }
                     } else {
                         getCountriesUC(continentId).mapCatching { domainModels ->
@@ -132,7 +137,7 @@ class SearchViewModel(
                             _uiState.update { it.copy(locationList = UI.READY(locationList)) }
                         }.onFailure { e ->
                             _uiState.update {
-                                it.copy(locationList = UI.ERROR(e) { loadList(type) })
+                                it.copy(locationList = UI.ERROR(e.asUiText()) { loadList(type) })
                             }
                         }
                     }
@@ -143,11 +148,11 @@ class SearchViewModel(
                     val countryId = _uiState.value.location.country?.id
                     if (continentId == null || countryId == null) {
                         val error = when {
-                            continentId == null -> CONTINENT_ERROR
-                            else -> COUNTRY_ERROR
+                            continentId == null -> UiText.Resource(string.search_error_continent)
+                            else -> UiText.Resource(string.search_error_country)
                         }
                         _uiState.update {
-                            it.copy(locationList = UI.ERROR(Exception(error)))
+                            it.copy(locationList = UI.ERROR(error))
                         }
                     } else {
                         getCitiesUC(continentId, countryId).mapCatching { domainModels ->
@@ -159,7 +164,7 @@ class SearchViewModel(
                             _uiState.update { it.copy(locationList = UI.READY(locationList)) }
                         }.onFailure { e ->
                             _uiState.update {
-                                it.copy(locationList = UI.ERROR(e) { loadList(type) })
+                                it.copy(locationList = UI.ERROR(e.asUiText()) { loadList(type) })
                             }
                         }
                     }
@@ -176,16 +181,17 @@ class SearchViewModel(
                         .onSuccess {
                             onSaveSuccess.fire()
                         }.onFailure {
-                            onToast.send(it.message ?: "Error updating forecast")
+                            onToast.send(
+                                it.asUiText(UiText.Resource(string.search_error_update))
+                            )
                         }
                 }
-                .onFailure { onToast.send(it.message ?: "Error saving location") }
+                .onFailure {
+                    onToast.send(
+                        it.asUiText(UiText.Resource(string.search_error_save))
+                    )
+                }
         }
-    }
-
-    companion object {
-        private const val CONTINENT_ERROR = "Continent not chosen"
-        private const val COUNTRY_ERROR = "Country not chosen"
     }
 }
 

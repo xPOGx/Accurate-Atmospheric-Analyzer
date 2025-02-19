@@ -27,6 +27,7 @@ import mega.triple.aaa.main.navigation.AAANavHost
 import mega.triple.aaa.search.SearchScreen
 import mega.triple.aaa.search.SearchViewModel
 import mega.triple.aaa.ui.components.loader.GlobalLoading
+import mega.triple.aaa.ui.ext.UiText.Companion.asString
 import mega.triple.aaa.ui.ext.render
 import mega.triple.aaa.ui.model.ThemeTypeUiModel
 import mega.triple.aaa.ui.theme.AAATheme
@@ -78,7 +79,7 @@ class AAAActivity : ComponentActivity() {
                                     ).show()
                                 }
                                 onToast.collectEffect { msg ->
-                                    Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
+                                    Toast.makeText(context, msg.asString(context), Toast.LENGTH_LONG).show()
                                 }
                             }
 
