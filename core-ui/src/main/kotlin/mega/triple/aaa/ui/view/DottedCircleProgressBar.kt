@@ -7,19 +7,27 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
 import android.os.Build
+import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.compose.ui.graphics.toArgb
+import androidx.core.content.withStyledAttributes
+import mega.triple.aaa.ui.R
 import kotlin.math.cos
 import kotlin.math.sin
 
-class DottedCircleProgressBar(context: Context) : View(context) {
+class DottedCircleProgressBar(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0,
+) : View(context, attrs, defStyleAttr) {
     private val paint = Paint()
     private var progress = 0f
 
     init {
         paint.isAntiAlias = true
         paint.style = Paint.Style.FILL
+        attrs?.let { findAttributes(it, defStyleAttr) }
     }
 
     fun setup(
@@ -67,6 +75,16 @@ class DottedCircleProgressBar(context: Context) : View(context) {
         val textX = centerX - textBounds.width() / 2f
         val textY = centerY + textBounds.height() / 2f
         canvas.drawText(text, textX, textY, paint)
+    }
+
+    private fun findAttributes(attrs: AttributeSet, defStyleAttr: Int) {
+        context.withStyledAttributes(
+            attrs,
+            R.styleable.DottedCircleProgressBar,
+            defStyleAttr,
+        ) {
+            setup(getFloat(R.styleable.DottedCircleProgressBar_progress, 0f))
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
