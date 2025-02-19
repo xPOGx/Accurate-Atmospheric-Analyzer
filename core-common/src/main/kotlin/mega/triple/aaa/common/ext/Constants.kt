@@ -19,6 +19,7 @@ object Constants {
     const val MINUTE_SHORT = "m"
     const val PERIOD = "."
     const val COLON = ":"
+    const val ALPHABET = "abcdefghijklmnopqrstuvwxyz"
 
     const val ISO_PATTERN = "yyyy-MM-dd'T'HH:mm:ssZ"
     const val ISO_PATTERN_WITHOUT_TIMEZONE = "yyyy-MM-dd'T'HH:mm:ss"

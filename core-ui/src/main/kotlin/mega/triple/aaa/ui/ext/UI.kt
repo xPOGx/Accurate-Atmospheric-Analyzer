@@ -17,6 +17,11 @@ sealed class UI<out T> {
         val uiText: UiText,
         val onTryAgain: (() -> Unit)? = null,
     ) : UI<Nothing>()
+
+    companion object {
+        fun <T> UI<T>.getOrNull() = (this as? READY)?.data
+        fun <T> UI<T>.errorOrNull() = this as? ERROR
+    }
 }
 
 @SuppressLint("ComposableNaming")
