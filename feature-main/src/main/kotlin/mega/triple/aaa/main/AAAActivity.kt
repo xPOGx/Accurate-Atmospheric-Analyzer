@@ -77,6 +77,7 @@ class AAAActivity : ComponentActivity() {
                                         uiState.location.locationName,
                                         Toast.LENGTH_LONG
                                     ).show()
+                                    mainViewModel.fetchLocation()
                                 }
                                 onToast.collectEffect { msg ->
                                     Toast.makeText(context, msg.asString(context), Toast.LENGTH_LONG).show()

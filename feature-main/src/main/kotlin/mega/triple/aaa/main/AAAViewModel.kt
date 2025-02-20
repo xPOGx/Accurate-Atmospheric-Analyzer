@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import mega.triple.aaa.common.ext.safeLaunch
@@ -28,11 +28,11 @@ class AAAViewModel(
     val themeType: Flow<ThemeTypeUiModel> = getThemeUC().map { it.toUiModel() }
 
     init {
-        subscribeLocation()
+        fetchLocation()
     }
 
-    private fun subscribeLocation() = viewModelScope.safeLaunch {
-        getLocationUC().collectLatest { location ->
+    fun fetchLocation() = viewModelScope.safeLaunch {
+        getLocationUC().firstOrNull().let { location ->
             _location.update { UI.READY(location?.toUiModel()) }
         }
     }
