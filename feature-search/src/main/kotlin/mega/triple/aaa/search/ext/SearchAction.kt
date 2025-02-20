@@ -9,4 +9,6 @@ sealed class SearchAction {
     data object SaveAll : SearchAction()
     data class LoadLocations(val type: LocationType) : SearchAction()
     data object OnNavigateBack : SearchAction()
+    data class ChangeEditMode(val mode: LocationType?) : SearchAction()
+    data class ChangeFilterQuery(val query: String) : SearchAction()
 }

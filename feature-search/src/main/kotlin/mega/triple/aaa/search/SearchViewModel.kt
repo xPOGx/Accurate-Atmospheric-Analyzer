@@ -21,6 +21,7 @@ import mega.triple.aaa.ui.ext.LocationType
 import mega.triple.aaa.ui.ext.LocationType.*
 import mega.triple.aaa.ui.ext.SingleEvent
 import mega.triple.aaa.ui.ext.UI
+import mega.triple.aaa.ui.ext.UI.Companion.getOrNull
 import mega.triple.aaa.ui.ext.UIEvent
 import mega.triple.aaa.ui.ext.UiText
 import mega.triple.aaa.ui.ext.asUiText
@@ -45,16 +46,13 @@ class SearchViewModel(
     fun onAction(action: SearchAction) {
         when (action) {
             is SearchAction.SaveContinent -> saveContinent(action.continentId)
-
             is SearchAction.SaveCountry -> saveCountry(action.countryId)
-
             is SearchAction.SaveCity -> saveCity(action.cityId)
-
             is SearchAction.SaveAll -> saveAll()
-
             is SearchAction.LoadLocations -> loadList(action.type)
-
             is SearchAction.OnNavigateBack -> onNavigationBack.fire()
+            is SearchAction.ChangeEditMode -> changeEditMode(action.mode)
+            is SearchAction.ChangeFilterQuery -> filterLocationList(action.query)
         }
     }
 
@@ -65,7 +63,10 @@ class SearchViewModel(
         val continent = continents?.find { it.id == continentId }
 
         _uiState.update { state ->
-            state.copy(location = LocationUiModel(continent = continent))
+            state.copy(
+                location = LocationUiModel(continent = continent),
+                editMode = null,
+            )
         }
     }
 
@@ -83,6 +84,7 @@ class SearchViewModel(
                     country = country,
                     city = null,
                 ),
+                editMode = null,
             )
         }
     }
@@ -96,12 +98,21 @@ class SearchViewModel(
         val city = cities?.find { it.id == cityId }
 
         _uiState.update { state ->
-            state.copy(location = state.location.copy(city = city))
+            state.copy(
+                location = state.location.copy(city = city),
+                editMode = null,
+            )
         }
     }
 
     private fun loadList(type: LocationType) {
-        _uiState.update { it.copy(locationList = UI.LOADING) }
+        _uiState.update {
+            it.copy(
+                locationList = UI.LOADING,
+                filteredList = emptyList(),
+                editMode = type,
+            )
+        }
         viewModelScope.safeLaunch {
             when (type) {
                 CONTINENT -> {
@@ -170,6 +181,29 @@ class SearchViewModel(
                     }
                 }
             }
+            filterLocationList()
+        }
+    }
+
+    private fun changeEditMode(mode: LocationType?) {
+        _uiState.update {
+            it.copy(editMode = mode)
+        }
+    }
+
+    private fun filterLocationList(query: String = "") {
+        if (_uiState.value.locationList is UI.ERROR) return
+        val list =  if (query.isBlank()) {
+            _uiState.value.locationList.getOrNull().orEmpty()
+        } else {
+            _uiState.value.locationList
+                .getOrNull()
+                .orEmpty()
+                .filter { it.toString().contains(query, true) }
+
+        }
+        _uiState.update {
+            it.copy(filteredList = list)
         }
     }
 
@@ -198,4 +232,6 @@ class SearchViewModel(
 data class SearchUiState(
     val location: LocationUiModel = LocationUiModel(),
     val locationList: UI<List<Pair<String?, String?>>> = UI.LOADING,
+    val editMode: LocationType? = null,
+    val filteredList: List<Pair<String?, String?>> = emptyList(),
 )

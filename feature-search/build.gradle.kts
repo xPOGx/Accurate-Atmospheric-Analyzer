@@ -50,6 +50,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     // Serialization
     implementation(libs.kotlinx.serialization.json)
+    // 3rd party
+    implementation(libs.lottie.compose)
     // Modules
     implementation(project(libs.versions.projectCoreCommon.get()))
     implementation(project(libs.versions.projectDomain.get()))
