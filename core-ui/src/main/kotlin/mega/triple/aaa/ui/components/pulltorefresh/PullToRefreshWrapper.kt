@@ -108,66 +108,68 @@ fun PullToRefreshWrapper(
         contentAlignment = contentAlignment,
     ) {
         content()
-        Box(
-            modifier = Modifier
-                .graphicsLayer {
-                    val showElevation = state.distanceFraction > 0f || isRefreshing
-                    translationY = state.distanceFraction * threshold.roundToPx() - size.height
-                    shadowElevation = if (showElevation) elevation.toPx() else 0f
-                    this.shape = shape
-                    clip = true
-                }
-                .background(color = containerColor, shape = shape)
-                .align(Alignment.TopCenter)
-                .fillMaxSize(maxSize),
-            contentAlignment = Alignment.BottomCenter,
-        ) {
-            LottieAnimation(
-                composition = compositionBackground,
-                progress = { backgroundProgress },
-                alignment = Alignment.BottomCenter,
-                contentScale = ContentScale.FillBounds,
+        if (enabled) {
+            Box(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(threshold * state.distanceFraction * maxDistanceFraction),
-            )
-            AnimatedVisibility(
-                visible = isRefreshing,
-                enter = fadeIn(),
-                exit = fadeOut(),
+                    .graphicsLayer {
+                        val showElevation = state.distanceFraction > 0f || isRefreshing
+                        translationY = state.distanceFraction * threshold.roundToPx() - size.height
+                        shadowElevation = if (showElevation) elevation.toPx() else 0f
+                        this.shape = shape
+                        clip = true
+                    }
+                    .background(color = containerColor, shape = shape)
+                    .align(Alignment.TopCenter)
+                    .fillMaxSize(maxSize),
+                contentAlignment = Alignment.BottomCenter,
             ) {
                 LottieAnimation(
-                    composition = compositionLoading,
-                    progress = { loadingProgress },
-                    modifier = Modifier.size(threshold),
+                    composition = compositionBackground,
+                    progress = { backgroundProgress },
+                    alignment = Alignment.BottomCenter,
+                    contentScale = ContentScale.FillBounds,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(threshold * state.distanceFraction * maxDistanceFraction),
                 )
-            }
-            if (!isRefreshing) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
+                AnimatedVisibility(
+                    visible = isRefreshing,
+                    enter = fadeIn(),
+                    exit = fadeOut(),
                 ) {
-                    Text(
-                        text = formatLastUpdateTime(context, lastUpdateDate),
-                        color = colors.white,
-                        textAlign = TextAlign.Center,
-                        overflow = TextOverflow.Clip,
-                        maxLines = 2,
+                    LottieAnimation(
+                        composition = compositionLoading,
+                        progress = { loadingProgress },
+                        modifier = Modifier.size(threshold),
                     )
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(spaces.size4),
+                }
+                if (!isRefreshing) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         Text(
-                            text = stringResource(refreshTextRes),
+                            text = formatLastUpdateTime(context, lastUpdateDate),
                             color = colors.white,
+                            textAlign = TextAlign.Center,
+                            overflow = TextOverflow.Clip,
+                            maxLines = 2,
                         )
-                        SpacerWidth(spaces.size12)
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                            contentDescription = null,
-                            tint = colors.white,
-                            modifier = Modifier.rotate(refreshIconRotation)
-                        )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.padding(spaces.size4),
+                        ) {
+                            Text(
+                                text = stringResource(refreshTextRes),
+                                color = colors.white,
+                            )
+                            SpacerWidth(spaces.size12)
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                                contentDescription = null,
+                                tint = colors.white,
+                                modifier = Modifier.rotate(refreshIconRotation)
+                            )
+                        }
                     }
                 }
             }
