@@ -54,6 +54,7 @@ import kotlinx.coroutines.launch
 import mega.triple.aaa.domain.ext.ForecastFlows
 import mega.triple.aaa.home.components.HomeContent
 import mega.triple.aaa.home.ext.HomeAction
+import mega.triple.aaa.home.ext.HomeCardType
 import mega.triple.aaa.ui.R.drawable
 import mega.triple.aaa.ui.components.card.DayCard
 import mega.triple.aaa.ui.components.card.EmptyCard
@@ -66,19 +67,6 @@ import mega.triple.aaa.ui.theme.AAATheme.colors
 import mega.triple.aaa.ui.theme.AAATheme.spaces
 import java.util.Calendar
 import kotlin.math.min
-
-enum class HomeCardType {
-    WIND_SPEED,
-    RAIN_CHANCE,
-    AIR_QUALITY,
-    UV_INDEX,
-    FORECAST_HOURLY,
-    FORECAST_DAILY,
-    FORECAST_RAIN_CHANCE,
-    SUN_RISE,
-    SUN_SET,
-    MOON_RISE,
-}
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -93,14 +81,16 @@ fun HomeScreen(
     // States
     val gridState = rememberLazyGridState()
     var selectedIndex by remember { mutableIntStateOf(0) }
+    val listMode = selectedIndex == 2
     var uvCustomVisible by remember { mutableStateOf(false) }
-    val compact by remember {
+    var toolbarTabVisible by remember { mutableStateOf(false) }
+    val compact by remember(selectedIndex) {
         derivedStateOf {
-            gridState.firstVisibleItemIndex != 0 || selectedIndex == 2
+            toolbarTabVisible = gridState.firstVisibleItemIndex != 0 || listMode
+            gridState.firstVisibleItemIndex != 0 || gridState.firstVisibleItemIndex == 0 && !gridState.canScrollForward || listMode
         }
     }
     // Extensions
-    val listMode = selectedIndex == 2
     val changeIndex: ((Int) -> Unit) = { selectedIndex = it }
     // Cards data
     val currentData = when (selectedIndex) {
@@ -132,7 +122,7 @@ fun HomeScreen(
     val threshold = PullToRefreshDefaults.PositionalThreshold
     // Edit Cards
     val topPadding = WindowInsets.statusBars.getTop(LocalDensity.current)
-    var editMode by remember { mutableStateOf(true) }
+    var editMode by remember { mutableStateOf(false) }
     var selectedCard: Pair<HomeCardType, Boolean>? by remember { mutableStateOf(null) }
     var cardsMenu: List<Pair<HomeCardType, Boolean>> by remember {
         mutableStateOf(
@@ -172,6 +162,7 @@ fun HomeScreen(
                     locationName = location?.locationName,
                     data = currentData,
                     compact = compact,
+                    toolbarTabVisible = toolbarTabVisible,
                     selectedIndex = selectedIndex,
                     isError = forecastFlows.isAllEmpty,
                     onSelect = changeIndex,
@@ -216,7 +207,6 @@ fun HomeScreen(
                             DayTab(
                                 selectedIndex = selectedIndex,
                                 onSelect = changeIndex,
-                                modifier = Modifier
                             )
                         }
                     }

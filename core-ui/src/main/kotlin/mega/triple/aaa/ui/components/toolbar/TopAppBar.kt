@@ -81,6 +81,7 @@ import mega.triple.aaa.ui.theme.AAATheme.typography
 fun TopAppBar(
     modifier: Modifier = Modifier,
     compact: Boolean,
+    toolbarTabVisible: Boolean = true,
     selectedIndex: Int,
     locationName: String? = null,
     data: DailyForecastUiModel? = null,
@@ -286,13 +287,15 @@ fun TopAppBar(
                 ) { small ->
                     Column {
                         if (small) {
-                            DayTab(
-                                selectedIndex = selectedIndex,
-                                onSelect = onSelect,
-                                modifier = Modifier
-                                    .padding(horizontal = spaces.size16)
-                                    .padding(bottom = spaces.size12)
-                            )
+                            if (toolbarTabVisible) {
+                                DayTab(
+                                    selectedIndex = selectedIndex,
+                                    onSelect = onSelect,
+                                    modifier = Modifier
+                                        .padding(horizontal = spaces.size16)
+                                        .padding(bottom = spaces.size12)
+                                )
+                            }
                         } else {
                             Row(
                                 verticalAlignment = Alignment.Bottom,

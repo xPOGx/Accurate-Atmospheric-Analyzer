@@ -16,7 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import mega.triple.aaa.common.ext.Constants.STUB_VALUE
 import mega.triple.aaa.common.ext.diff
 import mega.triple.aaa.common.ext.getTimeDiff
-import mega.triple.aaa.home.HomeCardType
+import mega.triple.aaa.home.ext.HomeCardType
 import mega.triple.aaa.strings.R.string
 import mega.triple.aaa.ui.R.drawable
 import mega.triple.aaa.ui.components.card.ForecastCard
