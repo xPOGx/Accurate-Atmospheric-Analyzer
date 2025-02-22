@@ -9,6 +9,7 @@ import mega.triple.aaa.domain.location.GetLocationUC
 import mega.triple.aaa.domain.settings.SetLastUpdateUC
 import mega.triple.aaa.local.source.ForecastDbSource
 import mega.triple.aaa.network.source.ForecastNetSource
+import java.util.Calendar
 
 class UpdateDailyForecastUCImpl(
     private val dbSource: ForecastDbSource,
@@ -26,7 +27,7 @@ class UpdateDailyForecastUCImpl(
                     wrapper.dailyForecasts?.map { it.toDbModel() } ?: throw NullResult()
                 }.onSuccess {
                     dbSource.insertDailyForecasts(it)
-                    setLastUpdateUC(System.currentTimeMillis())
+                    setLastUpdateUC(Calendar.getInstance().timeInMillis)
                 }.onFailure {
                     throw it
                 }

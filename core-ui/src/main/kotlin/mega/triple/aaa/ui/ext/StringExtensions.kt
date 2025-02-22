@@ -3,6 +3,8 @@ package mega.triple.aaa.ui.ext
 import android.content.Context
 import mega.triple.aaa.common.ext.Constants
 import mega.triple.aaa.strings.R.string
+import java.text.DecimalFormat
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -79,6 +81,7 @@ fun formatProbability(value: Int?) = buildString {
 }
 
 fun formatLastUpdateTime(context: Context, date: Calendar?): String {
+    val format: NumberFormat = DecimalFormat("00")
     return when {
         date == null -> context.getString(string.pull_to_refresh_first_time)
         else -> buildString {
@@ -92,8 +95,8 @@ fun formatLastUpdateTime(context: Context, date: Calendar?): String {
             append(Constants.SPACE)
             append(
                 listOf(
-                    date.get(Calendar.DAY_OF_MONTH),
-                    date.get(Calendar.MONTH + 1),
+                    format.format(date.get(Calendar.DAY_OF_MONTH)),
+                    format.format(date.get(Calendar.MONTH + 1)),
                     date.get(Calendar.YEAR),
                 ).joinToString(Constants.PERIOD)
             )

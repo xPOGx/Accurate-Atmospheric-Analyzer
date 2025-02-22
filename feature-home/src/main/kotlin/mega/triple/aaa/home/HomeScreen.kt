@@ -42,6 +42,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -80,8 +81,8 @@ fun HomeScreen(
 ) {
     // States
     val gridState = rememberLazyGridState()
-    var selectedIndex by remember { mutableIntStateOf(0) }
-    val listMode = selectedIndex == 2
+    var selectedIndex by rememberSaveable { mutableIntStateOf(0) }
+    val listMode by remember(selectedIndex) { mutableStateOf(selectedIndex == 2) }
     var uvCustomVisible by remember { mutableStateOf(false) }
     var toolbarTabVisible by remember { mutableStateOf(false) }
     val compact by remember(selectedIndex) {
