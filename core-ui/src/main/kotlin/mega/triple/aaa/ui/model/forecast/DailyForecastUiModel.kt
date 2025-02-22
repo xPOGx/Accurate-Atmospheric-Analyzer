@@ -28,5 +28,19 @@ data class DailyForecastUiModel(
     companion object {
         private const val AIR_QUALITY_KEY = "AirQuality"
         private const val UV_INDEX_KEY = "UVIndex"
+
+        val NULL = DailyForecastUiModel(
+            airAndPollen = null,
+            date = null,
+            day = null,
+            epochDate = Calendar.getInstance().timeInMillis,
+            hoursOfSun = null,
+            moon = null,
+            night = null,
+            realFeelTemperature = null,
+            realFeelTemperatureShade = null,
+            sun = null,
+            temperature = null,
+        )
     }
 }

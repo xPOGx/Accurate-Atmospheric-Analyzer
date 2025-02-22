@@ -84,6 +84,7 @@ dependencies {
     implementation(project(libs.versions.projectFeatureHome.get()))
     implementation(project(libs.versions.projectFeatureSearch.get()))
     implementation(project(libs.versions.projectFeatureSettings.get()))
+    implementation(project(libs.versions.projectFeatureWidget.get()))
 }
 
 secrets {

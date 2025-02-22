@@ -24,6 +24,7 @@ protobufPlugin = "0.9.4"
 workManager = "2.10.0"
 workStartup = "1.2.0"
 lottieCompose = "6.4.1"
+widget = "1.1.1"
 
 #build constants
 applicationId = "mega.triple.aaa"
@@ -49,6 +50,7 @@ projectFeatureHome = ":feature-home"
 projectFeatureSearch = ":feature-search"
 projectFeatureSettings = ":feature-settings"
 projectFeatureSync = ":feature-sync"
+projectFeatureWidget = ":feature-widget"
 
 [libraries]
 # Core
@@ -68,6 +70,13 @@ androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+
+# Widget
+androidx-glance-appwidget = { module = "androidx.glance:glance-appwidget", version.ref = "widget" }
+androidx-glance-appwidget-preview = { module = "androidx.glance:glance-appwidget-preview", version.ref = "widget" }
+androidx-glance-preview = { module = "androidx.glance:glance-preview", version.ref = "widget" }
+androidx-glance-material3 = { module = "androidx.glance:glance-material3", version.ref = "widget" }
+androidx-glance-material = { module = "androidx.glance:glance-material", version.ref = "widget" }
 
 # Koin
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinAndroid" }
@@ -113,4 +122,18 @@ firebase = { id = "com.google.gms.google-services", version.ref = "firebasePlugi
 firebase-crashlytic = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashPlugin" }
 
 [bundles]
-network = ["io-ktor-client-core", "io-ktor-client-okhttp", "io-ktor-client-content-negotiation", "io-ktor-serialization-json", "kotlinx-serialization-json", "chucker"]
+network = [
+    "io-ktor-client-core",
+    "io-ktor-client-okhttp",
+    "io-ktor-client-content-negotiation",
+    "io-ktor-serialization-json",
+    "kotlinx-serialization-json",
+    "chucker",
+]
+widget = [
+    "androidx-glance-appwidget",
+    "androidx-glance-appwidget-preview",
+    "androidx-glance-preview",
+    "androidx-glance-material3",
+    "androidx-glance-material",
+]
