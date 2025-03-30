@@ -18,9 +18,9 @@ import mega.triple.aaa.common.ext.diff
 import mega.triple.aaa.common.ext.getTimeDiff
 import mega.triple.aaa.home.ext.HomeCardType
 import mega.triple.aaa.strings.R.string
-import mega.triple.aaa.ui.R.drawable
 import mega.triple.aaa.ui.components.card.ForecastCard
 import mega.triple.aaa.ui.components.card.ParameterCard
+import mega.triple.aaa.ui.components.card.RainChanceCard
 import mega.triple.aaa.ui.components.view.UvIndexView
 import mega.triple.aaa.ui.ext.formatProbability
 import mega.triple.aaa.ui.ext.formatSimpleTime
@@ -31,6 +31,7 @@ import mega.triple.aaa.ui.theme.AAATheme
 import mega.triple.aaa.ui.theme.AAATheme.spaces
 import mega.triple.aaa.ui.theme.AAATheme.typography
 import kotlin.math.absoluteValue
+import mega.triple.aaa.ui.R.drawable as drawableRes
 
 @Composable
 fun HomeContent(
@@ -50,7 +51,7 @@ fun HomeContent(
             ParameterCard(
                 title = stringResource(string.home_wind_speed),
                 description = formatSpeed(speed, speedUnit),
-                iconRes = drawable.ic_air,
+                iconRes = drawableRes.ic_air,
                 extra = diff?.let { formatSpeed(it.absoluteValue, speedUnit) to (it > 0) },
                 modifier = modifier,
             )
@@ -64,7 +65,7 @@ fun HomeContent(
             ParameterCard(
                 title = stringResource(string.home_rain_chance),
                 description = formatProbability(dayNight?.rainProbability),
-                iconRes = drawable.ic_rainy,
+                iconRes = drawableRes.ic_rainy,
                 extra = diff?.let { formatProbability(diff.absoluteValue) to (diff > 0) },
                 modifier = modifier,
             )
@@ -74,7 +75,7 @@ fun HomeContent(
             ParameterCard(
                 title = stringResource(string.home_air_quality),
                 description = data?.airQuality ?: STUB_VALUE,
-                iconRes = drawable.ic_waves,
+                iconRes = drawableRes.ic_waves,
                 extra = null,
                 modifier = modifier,
             )
@@ -100,7 +101,7 @@ fun HomeContent(
                     ParameterCard(
                         title = stringResource(string.home_uv_index),
                         description = uvIndex.toString(),
-                        iconRes = drawable.ic_sun,
+                        iconRes = drawableRes.ic_sun,
                         extra = diff?.let { diff.toString() to (diff > 0) },
                         modifier = modifier,
                     )
@@ -128,13 +129,10 @@ fun HomeContent(
         }
 
         HomeCardType.FORECAST_RAIN_CHANCE -> {
-            // TODO Chance of rain card
-            Box {
-                ForecastCard(
-                    modifier = modifier,
-                )
-                Text("RAIN CHANCE")
-            }
+            RainChanceCard(
+                dayChance = dayNight?.rainProbability ?: 0,
+                nightChance = diffDayNight?.rainProbability ?: 0,
+            )
         }
 
         HomeCardType.SUN_RISE -> {
@@ -142,7 +140,7 @@ fun HomeContent(
                 title = stringResource(string.home_sunrise),
                 description = formatSimpleTime(data?.sun?.timeRise),
                 descriptionTextStyle = typography.gs500size14,
-                iconRes = drawable.ic_sun,
+                iconRes = drawableRes.ic_sun,
                 extra = getTimeDiff(data?.sun?.epochRise) to null,
                 extraModifier = Modifier.padding(bottom = spaces.size12),
                 modifier = modifier,
@@ -154,7 +152,7 @@ fun HomeContent(
                 title = stringResource(string.home_sunset),
                 description = formatSimpleTime(data?.sun?.timeSet),
                 descriptionTextStyle = typography.gs500size14,
-                iconRes = drawable.ic_sunset,
+                iconRes = drawableRes.ic_sunset,
                 extra = getTimeDiff(data?.sun?.epochSet) to null,
                 extraModifier = Modifier.padding(bottom = spaces.size12),
                 modifier = modifier,
@@ -166,7 +164,7 @@ fun HomeContent(
                 title = stringResource(string.home_moonrise),
                 description = formatSimpleTime(data?.moon?.timeRise),
                 descriptionTextStyle = typography.gs500size14,
-                iconRes = drawable.ic_sunrise,
+                iconRes = drawableRes.ic_sunrise,
                 extra = getTimeDiff(data?.moon?.epochRise) to null,
                 extraModifier = Modifier.padding(bottom = spaces.size12),
                 modifier = modifier,
@@ -179,6 +177,8 @@ fun HomeContent(
 @Composable
 private fun HomeContentPreview() {
     AAATheme {
-        HomeContent()
+        HomeContent(
+            contentType = HomeCardType.FORECAST_RAIN_CHANCE,
+        )
     }
 }

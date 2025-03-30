@@ -19,6 +19,7 @@ class Colors(
     changeGrowth: Color,
     changeDecrease: Color,
     secondaryText: Color,
+    rainChance: Color,
 ) {
     var background by mutableStateOf(background)
         private set
@@ -51,6 +52,9 @@ class Colors(
         private set
 
     var secondaryText by mutableStateOf(secondaryText)
+        private set
+
+    var rainChance by mutableStateOf(rainChance)
         private set
 }
 

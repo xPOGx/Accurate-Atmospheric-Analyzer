@@ -17,7 +17,7 @@ fun formatPartTemperature(
     isDay: Boolean,
     unit: String?,
 ): String = buildString {
-    append(if (isDay) context.getString(string.toolbar_day) else context.getString(string.toolbar_night))
+    append(if (isDay) context.getString(string.common_day) else context.getString(string.common_night))
     append(Constants.SPACE)
     append(formatTemperature(value, unit))
 }
@@ -88,16 +88,16 @@ fun formatLastUpdateTime(context: Context, date: Calendar?): String {
             append(context.getString(string.pull_to_refresh_last_time))
             append(
                 listOf(
-                    date.get(Calendar.HOUR_OF_DAY),
-                    date.get(Calendar.MINUTE),
+                    date[Calendar.HOUR_OF_DAY],
+                    date[Calendar.MINUTE],
                 ).joinToString(Constants.COLON)
             )
             append(Constants.SPACE)
             append(
                 listOf(
-                    format.format(date.get(Calendar.DAY_OF_MONTH)),
-                    format.format(date.get(Calendar.MONTH + 1)),
-                    date.get(Calendar.YEAR),
+                    format.format(date[Calendar.DAY_OF_MONTH]),
+                    format.format(date[Calendar.MONTH + 1]),
+                    date[Calendar.YEAR],
                 ).joinToString(Constants.PERIOD)
             )
         }

@@ -6,4 +6,6 @@
     <string name="common_now">Now</string>
     <string name="common_tomorrow">Tomorrow</string>
     <string name="common_5_days">5 days</string>
+    <string name="common_day">Day</string>
+    <string name="common_night">Night</string>
 </resources>

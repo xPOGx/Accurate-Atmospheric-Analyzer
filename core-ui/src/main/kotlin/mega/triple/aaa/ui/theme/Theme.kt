@@ -37,6 +37,7 @@ fun lightColors() =
         tabContainer = Color(0xFFE0B6FF),
         tabContent = Color(0xFF2E004E),
         secondaryText = Color(0xFF494649),
+        rainChance = Color(0xFFFAEDFF),
     )
 
 fun darkColors() =
@@ -52,6 +53,7 @@ fun darkColors() =
         tabContainer = Color(0xFF3F3F3F), // Tab container background
         tabContent = Color.White, // Text within tabs,
         secondaryText = Color(0xFFB0B0B0),
+        rainChance = Color(0xFF051200),
     )
 
 fun ColorScheme.toColors(isDarkMode: Boolean): Colors =
@@ -67,6 +69,7 @@ fun ColorScheme.toColors(isDarkMode: Boolean): Colors =
         tabContainer = this.secondaryContainer,
         tabContent = this.onSecondaryContainer,
         secondaryText = this.secondary,
+        rainChance = this.error,
     )
 
 @Composable
