@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     // Ksp
     alias(libs.plugins.ksp)
+    // Serialization
+    alias(libs.plugins.jetbrains.kotlin.serialization)
 }
 
 android {
@@ -37,4 +39,6 @@ dependencies {
     // Datastore
     implementation(libs.androidx.datastore)
     implementation(libs.androidx.datastore.preferences)
+    // Serialization
+    implementation(libs.kotlinx.serialization.json)
 }
