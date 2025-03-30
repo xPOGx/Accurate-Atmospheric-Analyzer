@@ -21,12 +21,13 @@ class DottedCircleProgressBar(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
 ) : View(context, attrs, defStyleAttr) {
-    private val paint = Paint()
+    private val paint = Paint().apply {
+        isAntiAlias = true
+        style = Paint.Style.FILL
+    }
     private var progress = 0f
 
     init {
-        paint.isAntiAlias = true
-        paint.style = Paint.Style.FILL
         attrs?.let { findAttributes(it, defStyleAttr) }
     }
 
@@ -47,34 +48,36 @@ class DottedCircleProgressBar(
 
         // Background
         paint.color = Color.TRANSPARENT
-        canvas.drawCircle(centerX, centerY, CIRCLE_RADIUS, paint)
+        with(canvas) {
+            drawCircle(centerX, centerY, CIRCLE_RADIUS, paint)
 
-        // Draw the dots
-        val progressDots = progress * DOT_COUNT / 10
-        for (i in 0 until DOT_COUNT) {
-            val angle = i * ANGLE_STEP + ANGLE
-            if (i < progressDots) {
-                paint.color = getColor(progress)
-                canvas.drawDot(angle, DotType.BIG)
-                canvas.drawDot(angle, DotType.MEDIUM)
-                canvas.drawDot(angle, DotType.SMALL)
-            } else {
-                paint.color = Color.WHITE
-                canvas.drawDot(angle, DotType.BIG)
-                canvas.drawDot(angle, DotType.MEDIUM)
-                canvas.drawDot(angle, DotType.SMALL)
+            // Draw the dots
+            val progressDots = progress * DOT_COUNT / 10
+            for (i in 0 until DOT_COUNT) {
+                val angle = i * ANGLE_STEP + ANGLE
+                if (i < progressDots) {
+                    paint.color = getColor(progress)
+                    drawDot(angle, DotType.BIG)
+                    drawDot(angle, DotType.MEDIUM)
+                    drawDot(angle, DotType.SMALL)
+                } else {
+                    paint.color = Color.WHITE
+                    drawDot(angle, DotType.BIG)
+                    drawDot(angle, DotType.MEDIUM)
+                    drawDot(angle, DotType.SMALL)
+                }
             }
-        }
 
-        paint.color = Color.BLACK
-        paint.textSize = TEXT_SIZE
-        @SuppressLint("DrawAllocation")
-        val textBounds = Rect()
-        val text = progress.toString()
-        paint.getTextBounds(text, 0, text.length, textBounds)
-        val textX = centerX - textBounds.width() / 2f
-        val textY = centerY + textBounds.height() / 2f
-        canvas.drawText(text, textX, textY, paint)
+            paint.color = Color.BLACK
+            paint.textSize = TEXT_SIZE
+            @SuppressLint("DrawAllocation")
+            val textBounds = Rect()
+            val text = progress.toString()
+            paint.getTextBounds(text, 0, text.length, textBounds)
+            val textX = centerX - textBounds.width() / 2f
+            val textY = centerY + textBounds.height() / 2f
+            drawText(text, textX, textY, paint)
+        }
     }
 
     private fun findAttributes(attrs: AttributeSet, defStyleAttr: Int) {

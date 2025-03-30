@@ -1,5 +1,6 @@
 package mega.triple.aaa.ui.components.scrollbar
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
@@ -7,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -26,8 +26,7 @@ fun ScrollingBubble(
     bubbleOffsetYFloat: Float,
     currAlphabetScrolledOn: Char,
 ) {
-    Surface(
-        shape = CircleShape,
+    Box(
         modifier = Modifier
             .size(bubbleSize)
             .offset(
@@ -35,8 +34,8 @@ fun ScrollingBubble(
                 y = with(LocalDensity.current) {
                     bubbleOffsetYFloat.toDp() - (bubbleSize / 2)
                 },
-            ),
-        color = AAATheme.colors.cardContent,
+            )
+            .background(AAATheme.colors.cardContent, CircleShape),
     ) {
         Box(
             modifier = Modifier.fillMaxSize(),
