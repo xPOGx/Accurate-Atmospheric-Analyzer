@@ -1,7 +1,6 @@
 package mega.triple.aaa.home.navigation
 
 import android.widget.Toast
-import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -43,18 +42,18 @@ fun NavGraphBuilder.homeNavigationGraph(
             uiState.location.render(
                 onLoading = { GlobalLoading() }
             ) { location ->
-                Box {
-                    if (uiState.forecastFlows.isLoading) {
-                        GlobalLoading(withBackground = true)
-                    }
-                    HomeScreen(
-                        location = location,
-                        forecastFlows = uiState.forecastFlows,
-                        lastUpdateDate = uiState.lastUpdatedDate,
-                        isRefreshing = uiState.isRefreshing,
-                        onAction = viewModel::onAction,
-                    )
-                }
+                HomeScreen(
+                    location = location,
+                    forecastFlows = uiState.forecastFlows,
+                    lastUpdateDate = uiState.lastUpdatedDate,
+                    isRefreshing = uiState.isRefreshing,
+                    cardsWrapper = uiState.cardsWrapper,
+                    onAction = viewModel::onAction,
+                )
+            }
+
+            if (uiState.forecastFlows.isLoading) {
+                GlobalLoading(withBackground = true)
             }
         }
     }

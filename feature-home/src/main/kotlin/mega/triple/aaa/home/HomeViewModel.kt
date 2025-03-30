@@ -13,8 +13,14 @@ import mega.triple.aaa.domain.ext.ForecastFlows
 import mega.triple.aaa.domain.ext.ForecastHelper
 import mega.triple.aaa.domain.location.GetLocationUC
 import mega.triple.aaa.domain.location.model.LocationDomainModel.Companion.toUiModel
+import mega.triple.aaa.domain.settings.GetCardsSetupUC
 import mega.triple.aaa.domain.settings.GetLastUpdateUC
+import mega.triple.aaa.domain.settings.SetCardsSetupUC
+import mega.triple.aaa.domain.settings.model.HomeCardTypeDomainModel
 import mega.triple.aaa.home.ext.HomeAction
+import mega.triple.aaa.home.ext.HomeCardType
+import mega.triple.aaa.home.ext.HomeCardType.Companion.toDomainModel
+import mega.triple.aaa.home.ext.HomeCardType.Companion.toUiModel
 import mega.triple.aaa.strings.R.string
 import mega.triple.aaa.ui.ext.SingleEvent
 import mega.triple.aaa.ui.ext.UI
@@ -25,8 +31,10 @@ import java.util.Calendar
 import java.util.concurrent.TimeUnit
 
 class HomeViewModel(
-    private val getLocationUC: GetLocationUC,
-    private val getLastUpdateUC: GetLastUpdateUC,
+    private val getLocation: GetLocationUC,
+    private val getLastUpdate: GetLastUpdateUC,
+    private val getCardsSetup: GetCardsSetupUC,
+    private val setCardsSetup: SetCardsSetupUC,
     private val forecastHelper: ForecastHelper,
 ) : ViewModel() {
     // FLOWS
@@ -42,6 +50,7 @@ class HomeViewModel(
         subscribeLocation()
         subscribeForecast()
         subscribeLastUpdate()
+        subscribeCardsSetup()
     }
 
     fun onAction(action: HomeAction) {
@@ -50,6 +59,7 @@ class HomeViewModel(
             HomeAction.OnNavigateSettings -> onNavigateToSettings.fire()
             HomeAction.UpdateAllData -> updateAll()
             HomeAction.Refresh -> refresh()
+            is HomeAction.UpdateCardsSetup -> setCardsSetup(action.cards)
         }
     }
 
@@ -62,7 +72,7 @@ class HomeViewModel(
             it.copy(isRefreshing = true)
         }
         val now = System.currentTimeMillis()
-        val lastUpdate = getLastUpdateUC().firstOrNull() ?: 0L
+        val lastUpdate = getLastUpdate().firstOrNull() ?: 0L
         val oneDay = TimeUnit.DAYS.toMillis(1)
         if (now - lastUpdate > oneDay) {
             forecastHelper.reinit()
@@ -77,9 +87,10 @@ class HomeViewModel(
     }
 
     private fun subscribeLocation() = viewModelScope.safeLaunch {
-        getLocationUC().collectLatest { location ->
+        getLocation().collectLatest { location ->
+            val model = UI.READY(location?.toUiModel())
             _uiState.update {
-                it.copy(location = UI.READY(location?.toUiModel()))
+                it.copy(location = model)
             }
             location?.let {
                 forecastHelper.initFlows()
@@ -96,15 +107,33 @@ class HomeViewModel(
     }
 
     private fun subscribeLastUpdate() = viewModelScope.safeLaunch {
-        getLastUpdateUC().collectLatest { date ->
+        getLastUpdate().collectLatest { date ->
+            val calendar = date?.let {
+                Calendar.getInstance().apply { timeInMillis = it }
+            }
             _uiState.update {
-                it.copy(
-                    lastUpdatedDate = date?.let {
-                        Calendar.getInstance().apply { timeInMillis = it }
-                    }
-                )
+                it.copy(lastUpdatedDate = calendar)
             }
         }
+    }
+
+    private fun subscribeCardsSetup() = viewModelScope.safeLaunch {
+        getCardsSetup().collectLatest { cards ->
+            if (cards.isEmpty()) {
+                val defaultCards = HomeCardTypeDomainModel.entries.associateWith { true }
+                setCardsSetup(defaultCards)
+            } else {
+                val cardsMap = cards.mapKeys { it.key.toUiModel() }
+                _uiState.update {
+                    it.copy(cardsWrapper = HomeCardWrapper(cardsMap))
+                }
+            }
+        }
+    }
+
+    private fun setCardsSetup(cards: Map<HomeCardType, Boolean>) = viewModelScope.safeLaunch {
+        val models = cards.mapKeys { it.key.toDomainModel() }
+        setCardsSetup(models)
     }
 }
 
@@ -113,4 +142,10 @@ data class HomeUiState(
     val forecastFlows: ForecastFlows = ForecastFlows(),
     val lastUpdatedDate: Calendar? = null,
     val isRefreshing: Boolean = false,
+    val cardsWrapper: HomeCardWrapper = HomeCardWrapper(),
+)
+
+data class HomeCardWrapper(
+    val cards : Map<HomeCardType, Boolean> = emptyMap(),
+    val time: Long = System.currentTimeMillis(),
 )

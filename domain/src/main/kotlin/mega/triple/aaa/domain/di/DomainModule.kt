@@ -23,12 +23,16 @@ import mega.triple.aaa.domain.location.impl.GetContinentsUCImpl
 import mega.triple.aaa.domain.location.impl.GetCountriesUCImpl
 import mega.triple.aaa.domain.location.impl.GetLocationUCImpl
 import mega.triple.aaa.domain.location.impl.SetLocationUCImpl
+import mega.triple.aaa.domain.settings.GetCardsSetupUC
 import mega.triple.aaa.domain.settings.GetLastUpdateUC
 import mega.triple.aaa.domain.settings.GetThemeUC
+import mega.triple.aaa.domain.settings.SetCardsSetupUC
 import mega.triple.aaa.domain.settings.SetLastUpdateUC
 import mega.triple.aaa.domain.settings.SetThemeUC
+import mega.triple.aaa.domain.settings.impl.GetCardsSetupUCImpl
 import mega.triple.aaa.domain.settings.impl.GetLastUpdateUCImpl
 import mega.triple.aaa.domain.settings.impl.GetThemeUCImpl
+import mega.triple.aaa.domain.settings.impl.SetCardsSetupUCImpl
 import mega.triple.aaa.domain.settings.impl.SetLastUpdateUCImpl
 import mega.triple.aaa.domain.settings.impl.SetThemeUCImpl
 import org.koin.core.module.dsl.singleOf
@@ -56,4 +60,7 @@ val domainModule = module {
     // Last Update Date
     singleOf(::GetLastUpdateUCImpl) bind GetLastUpdateUC::class
     singleOf(::SetLastUpdateUCImpl) bind SetLastUpdateUC::class
+    // Cards Setup
+    singleOf(::GetCardsSetupUCImpl) bind GetCardsSetupUC::class
+    singleOf(::SetCardsSetupUCImpl) bind SetCardsSetupUC::class
 }

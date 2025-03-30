@@ -56,6 +56,7 @@ import mega.triple.aaa.domain.ext.ForecastFlows
 import mega.triple.aaa.home.components.HomeContent
 import mega.triple.aaa.home.ext.HomeAction
 import mega.triple.aaa.home.ext.HomeCardType
+import mega.triple.aaa.home.ext.MapExtension.partition
 import mega.triple.aaa.ui.R.drawable
 import mega.triple.aaa.ui.components.card.DayCard
 import mega.triple.aaa.ui.components.card.EmptyCard
@@ -77,6 +78,7 @@ fun HomeScreen(
     forecastFlows: ForecastFlows = ForecastFlows(),
     lastUpdateDate: Calendar? = null,
     isRefreshing: Boolean = false,
+    cardsWrapper: HomeCardWrapper = HomeCardWrapper(),
     onAction: ((HomeAction) -> Unit)? = null,
 ) {
     // States
@@ -108,49 +110,87 @@ fun HomeScreen(
     val line = if (listMode) 1 else 2
     val allLine: LazyGridItemSpanScope.() -> GridItemSpan = { GridItemSpan(line) }
     val singleSpan: LazyGridItemSpanScope.() -> GridItemSpan = { GridItemSpan(1) }
-    val editContentSpan: LazyGridItemSpanScope.(Pair<HomeCardType, Boolean>) -> GridItemSpan =
-        { item ->
-            when (item.first) {
-                HomeCardType.FORECAST_HOURLY,
-                HomeCardType.FORECAST_DAILY,
-                HomeCardType.FORECAST_RAIN_CHANCE -> allLine()
+    val editContentSpan: LazyGridItemSpanScope.(HomeCardType) -> GridItemSpan = {
+        when (it) {
+            HomeCardType.FORECAST_HOURLY,
+            HomeCardType.FORECAST_DAILY,
+            HomeCardType.FORECAST_RAIN_CHANCE -> allLine()
 
-                else -> singleSpan()
-            }
+            else -> singleSpan()
         }
+    }
     // Pull to refresh
     val state = rememberPullToRefreshState()
     val threshold = PullToRefreshDefaults.PositionalThreshold
     // Edit Cards
     val topPadding = WindowInsets.statusBars.getTop(LocalDensity.current)
     var editMode by remember { mutableStateOf(false) }
-    var selectedCard: Pair<HomeCardType, Boolean>? by remember { mutableStateOf(null) }
-    var cardsMenu: List<Pair<HomeCardType, Boolean>> by remember {
-        mutableStateOf(
-            listOf(
-                HomeCardType.WIND_SPEED to true,
-                HomeCardType.RAIN_CHANCE to true,
-                HomeCardType.AIR_QUALITY to true,
-                HomeCardType.UV_INDEX to true,
-                HomeCardType.FORECAST_HOURLY to true,
-                HomeCardType.FORECAST_DAILY to true,
-                HomeCardType.FORECAST_RAIN_CHANCE to true,
-                HomeCardType.SUN_RISE to true,
-                HomeCardType.SUN_SET to true,
-                HomeCardType.MOON_RISE to true,
-            )
-        )
+    var selectedCard: HomeCardType? by remember { mutableStateOf(null) }
+    val (availableCards, unavailableCards) = remember(cardsWrapper) {
+        cardsWrapper.cards.partition()
     }
-    val (availableCards, unavailableCards) = cardsMenu.partition { it.second }
     val scope = rememberCoroutineScope()
-    LaunchedEffect(cardsMenu) {
+    LaunchedEffect(cardsWrapper) {
         scope.launch {
             gridState.scroll(MutatePriority.PreventUserInput) {
                 scrollBy(-Float.MAX_VALUE / 2)
             }
         }
     }
+    // Card management
+    fun addFirstItem() {
+        val temp = cardsWrapper.cards.toMutableMap()
+        val key = temp.keys.first()
+        temp[key] = !cardsWrapper.cards[key]!!
+        onAction?.invoke(HomeAction.UpdateCardsSetup(temp))
+    }
 
+    fun onCardClick(item: HomeCardType) {
+        if (item == HomeCardType.UV_INDEX && !editMode) {
+            uvCustomVisible = !uvCustomVisible
+            return
+        }
+        if (!editMode) return
+        if (item == selectedCard) {
+            selectedCard = null
+            return
+        }
+        if (selectedCard == null) {
+            selectedCard = item
+            return
+        }
+        selectedCard?.let { selected ->
+            val temp = mutableMapOf<HomeCardType, Boolean>()
+            cardsWrapper.cards.forEach { entry ->
+                when (entry.key) {
+                    item -> temp[selected] = cardsWrapper.cards[selected] ?: return
+                    selected -> temp[item] = cardsWrapper.cards[item] ?: return
+                    else -> temp[entry.key] = entry.value
+                }
+            }
+            selectedCard = null
+            onAction?.invoke(HomeAction.UpdateCardsSetup(temp))
+        }
+    }
+
+    fun toggleEditMode() {
+        editMode = !editMode
+        uvCustomVisible = false
+        selectedCard = null
+    }
+
+    fun hideCard(item: HomeCardType) {
+        val temp = cardsWrapper.cards.toMutableMap()
+        temp[item] = false
+        onAction?.invoke(HomeAction.UpdateCardsSetup(temp))
+    }
+
+    fun showCard(item: HomeCardType) {
+        val temp = cardsWrapper.cards.toMutableMap()
+        temp[item] = true
+        onAction?.invoke(HomeAction.UpdateCardsSetup(temp))
+    }
+    // UI
     Scaffold(
         containerColor = colors.background,
         topBar = {
@@ -199,7 +239,9 @@ fun HomeScreen(
                 }
             ) {
                 if (listMode) {
-                    items(items = forecastFlows.forecast) {
+                    items(
+                        items = forecastFlows.forecast,
+                    ) {
                         DayCard(data = it)
                     }
                 } else {
@@ -215,19 +257,16 @@ fun HomeScreen(
                         item(key = "EmptyAvailableCards", span = allLine) {
                             EmptyCard(
                                 modifier = Modifier.animateItem(),
-                            ) {
-                                val temp = cardsMenu.toMutableList()
-                                temp[0] = cardsMenu[0].copy(second = true)
-                                cardsMenu = temp
-                            }
+                                onClick = ::addFirstItem,
+                            )
                         }
                     }
                     items(
                         items = availableCards,
-                        key = { item -> item.first },
+                        key = { it.toString() },
                         span = editContentSpan,
-                    ) { entry ->
-                        val color = if (selectedCard?.first == entry.first)
+                    ) { item: HomeCardType ->
+                        val color = if (selectedCard == item)
                             Color.Green.copy(alpha = 0.5f) else Color.Transparent
                         Box(
                             modifier = Modifier
@@ -236,38 +275,15 @@ fun HomeScreen(
                                     shape = RoundedCornerShape(spaces.size12),
                                 )
                                 .combinedClickable(
-                                    onLongClick = {
-                                        editMode = !editMode
-                                        uvCustomVisible = false
-                                        selectedCard = null
-                                    },
+                                    onLongClick = ::toggleEditMode,
                                     onClick = {
-                                        if (entry.first == HomeCardType.UV_INDEX && !editMode) {
-                                            uvCustomVisible = !uvCustomVisible
-                                        } else {
-                                            if (entry == selectedCard) {
-                                                selectedCard = null
-                                            } else {
-                                                if (selectedCard != null) {
-                                                    val temp = cardsMenu.toMutableList()
-                                                    val first =
-                                                        temp.indexOf(selectedCard!!)
-                                                    val second = temp.indexOf(entry)
-                                                    temp[first] = entry
-                                                    temp[second] = selectedCard!!
-                                                    cardsMenu = temp
-                                                    selectedCard = null
-                                                } else {
-                                                    selectedCard = entry
-                                                }
-                                            }
-                                        }
+                                        onCardClick(item)
                                     }
                                 )
                                 .animateItem(),
                         ) {
                             HomeContent(
-                                contentType = entry.first,
+                                contentType = item,
                                 dayNight = dayNight,
                                 diffDayNight = diffDayNight,
                                 data = currentData,
@@ -278,11 +294,7 @@ fun HomeScreen(
                             if (editMode && selectedCard == null) {
                                 IconButton(
                                     onClick = {
-                                        selectedCard = null
-                                        val temp = cardsMenu.toMutableList()
-                                        val index = temp.indexOf(entry)
-                                        temp[index] = entry.copy(second = false)
-                                        cardsMenu = temp
+                                        hideCard(item)
                                     },
                                     modifier = Modifier.align(Alignment.TopEnd),
                                 ) {
@@ -294,28 +306,26 @@ fun HomeScreen(
                             }
                         }
                     }
-                    if (editMode) {
-                        if (unavailableCards.isNotEmpty()) {
-                            item(key = "NotEmptyUnavailableCards", span = allLine) {
-                                Image(
-                                    painter = painterResource(drawable.ic_divider),
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .heightIn(min = spaces.size80)
-                                        .animateItem(),
-                                )
-                            }
+                    if (editMode && unavailableCards.isNotEmpty()) {
+                        item(key = "NotEmptyUnavailableCards", span = allLine) {
+                            Image(
+                                painter = painterResource(drawable.ic_divider),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .heightIn(min = spaces.size80)
+                                    .animateItem(),
+                            )
                         }
                         items(
                             items = unavailableCards,
-                            key = { item -> item.first },
+                            key = { it.toString() },
                             span = editContentSpan,
-                        ) { entry ->
+                        ) { item ->
                             Box(
                                 modifier = Modifier.animateItem(),
                             ) {
                                 HomeContent(
-                                    contentType = entry.first,
+                                    contentType = item,
                                     dayNight = dayNight,
                                     diffDayNight = diffDayNight,
                                     data = currentData,
@@ -325,10 +335,7 @@ fun HomeScreen(
 
                                 IconButton(
                                     onClick = {
-                                        val temp = cardsMenu.toMutableList()
-                                        val index = temp.indexOf(entry)
-                                        temp[index] = entry.copy(second = true)
-                                        cardsMenu = temp
+                                        showCard(item)
                                     },
                                     modifier = Modifier
                                         .align(Alignment.Center)
