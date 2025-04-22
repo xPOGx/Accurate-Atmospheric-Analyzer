@@ -6,9 +6,8 @@ import mega.triple.aaa.common.model.BuildConfigModel
 class BuildConfigModelProviderImpl : BuildConfigModelProvider {
     private lateinit var model: BuildConfigModel
 
-    override fun provide(): BuildConfigModel {
-        return model
-    }
+    override val buildConfig: BuildConfigModel
+        get() = model
 
     override fun populate(
         isDebug: Boolean,

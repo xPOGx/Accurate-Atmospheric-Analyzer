@@ -48,6 +48,7 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import kotlinx.coroutines.delay
+import mega.triple.aaa.common.ext.Constants.ZERO_FLOAT
 import mega.triple.aaa.common.ext.safeLaunch
 import mega.triple.aaa.strings.R.string
 import mega.triple.aaa.ui.R.raw
@@ -72,14 +73,9 @@ fun PullToRefreshWrapper(
     onRefresh: () -> Unit,
     content: @Composable BoxScope.() -> Unit,
 ) {
-    val context = LocalContext.current
     val elevation = PullToRefreshDefaults.Elevation
     val containerColor = colors.cardBG
     val shape = shapes.roundedCustom(bottomStart = spaces.size32, bottomEnd = spaces.size32)
-    val isNotReady = state.distanceFraction < 1
-    val refreshTextRes =
-        if (isNotReady) string.pull_to_refresh_pull else string.pull_to_refresh_release
-    val refreshIconRotation by animateFloatAsState(targetValue = if (isNotReady) -90f else 90f)
     val maxSize = minOf(maxOf(0.35f, state.distanceFraction), 1f)
     val maxDistanceFraction = 2
 
@@ -112,9 +108,9 @@ fun PullToRefreshWrapper(
             Box(
                 modifier = Modifier
                     .graphicsLayer {
-                        val showElevation = state.distanceFraction > 0f || isRefreshing
+                        val showElevation = state.distanceFraction > ZERO_FLOAT || isRefreshing
                         translationY = state.distanceFraction * threshold.roundToPx() - size.height
-                        shadowElevation = if (showElevation) elevation.toPx() else 0f
+                        shadowElevation = if (showElevation) elevation.toPx() else ZERO_FLOAT
                         this.shape = shape
                         clip = true
                     }
@@ -144,35 +140,53 @@ fun PullToRefreshWrapper(
                     )
                 }
                 if (!isRefreshing) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                    ) {
-                        Text(
-                            text = formatLastUpdateTime(context, lastUpdateDate),
-                            color = colors.white,
-                            textAlign = TextAlign.Center,
-                            overflow = TextOverflow.Clip,
-                            maxLines = 2,
-                        )
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.padding(spaces.size4),
-                        ) {
-                            Text(
-                                text = stringResource(refreshTextRes),
-                                color = colors.white,
-                            )
-                            SpacerWidth(spaces.size12)
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                                contentDescription = null,
-                                tint = colors.white,
-                                modifier = Modifier.rotate(refreshIconRotation)
-                            )
-                        }
-                    }
+                    LastUpdateInfo(
+                        isNotReady = state.distanceFraction < 1,
+                        lastUpdateDate = lastUpdateDate,
+                    )
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun LastUpdateInfo(
+    modifier: Modifier = Modifier,
+    isNotReady: Boolean,
+    lastUpdateDate: Calendar?,
+) {
+    val context = LocalContext.current
+    val refreshTextRes =
+        if (isNotReady) string.pull_to_refresh_pull else string.pull_to_refresh_release
+    val refreshIconRotation by animateFloatAsState(targetValue = if (isNotReady) -90f else 90f)
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier,
+    ) {
+        Text(
+            text = formatLastUpdateTime(context, lastUpdateDate),
+            color = colors.white,
+            textAlign = TextAlign.Center,
+            overflow = TextOverflow.Clip,
+            maxLines = 2,
+        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(spaces.size4),
+        ) {
+            Text(
+                text = stringResource(refreshTextRes),
+                color = colors.white,
+            )
+            SpacerWidth(spaces.size12)
+            Icon(
+                imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                contentDescription = null,
+                tint = colors.white,
+                modifier = Modifier.rotate(refreshIconRotation)
+            )
         }
     }
 }

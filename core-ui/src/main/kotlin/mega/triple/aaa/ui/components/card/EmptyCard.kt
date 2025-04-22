@@ -31,12 +31,13 @@ fun EmptyCard(
 
     Box(
         contentAlignment = Alignment.Center,
-        modifier = modifier,
+        modifier = Modifier
+            .fillMaxWidth(),
     ) {
         LottieAnimation(
             composition = compositionBackground,
             progress = { backgroundProgress },
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth(0.5f)
                 .noRippleClickable(onClick),
         )

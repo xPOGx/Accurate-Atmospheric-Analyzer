@@ -2,13 +2,14 @@ package mega.triple.aaa.ui.components.card
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import mega.triple.aaa.ui.ext.noRippleClickable
 import mega.triple.aaa.ui.theme.AAATheme
 import mega.triple.aaa.ui.theme.AAATheme.colors
 import mega.triple.aaa.ui.theme.AAATheme.spaces
@@ -20,13 +21,12 @@ fun LocationCard(
     title: String,
     onClick: (() -> Unit)? = null,
 ) {
-    Card(
-        onClick = { onClick?.invoke() },
-        colors = CardDefaults.cardColors().copy(
-            containerColor = colors.cardBG,
-            contentColor = colors.cardContent,
-        ),
-        modifier = modifier,
+    Surface(
+        color = colors.cardBG,
+        contentColor = colors.cardContent,
+        modifier = modifier
+            .clip(AAATheme.shapes.cardShape)
+            .noRippleClickable(onClick),
     ) {
         Text(
             text = title,

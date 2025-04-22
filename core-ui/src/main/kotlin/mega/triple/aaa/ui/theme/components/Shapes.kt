@@ -12,6 +12,8 @@ class Shapes(
      */
     val circleShape: RoundedCornerShape = RoundedCornerShape(50),
     val tabItemShape: RoundedCornerShape = RoundedCornerShape(14.dp),
+    val cardShape: RoundedCornerShape = RoundedCornerShape(12.dp),
+    val bigCardShape: RoundedCornerShape = RoundedCornerShape(24.dp),
 ) {
     fun roundedCustom(
         topStart: Dp = 0.dp,

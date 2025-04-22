@@ -4,24 +4,24 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collectLatest
+import mega.triple.aaa.common.analytic.impl.Analytic
 import mega.triple.aaa.common.ext.safeLaunch
 
-object AAAAnalytic {
+class AAAAnalytic : Analytic {
     private val publisher = MutableSharedFlow<String>()
     private val ioScope = CoroutineScope(Dispatchers.IO)
 
-    fun subscribe(
-        scope: CoroutineScope = CoroutineScope(Dispatchers.IO),
+    override fun subscribe(
         action: (String) -> Unit,
     ) {
-        scope.safeLaunch {
+        ioScope.safeLaunch {
             publisher.collectLatest {
                 action(it)
             }
         }
     }
 
-    fun logEvent(e: String) {
+    override fun logEvent(e: String) {
         ioScope.safeLaunch {
             publisher.emit(e)
         }

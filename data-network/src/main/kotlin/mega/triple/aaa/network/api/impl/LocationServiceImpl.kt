@@ -15,7 +15,7 @@ class LocationServiceImpl(
     private val client: HttpClient,
     buildConfigModelProvider: BuildConfigModelProvider,
 ) : LocationService {
-    private val buildConfig = buildConfigModelProvider.provide()
+    private val buildConfig = buildConfigModelProvider.buildConfig
 
     override suspend fun getContinents(language: String): HttpResponse {
         return client.get(continentUrl()) {

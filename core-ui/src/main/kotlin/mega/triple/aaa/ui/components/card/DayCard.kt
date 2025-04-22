@@ -8,27 +8,31 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import mega.triple.aaa.common.ext.Constants.STUB_VALUE
 import mega.triple.aaa.common.ext.isToday
+import mega.triple.aaa.common.ext.normalized
 import mega.triple.aaa.strings.R
 import mega.triple.aaa.ui.R.drawable
 import mega.triple.aaa.ui.components.ext.SpacerHeight
 import mega.triple.aaa.ui.components.ext.SpacerWidth
 import mega.triple.aaa.ui.components.icon.CircleBgIcon
+import mega.triple.aaa.ui.ext.dailyForecastUiModel
 import mega.triple.aaa.ui.ext.formatDate
 import mega.triple.aaa.ui.ext.formatTemperature
 import mega.triple.aaa.ui.ext.getAccuWeatherIconRes
 import mega.triple.aaa.ui.model.forecast.DailyForecastUiModel
+import mega.triple.aaa.ui.theme.AAATheme
 import mega.triple.aaa.ui.theme.AAATheme.colors
 import mega.triple.aaa.ui.theme.AAATheme.spaces
 import mega.triple.aaa.ui.theme.AAATheme.typography
@@ -38,28 +42,30 @@ fun DayCard(
     modifier: Modifier = Modifier,
     data: DailyForecastUiModel,
 ) {
-    val dateTime = data.epochDate * 1000
+    val dateTime = data.epochDate.normalized()
 
-    Card(
-        colors = CardDefaults.cardColors().copy(
-            containerColor = colors.cardBG,
-            contentColor = colors.cardContent,
-        ),
-        modifier = modifier,
+    Surface(
+        color = colors.cardBG,
+        contentColor = colors.cardContent,
+        modifier = modifier
+            .clip(AAATheme.shapes.cardShape),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(spaces.size14)
+            modifier = Modifier
+                .padding(spaces.size14)
         ) {
             Column {
                 Text(
-                    if (dateTime.isToday())
-                        stringResource(R.string.common_today) else formatDate(dateTime),
+                    text = when (dateTime.isToday()) {
+                        true -> stringResource(R.string.common_today)
+                        false -> formatDate(dateTime)
+                    },
                     style = typography.ps400size16,
                 )
                 SpacerHeight(spaces.size4)
                 Text(
-                    data.day?.iconPhrase ?: STUB_VALUE,
+                    text = data.day?.iconPhrase ?: STUB_VALUE,
                     style = typography.ps400size16,
                     color = colors.secondaryText,
                 )
@@ -67,7 +73,7 @@ fun DayCard(
             Spacer(Modifier.weight(1f))
             Column {
                 Text(
-                    formatTemperature(
+                    text = formatTemperature(
                         data.temperature?.maximum?.value,
                         data.temperature?.maximum?.unit,
                     ),
@@ -76,7 +82,7 @@ fun DayCard(
                 )
                 SpacerHeight(spaces.size4)
                 Text(
-                    formatTemperature(
+                    text = formatTemperature(
                         data.temperature?.minimum?.value,
                         data.temperature?.minimum?.unit,
                     ),
@@ -106,4 +112,12 @@ fun DayCard(
             )
         }
     }
+}
+
+@Preview
+@Composable
+fun DayCardPreview() = AAATheme {
+    DayCard(
+        data = dailyForecastUiModel,
+    )
 }

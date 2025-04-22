@@ -16,7 +16,7 @@ class ForecastServiceImpl(
     private val client: HttpClient,
     buildConfigModelProvider: BuildConfigModelProvider,
 ) : ForecastService {
-    private val buildConfig = buildConfigModelProvider.provide()
+    private val buildConfig = buildConfigModelProvider.buildConfig
 
     override suspend fun get5dayForecast(
         language: String,

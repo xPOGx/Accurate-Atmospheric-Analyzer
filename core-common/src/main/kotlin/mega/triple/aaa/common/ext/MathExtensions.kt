@@ -7,23 +7,19 @@ import mega.triple.aaa.common.ext.Constants.MINUTE_SHORT
 import mega.triple.aaa.common.ext.Constants.TIME_ZONE_UA
 
 fun diff(value1: Double?, value2: Double?) =
-    value1?.let {
-        value2?.let {
-            value1.minus(value2).takeIf { it != 0.0 }
-        }
+    value2?.let {
+        value1?.minus(value2).takeIf { it != 0.0 }
     }
 
 fun diff(value1: Int?, value2: Int?) =
-    value1?.let {
-        value2?.let {
-            value1.minus(value2).takeIf { it != 0 }
-        }
+    value2?.let {
+        value1?.minus(value2).takeIf { it != 0 }
     }
 
 fun getTimeDiff(value: Long?): String {
     val other = Calendar.getInstance().apply {
         timeZone = TimeZone.getTimeZone(TIME_ZONE_UA)
-        value?.let { timeInMillis = value * 1000 } // WHY?!?!?!?!??! in seconds.......
+        value?.let { timeInMillis = value.normalized() }
     }
     val now = Calendar.getInstance().apply {
         timeZone = TimeZone.getTimeZone(TIME_ZONE_UA)

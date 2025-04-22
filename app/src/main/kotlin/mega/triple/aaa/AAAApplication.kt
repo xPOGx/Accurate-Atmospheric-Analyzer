@@ -8,8 +8,8 @@ import com.google.firebase.Firebase
 import com.google.firebase.analytics.analytics
 import com.google.firebase.initialize
 import mega.triple.aaa.common.BuildConfigModelProvider
-import mega.triple.aaa.common.analytic.AAAAnalytic
-import mega.triple.aaa.common.di.coreCommonModule
+import mega.triple.aaa.common.analytic.impl.Analytic
+import mega.triple.aaa.common.di.applicationModule
 import mega.triple.aaa.domain.di.domainModule
 import mega.triple.aaa.home.di.featureHomeModule
 import mega.triple.aaa.local.di.dataLocalModule
@@ -29,9 +29,12 @@ import org.koin.core.context.GlobalContext.startKoin
 
 class AAAApplication : Application(), Configuration.Provider {
     private val buildConfigProvider: BuildConfigModelProvider by inject()
+    private val analytic: Analytic by inject()
 
     override val workManagerConfiguration: Configuration
-        get() = Configuration.Builder().setWorkerFactory(WorkerFactory(getKoin())).build()
+        get() = Configuration.Builder()
+            .setWorkerFactory(WorkerFactory(getKoin()))
+            .build()
 
     override fun onCreate() {
         super.onCreate()
@@ -39,7 +42,7 @@ class AAAApplication : Application(), Configuration.Provider {
         startKoin {
             androidContext(this@AAAApplication)
             modules(
-                coreCommonModule,
+                applicationModule,
                 dataLocalModule,
                 dataNetworkModule,
                 dataPreferenceModule,
@@ -55,7 +58,7 @@ class AAAApplication : Application(), Configuration.Provider {
 
         // Firebase
         Firebase.initialize(this)
-        AAAAnalytic.subscribe {
+        analytic.subscribe {
             Firebase.analytics.logEvent(it, null)
         }
 

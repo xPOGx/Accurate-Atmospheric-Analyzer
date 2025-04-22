@@ -20,7 +20,6 @@ sealed class UI<out T> {
 
     companion object {
         fun <T> UI<T>.getOrNull() = (this as? READY)?.data
-        fun <T> UI<T>.errorOrNull() = this as? ERROR
     }
 }
 

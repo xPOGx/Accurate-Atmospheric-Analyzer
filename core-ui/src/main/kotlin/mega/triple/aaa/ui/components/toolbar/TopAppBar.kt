@@ -45,6 +45,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -92,7 +93,6 @@ fun TopAppBar(
     onUpdateAll: (() -> Unit)? = null,
 ) {
     val density = LocalDensity.current
-    val context = LocalContext.current
     val statusBars = WindowInsets.statusBars.getTop(density) / density.density
     var min by remember { mutableStateOf((TOOLBAR_HEIGHT_MIN + statusBars).dp) }
     var max by remember { mutableStateOf((TOOLBAR_HEIGHT_MAX + statusBars).dp) }
@@ -105,33 +105,12 @@ fun TopAppBar(
         }
     }
 
-    val fullColor = colors.white
-    val compactColor = colors.black
-    val mainColor = if (compact) compactColor else fullColor
+    val contentColor = colors.white
+    val mainColor = if (compact) colors.black else contentColor
 
     val animateHeight by animateDpAsState(
         targetValue = if (compact) min else max,
         label = "animateHeight",
-    )
-    val animateTempSize by animateIntAsState(
-        targetValue = if (compact) 57 else 122,
-        label = "animateTempSize",
-    )
-    val animateFeelSize by animateFloatAsState(
-        targetValue = if (compact) 16f else 18f,
-        label = "animateFeelSize",
-    )
-    val animateFeelOffset by animateOffsetAsState(
-        targetValue = if (compact) {
-            Offset(0f, -(10 * density.density))
-        } else {
-            Offset(-(20 * density.density), -(30 * density.density))
-        },
-        label = "animateFeelOffset",
-    )
-    val animateImageSize by animateDpAsState(
-        targetValue = if (compact) 60.dp else 75.dp,
-        label = "animateImageSize",
     )
     val animateShapeSize by animateDpAsState(
         targetValue = if (compact) Dp.Hairline else 32.dp,
@@ -143,12 +122,8 @@ fun TopAppBar(
     )
 
     val temperatureUnit = data?.temperature?.maximum?.unit
-    val feelLikeTemp = data?.realFeelTemperature?.mathAverage
-    val feelLikeShadowTemp = data?.realFeelTemperatureShade?.mathAverage
-    val icon = getAccuWeatherIconRes(data?.day?.icon)
-    val iconPhrase = data?.day?.iconPhrase ?: STUB_VALUE
 
-    Column(
+    Box(
         modifier = modifier
             .fillMaxWidth()
             .height(height = animateHeight)
@@ -158,203 +133,297 @@ fun TopAppBar(
             )
             .clip(mainShape)
     ) {
-        Box {
-            this@Column.AnimatedVisibility(
-                visible = !compact,
-                enter = fadeIn(),
-                exit = fadeOut(),
-            ) {
-                Image(
-                    painter = painterResource(drawable.img_bg_toolbar),
-                    contentScale = ContentScale.Crop,
+        AnimatedVisibility(
+            visible = !compact,
+            enter = fadeIn(),
+            exit = fadeOut(),
+        ) {
+            Image(
+                painter = painterResource(drawable.img_bg_toolbar),
+                contentScale = ContentScale.Crop,
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .requiredHeightIn(max, max),
+            )
+        }
+        Column(
+            verticalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxSize()
+                .statusBarsPadding(),
+        ) {
+            Toolbar(
+                locationName = locationName,
+                mainColor = mainColor,
+                onSearch = onSearch,
+                onSettings = onSettings,
+            )
+            MainBody(
+                compact = compact,
+                data = data,
+                temperatureUnit = temperatureUnit,
+                mainColor = mainColor,
+                contentColor = contentColor,
+            )
+            Footer(
+                compact = compact,
+                toolbarTabVisible = toolbarTabVisible,
+                selectedIndex = selectedIndex,
+                data = data,
+                temperatureUnit = temperatureUnit,
+                contentColor = contentColor,
+                isError = isError,
+                onSelect = onSelect,
+                onUpdateAll = onUpdateAll,
+            )
+        }
+    }
+}
+
+@Composable
+private fun Toolbar(
+    modifier: Modifier = Modifier,
+    locationName: String?,
+    mainColor: Color,
+    onSearch: (() -> Unit)? = null,
+    onSettings: (() -> Unit)? = null,
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Absolute.SpaceBetween,
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(start = spaces.size24),
+    ) {
+        Text(
+            text = locationName ?: stringResource(R.string.toolbar_unknown_place),
+            color = mainColor,
+            style = typography.ps400size22,
+            modifier = Modifier.weight(1f)
+        )
+        Row {
+            IconButton(onClick = { onSearch?.invoke() }) {
+                Icon(
+                    painter = painterResource(drawable.ic_search),
                     contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .requiredHeightIn(max, max),
+                    tint = mainColor,
                 )
             }
-            Column(
-                verticalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .statusBarsPadding(),
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Absolute.SpaceBetween,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = spaces.size24),
-                ) {
-                    Text(
-                        text = locationName ?: stringResource(R.string.toolbar_unknown_place),
-                        color = mainColor,
-                        style = typography.ps400size22,
-                        modifier = Modifier.weight(1f)
-                    )
-                    Row {
-                        IconButton(onClick = { onSearch?.invoke() }) {
-                            Icon(
-                                painter = painterResource(drawable.ic_search),
-                                contentDescription = null,
-                                tint = mainColor,
-                            )
-                        }
-                        IconButton(onClick = { onSettings?.invoke() }) {
-                            Icon(
-                                imageVector = Icons.Default.Settings,
-                                contentDescription = null,
-                                tint = mainColor,
-                            )
-                        }
-                    }
+            IconButton(onClick = { onSettings?.invoke() }) {
+                Icon(
+                    imageVector = Icons.Default.Settings,
+                    contentDescription = null,
+                    tint = mainColor,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun MainBody(
+    modifier: Modifier = Modifier,
+    compact: Boolean,
+    data: DailyForecastUiModel?,
+    temperatureUnit: String?,
+    mainColor: Color,
+    contentColor: Color,
+) {
+    val context = LocalContext.current
+    val density = LocalDensity.current.density
+    val animateTempSize by animateIntAsState(
+        targetValue = if (compact) 57 else 122,
+        label = "animateTempSize",
+    )
+    val animateFeelSize by animateFloatAsState(
+        targetValue = if (compact) 16f else 18f,
+        label = "animateFeelSize",
+    )
+    val animateFeelOffset by animateOffsetAsState(
+        targetValue = if (compact) {
+            Offset(0f, -(10 * density))
+        } else {
+            Offset(-(20 * density), -(30 * density))
+        },
+        label = "animateFeelOffset",
+    )
+    val animateImageSize by animateDpAsState(
+        targetValue = if (compact) 60.dp else 75.dp,
+        label = "animateImageSize",
+    )
+
+    Row(
+        verticalAlignment = if (compact) Alignment.CenterVertically else Alignment.Bottom,
+        modifier = modifier.padding(horizontal = spaces.size24)
+    ) {
+        Text(
+            text = data?.day?.wetBulbTemperature.let {
+                formatTemperature(
+                    it?.average?.value ?: it?.mathAverage,
+                    it?.maximum?.unit,
+                )
+            },
+            style = typography.ps400size14.copy(fontSize = animateTempSize.sp),
+            color = mainColor,
+        )
+        Column(
+            modifier = Modifier
+                .graphicsLayer {
+                    translationX = animateFeelOffset.x
+                    translationY = animateFeelOffset.y
                 }
+                .align(Alignment.Bottom)
+        ) {
+            Text(
+                text = formatFeelTemperature(
+                    context,
+                    data?.realFeelTemperature?.mathAverage,
+                    temperatureUnit,
+                ),
+                style = typography.ps400size18.copy(fontSize = animateFeelSize.sp),
+                color = mainColor,
+            )
+            AnimatedVisibility(!compact) {
+                Text(
+                    text = formatFeelTemperature(
+                        context,
+                        data?.realFeelTemperatureShade?.mathAverage,
+                        temperatureUnit,
+                        inShadow = true,
+                    ),
+                    style = typography.ps400size18.copy(fontSize = animateFeelSize.sp),
+                    color = mainColor,
+                )
+            }
+        }
+        Spacer(modifier = Modifier.weight(1f))
+        Column(
+            horizontalAlignment = Alignment.End,
+            modifier = Modifier.align(Alignment.Top)
+        ) {
+            Image(
+                painter = painterResource(getAccuWeatherIconRes(data?.day?.icon)),
+                contentDescription = null,
+                modifier = Modifier.size(animateImageSize)
+            )
+            AnimatedVisibility(
+                visible = !compact,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            ) {
+                SpacerHeight(spaces.size16)
+                Text(
+                    text = data?.day?.iconPhrase ?: STUB_VALUE,
+                    style = typography.ps400size22,
+                    color = contentColor,
+                    textAlign = TextAlign.End,
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun Footer(
+    modifier: Modifier = Modifier,
+    compact: Boolean,
+    toolbarTabVisible: Boolean,
+    selectedIndex: Int,
+    data: DailyForecastUiModel? = null,
+    temperatureUnit: String? = null,
+    contentColor: Color = colors.white,
+    isError: Boolean = false,
+    onUpdateAll: (() -> Unit)? = null,
+    onSelect: ((Int) -> Unit)? = null,
+) {
+    val context = LocalContext.current
+
+    AnimatedContent(
+        targetState = compact,
+        label = "ToolbarFooter",
+        transitionSpec = {
+            if (compact) {
+                // compact -> full
+                (slideInVertically { it }).togetherWith(slideOutVertically { -2 * it })
+            } else {
+                // full -> compact
+                (slideInVertically { -it }).togetherWith(slideOutVertically { 2 * it })
+            }
+        },
+    ) { small ->
+        Column(
+            modifier = modifier,
+        ) {
+            if (small) {
+                if (toolbarTabVisible) {
+                    DayTab(
+                        selectedIndex = selectedIndex,
+                        onSelect = onSelect,
+                        modifier = Modifier
+                            .padding(horizontal = spaces.size16)
+                            .padding(bottom = spaces.size12)
+                    )
+                }
+            } else {
                 Row(
-                    verticalAlignment = if (compact) Alignment.CenterVertically else Alignment.Bottom,
-                    modifier = Modifier.padding(horizontal = spaces.size24)
+                    verticalAlignment = Alignment.Bottom,
+                    modifier = Modifier
+                        .padding(horizontal = spaces.size24)
+                        .padding(bottom = spaces.size16),
                 ) {
                     Text(
-                        text = formatTemperature(
-                            data?.day?.wetBulbTemperature?.average?.value
-                                ?: data?.day?.wetBulbTemperature?.mathAverage,
-                            data?.day?.wetBulbTemperature?.maximum?.unit,
-                        ),
-                        style = typography.ps400size14.copy(fontSize = animateTempSize.sp),
-                        color = mainColor,
+                        text = formatTime(data?.date),
+                        style = typography.ps400size18,
+                        color = contentColor
                     )
-                    Column(
-                        modifier = Modifier
-                            .graphicsLayer {
-                                translationX = animateFeelOffset.x
-                                translationY = animateFeelOffset.y
-                            }
-                            .align(Alignment.Bottom)
-                    ) {
-                        Text(
-                            text = formatFeelTemperature(context, feelLikeTemp, temperatureUnit),
-                            style = typography.ps400size18.copy(fontSize = animateFeelSize.sp),
-                            color = mainColor,
-                        )
-                        AnimatedVisibility(!compact) {
-                            Text(
-                                text = formatFeelTemperature(
-                                    context,
-                                    feelLikeShadowTemp,
-                                    temperatureUnit,
-                                    inShadow = true
-                                ),
-                                style = typography.ps400size18.copy(fontSize = animateFeelSize.sp),
-                                color = mainColor,
-                            )
-                        }
-                    }
                     Spacer(modifier = Modifier.weight(1f))
                     Column(
                         horizontalAlignment = Alignment.End,
-                        modifier = Modifier.align(Alignment.Top)
                     ) {
-                        Image(
-                            painter = painterResource(icon),
-                            contentDescription = null,
-                            modifier = Modifier.size(animateImageSize)
+                        Text(
+                            text = formatPartTemperature(
+                                context,
+                                data?.temperature?.maximum?.value,
+                                true,
+                                temperatureUnit,
+                            ),
+                            style = typography.ps700size18,
+                            color = contentColor
                         )
-                        AnimatedVisibility(
-                            visible = !compact,
-                            modifier = Modifier.align(Alignment.CenterHorizontally)
-                        ) {
-                            SpacerHeight(spaces.size16)
-                            Text(
-                                text = iconPhrase,
-                                style = typography.ps400size22,
-                                color = fullColor,
-                                textAlign = TextAlign.End,
-                            )
-                        }
+                        Text(
+                            text = formatPartTemperature(
+                                context,
+                                data?.temperature?.minimum?.value,
+                                false,
+                                temperatureUnit,
+                            ),
+                            style = typography.ps700size18,
+                            color = contentColor
+                        )
                     }
                 }
-                AnimatedContent(
-                    targetState = compact,
-                    label = "ToolbarFooter",
-                    transitionSpec = {
-                        if (compact) {
-                            // compact -> full
-                            (slideInVertically { it }).togetherWith(slideOutVertically { -2 * it })
-                        } else {
-                            // full -> compact
-                            (slideInVertically { -it }).togetherWith(slideOutVertically { 2 * it })
-                        }
-                    },
-                ) { small ->
-                    Column {
-                        if (small) {
-                            if (toolbarTabVisible) {
-                                DayTab(
-                                    selectedIndex = selectedIndex,
-                                    onSelect = onSelect,
-                                    modifier = Modifier
-                                        .padding(horizontal = spaces.size16)
-                                        .padding(bottom = spaces.size12)
-                                )
-                            }
-                        } else {
-                            Row(
-                                verticalAlignment = Alignment.Bottom,
-                                modifier = Modifier
-                                    .padding(horizontal = spaces.size24)
-                                    .padding(bottom = spaces.size16),
-                            ) {
-                                Text(
-                                    text = formatTime(data?.date),
-                                    style = typography.ps400size18,
-                                    color = fullColor
-                                )
-                                Spacer(modifier = Modifier.weight(1f))
-                                Column(
-                                    horizontalAlignment = Alignment.End,
-                                ) {
-                                    Text(
-                                        text = formatPartTemperature(
-                                            context,
-                                            data?.temperature?.maximum?.value,
-                                            true,
-                                            temperatureUnit
-                                        ),
-                                        style = typography.ps700size18,
-                                        color = fullColor
-                                    )
-                                    Text(
-                                        text = formatPartTemperature(
-                                            context,
-                                            data?.temperature?.minimum?.value,
-                                            false,
-                                            temperatureUnit
-                                        ),
-                                        style = typography.ps700size18,
-                                        color = fullColor
-                                    )
-                                }
-                            }
-                        }
-                        if (isError) {
-                            Row(
-                                modifier = Modifier
-                                    .combinedClickable(
-                                        onLongClick = { onUpdateAll?.invoke() },
-                                        onClick = { /* ignore */ },
-                                    ).fillMaxWidth()
-                                    .background(colors.changeDecrease),
-                                horizontalArrangement = Arrangement.Center,
-                                verticalAlignment = Alignment.CenterVertically,
-                            ) {
-                                Text("Something wrong")
-                                SpacerWidth(spaces.size16)
-                                Icon(
-                                    imageVector = Icons.Default.Refresh,
-                                    contentDescription = null
-                                )
-                            }
-                        }
-                    }
+            }
+            if (isError) {
+                Row(
+                    modifier = Modifier
+                        .combinedClickable(
+                            onLongClick = { onUpdateAll?.invoke() },
+                            onClick = { /* ignore */ },
+                        ).fillMaxWidth()
+                        .background(colors.changeDecrease),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        text = stringResource(R.string.toolbar_error),
+                        color = contentColor,
+                    )
+                    SpacerWidth(spaces.size16)
+                    Icon(
+                        imageVector = Icons.Default.Refresh,
+                        contentDescription = null
+                    )
                 }
             }
         }

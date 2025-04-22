@@ -6,13 +6,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,7 +20,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import mega.triple.aaa.strings.R.string
-import mega.triple.aaa.ui.components.ext.SpacerWidth
 import mega.triple.aaa.ui.components.icon.CircleBgIcon
 import mega.triple.aaa.ui.ext.formatProbability
 import mega.triple.aaa.ui.theme.AAATheme
@@ -37,12 +34,11 @@ fun RainChanceCard(
     @IntRange(0, 100) dayChance: Int = 0,
     @IntRange(0, 100) nightChance: Int = 0,
 ) {
-    Card(
-        colors = CardDefaults.cardColors().copy(
-            containerColor = colors.cardBG,
-            contentColor = colors.cardContent,
-        ),
-        modifier = modifier,
+    Surface(
+        color = colors.cardBG,
+        contentColor = colors.cardContent,
+        modifier = modifier
+            .clip(AAATheme.shapes.cardShape),
     ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(spaces.size12),
@@ -50,12 +46,12 @@ fun RainChanceCard(
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(spaces.size8),
                 modifier = Modifier
                     .padding(spaces.size12)
                     .fillMaxWidth()
             ) {
                 CircleBgIcon(iconRes = drawableRes.ic_rainy)
-                SpacerWidth(spaces.size8)
                 Text(
                     text = stringResource(string.home_rain_forecast),
                     style = typography.ps400size14,
@@ -99,7 +95,6 @@ private fun RainChance(
             Box(
                 modifier = Modifier
                     .fillMaxWidth(chance / 100f)
-                    .fillMaxHeight()
                     .height(spaces.size24)
                     .background(color = colors.changeGrowth, shape = CircleShape),
             )

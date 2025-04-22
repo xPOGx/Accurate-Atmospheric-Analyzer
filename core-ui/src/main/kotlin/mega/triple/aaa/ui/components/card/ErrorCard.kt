@@ -7,17 +7,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import mega.triple.aaa.strings.R
@@ -35,9 +34,10 @@ fun ErrorCard(
     onTryAgain: (() -> Unit)? = null,
 ) {
     Box(modifier = modifier.padding(top = spaces.size8)) {
-        Card(
-            shape = RoundedCornerShape(spaces.size24),
-            modifier = Modifier.padding(spaces.size24)
+        Surface(
+            modifier = Modifier
+                .padding(spaces.size24)
+                .clip(shapes.bigCardShape)
         ) {
             Column(
                 verticalArrangement = Arrangement.Center,
@@ -72,8 +72,8 @@ fun ErrorCard(
                 .align(Alignment.TopCenter)
                 .size(spaces.size48)
                 .background(
-                    Color.Red.copy(alpha = .8f),
-                    shapes.circleShape,
+                    color = colors.error,
+                    shape = shapes.circleShape,
                 )
         ) {
             Icon(
