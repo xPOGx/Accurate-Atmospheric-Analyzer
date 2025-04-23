@@ -18,7 +18,9 @@ import mega.triple.aaa.domain.location.model.LocationDomainModel.Companion.toDom
 import mega.triple.aaa.search.ext.SearchAction
 import mega.triple.aaa.strings.R.string
 import mega.triple.aaa.ui.ext.LocationType
-import mega.triple.aaa.ui.ext.LocationType.*
+import mega.triple.aaa.ui.ext.LocationType.CITY
+import mega.triple.aaa.ui.ext.LocationType.CONTINENT
+import mega.triple.aaa.ui.ext.LocationType.COUNTRY
 import mega.triple.aaa.ui.ext.SingleEvent
 import mega.triple.aaa.ui.ext.UI
 import mega.triple.aaa.ui.ext.UI.Companion.getOrNull
@@ -53,6 +55,7 @@ class SearchViewModel(
             is SearchAction.OnNavigateBack -> onNavigationBack.fire()
             is SearchAction.ChangeEditMode -> changeEditMode(action.mode)
             is SearchAction.ChangeFilterQuery -> filterLocationList(action.query)
+            SearchAction.ChangeSearchMode -> changeSearchMode()
         }
     }
 
@@ -227,6 +230,15 @@ class SearchViewModel(
                 }
         }
     }
+
+    private fun changeSearchMode() {
+        _uiState.update { state ->
+            state.copy(
+                isSearchActive = !state.isSearchActive,
+                currentQuery = "",
+            )
+        }
+    }
 }
 
 data class SearchUiState(
@@ -234,4 +246,6 @@ data class SearchUiState(
     val locationList: UI<List<Pair<String?, String?>>> = UI.LOADING,
     val editMode: LocationType? = null,
     val filteredList: List<Pair<String?, String?>> = emptyList(),
+    val isSearchActive: Boolean = false,
+    val currentQuery: String = "",
 )

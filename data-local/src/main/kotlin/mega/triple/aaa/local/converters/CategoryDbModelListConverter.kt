@@ -2,7 +2,6 @@ package mega.triple.aaa.local.converters
 
 import androidx.room.TypeConverter
 import io.ktor.serialization.kotlinx.json.DefaultJson
-import kotlinx.serialization.encodeToString
 import mega.triple.aaa.local.model.forecast.CategoryDbModel
 
 class CategoryDbModelListConverter {
@@ -11,7 +10,7 @@ class CategoryDbModelListConverter {
         if (categories.isNullOrEmpty()) {
             return null
         }
-        return DefaultJson.encodeToString(categories) // Use Gson or any other JSON library
+        return DefaultJson.encodeToString(categories)
     }
 
     @TypeConverter

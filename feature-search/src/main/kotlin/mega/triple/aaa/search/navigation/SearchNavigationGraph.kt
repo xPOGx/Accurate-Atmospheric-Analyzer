@@ -1,6 +1,5 @@
 package mega.triple.aaa.search.navigation
 
-import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -8,6 +7,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import mega.triple.aaa.common.ext.showToast
 import mega.triple.aaa.navigation.NavigationDirection
 import mega.triple.aaa.search.SearchScreen
 import mega.triple.aaa.search.SearchViewModel
@@ -28,12 +28,12 @@ fun NavGraphBuilder.searchNavigationGraph(
 
             with(viewModel) {
                 onSaveSuccess.collectEffect {
-                    Toast.makeText(context, uiState.location.locationName, Toast.LENGTH_LONG).show()
+                    context.showToast(uiState.location.locationName)
                     navController.navigateUp()
                 }
                 onNavigationBack.collectEffect { navController.navigateUp() }
                 onToast.collectEffect { msg ->
-                    Toast.makeText(context, msg.asString(context), Toast.LENGTH_LONG).show()
+                    context.showToast(msg.asString(context))
                 }
             }
 

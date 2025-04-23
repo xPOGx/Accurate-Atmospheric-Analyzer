@@ -14,10 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -36,10 +33,10 @@ fun SearchToolbar(
     modifier: Modifier = Modifier,
     editMode: LocationType? = null,
     forceMode: Boolean = false,
+    isSearchActive: Boolean = false,
+    currentQuery: String = "",
     onAction: ((SearchAction) -> Unit)? = null,
 ) {
-    var isSearchActive by remember(editMode) { mutableStateOf(false) }
-    var currentQuery: String by remember(editMode) { mutableStateOf("") }
     val focusManager = LocalFocusManager.current
     val focusRequester = remember { FocusRequester() }
 
@@ -50,7 +47,6 @@ fun SearchToolbar(
                     TextField(
                         value = currentQuery,
                         onValueChange = {
-                            currentQuery = it
                             onAction?.invoke(SearchAction.ChangeFilterQuery(it))
                         },
                         singleLine = true,
@@ -82,11 +78,7 @@ fun SearchToolbar(
             if (editMode != null) {
                 IconButton(
                     onClick = {
-                        if (isSearchActive) {
-                            currentQuery = ""
-                            onAction?.invoke(SearchAction.ChangeFilterQuery(""))
-                        }
-                        isSearchActive = !isSearchActive
+                        onAction?.invoke(SearchAction.ChangeSearchMode)
                     },
                 ) {
                     AnimatedContent(isSearchActive) {

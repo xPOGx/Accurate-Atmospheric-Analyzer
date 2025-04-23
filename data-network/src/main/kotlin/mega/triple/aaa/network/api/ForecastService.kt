@@ -2,7 +2,7 @@ package mega.triple.aaa.network.api
 
 import io.ktor.client.statement.HttpResponse
 
-interface ForecastService {
+fun interface ForecastService {
     suspend fun get5dayForecast(
         language: String,
         locationKey: String,

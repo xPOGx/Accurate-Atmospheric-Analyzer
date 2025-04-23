@@ -4,7 +4,6 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
@@ -12,7 +11,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
@@ -21,6 +19,7 @@ import com.google.firebase.analytics.analytics
 import com.google.firebase.analytics.logEvent
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import mega.triple.aaa.common.ext.showToast
 import mega.triple.aaa.domain.settings.GetThemeUC
 import mega.triple.aaa.domain.settings.model.ThemeTypeDomainModel.Companion.toUiModel
 import mega.triple.aaa.main.navigation.AAANavHost
@@ -57,13 +56,14 @@ class AAAActivity : ComponentActivity() {
             val location by mainViewModel.location.collectAsStateWithLifecycle()
             val themeType by mainViewModel.themeType.collectAsStateWithLifecycle(ThemeTypeUiModel.LIGHT)
 
-            val context = LocalContext.current
-
             AAATheme(themeType) {
                 location.render(
                     onLoading = { GlobalLoading(withBackground = false) }
                 ) {
-                    AnimatedContent(targetState = it != null, label = "MainScreen") { isValid ->
+                    AnimatedContent(
+                        targetState = it != null,
+                        label = "MainScreen",
+                    ) { isValid ->
                         if (isValid) {
                             AAANavHost(navController = navHostController)
                         } else {
@@ -72,15 +72,11 @@ class AAAActivity : ComponentActivity() {
 
                             with(viewModel) {
                                 onSaveSuccess.collectEffect {
-                                    Toast.makeText(
-                                        context,
-                                        uiState.location.locationName,
-                                        Toast.LENGTH_LONG
-                                    ).show()
+                                    this@AAAActivity.showToast(uiState.location.locationName)
                                     mainViewModel.fetchLocation()
                                 }
                                 onToast.collectEffect { msg ->
-                                    Toast.makeText(context, msg.asString(context), Toast.LENGTH_LONG).show()
+                                    this@AAAActivity.showToast(msg.asString(this@AAAActivity))
                                 }
                             }
 

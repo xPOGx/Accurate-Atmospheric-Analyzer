@@ -14,7 +14,7 @@ class GetThemeUCImpl(
     override operator fun invoke(): Flow<ThemeTypeDomainModel> {
         return try {
             settingsDatastore.getThemeType().map { it.toDomainModel() }
-        } catch (e: Exception) {
+        } catch (_: Throwable) {
             flowOf(ThemeTypeDomainModel.LIGHT)
         }
     }

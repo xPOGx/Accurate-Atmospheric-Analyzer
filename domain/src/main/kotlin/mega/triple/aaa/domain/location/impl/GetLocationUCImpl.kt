@@ -15,7 +15,7 @@ class GetLocationUCImpl(
         return try {
             val protoModel = locationDataStore.readLocation()
             protoModel.map { it?.toDomainModel() }
-        } catch (e: Exception) {
+        } catch (_: Throwable) {
             flowOf(null)
         }
     }

@@ -44,10 +44,7 @@ fun NavGraphBuilder.homeNavigationGraph(
             ) { location ->
                 HomeScreen(
                     location = location,
-                    forecastFlows = uiState.forecastFlows,
-                    lastUpdateDate = uiState.lastUpdatedDate,
-                    isRefreshing = uiState.isRefreshing,
-                    cardsWrapper = uiState.cardsWrapper,
+                    uiState = uiState,
                     onAction = viewModel::onAction,
                 )
             }

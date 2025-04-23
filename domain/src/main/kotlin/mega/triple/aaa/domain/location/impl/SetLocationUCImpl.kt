@@ -1,6 +1,7 @@
 package mega.triple.aaa.domain.location.impl
 
 import kotlinx.coroutines.flow.first
+import mega.triple.aaa.domain.ext.resultLauncher
 import mega.triple.aaa.domain.location.GetCityKeyUC
 import mega.triple.aaa.domain.location.GetLocationUC
 import mega.triple.aaa.domain.location.SetLocationUC
@@ -13,14 +14,14 @@ class SetLocationUCImpl(
     private val getCityKeyUC: GetCityKeyUC,
     private val getLocationUC: GetLocationUC,
 ) : SetLocationUC {
-    override suspend operator fun invoke(domainModel: LocationDomainModel): Result<Unit> {
-        return try {
+    override suspend operator fun invoke(domainModel: LocationDomainModel): Result<Unit> =
+        resultLauncher {
             val location = getLocationUC().first()
             if (location?.continent?.id == domainModel.continent?.id &&
                 location?.country?.id == domainModel.country?.id &&
                 location?.city?.id == domainModel.city?.id
             ) {
-                return Result.success(Unit)
+                return@resultLauncher
             }
 
             getCityKeyUC(
@@ -37,10 +38,5 @@ class SetLocationUCImpl(
             }.onFailure {
                 throw it
             }
-
-            Result.success(Unit)
-        } catch (e: Exception) {
-            Result.failure(e)
         }
-    }
 }

@@ -11,4 +11,5 @@ sealed class SearchAction {
     data object OnNavigateBack : SearchAction()
     data class ChangeEditMode(val mode: LocationType?) : SearchAction()
     data class ChangeFilterQuery(val query: String) : SearchAction()
+    data object ChangeSearchMode : SearchAction()
 }

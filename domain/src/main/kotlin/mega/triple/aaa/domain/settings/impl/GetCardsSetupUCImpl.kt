@@ -16,7 +16,7 @@ class GetCardsSetupUCImpl(
             settingsDatastore.getCardsSetup().map { map ->
                 map.mapKeys { it.key.toDomainModel() }
             }
-        } catch (_: Exception) {
+        } catch (_: Throwable) {
             flowOf(emptyMap())
         }
     }

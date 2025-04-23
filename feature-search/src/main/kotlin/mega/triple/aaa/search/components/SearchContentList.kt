@@ -49,7 +49,6 @@ import mega.triple.aaa.ui.ext.UI
 import mega.triple.aaa.ui.ext.render
 import mega.triple.aaa.ui.theme.AAATheme
 import mega.triple.aaa.ui.theme.AAATheme.spaces
-import kotlin.collections.get
 
 @Composable
 fun SearchContentList(
@@ -85,6 +84,13 @@ fun SearchContentList(
     ) {
         alphabetRelativeDragYOffset = relativeDragYOffset
         alphabetDistanceFromTopOfScreen = containerDistance
+        coroutineScope.launch {
+            val indexOfChar =
+                relativeDragYOffset?.getIndexOfCharBasedOnYPosition(alphabetHeightInPixels)
+            mapOfFirstLetterIndex[indexOfChar]?.let {
+                lazyListState.scrollToItem(it)
+            }
+        }
     }
 
     Column(
@@ -98,7 +104,13 @@ fun SearchContentList(
         uiListState.render {
             SpacerHeight(height = spaces.size8)
             AnimatedContent(filteredList.isNotEmpty()) { listAvailable ->
-                if (listAvailable) {
+                if (!listAvailable) {
+                    LottieAnimation(
+                        composition = compositionEmpty,
+                        progress = { emptyProgress },
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                } else {
                     BoxWithConstraints {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
@@ -137,15 +149,6 @@ fun SearchContentList(
                                         relativeDragYOffset,
                                         containerDistanceFromTopOfScreen,
                                     )
-                                    coroutineScope.launch {
-                                        val indexOfChar =
-                                            relativeDragYOffset?.getIndexOfCharBasedOnYPosition(
-                                                alphabetHeightInPixels,
-                                            )
-                                        mapOfFirstLetterIndex[indexOfChar]?.let {
-                                            lazyListState.scrollToItem(it)
-                                        }
-                                    }
                                 },
                             )
                         }
@@ -153,18 +156,11 @@ fun SearchContentList(
                             ScrollingBubble(
                                 boxConstraintMaxWidth = this.maxWidth,
                                 bubbleOffsetYFloat = yOffset + alphabetDistanceFromTopOfScreen,
-                                currAlphabetScrolledOn = yOffset.getIndexOfCharBasedOnYPosition(
-                                    alphabetHeightInPixels,
-                                ),
+                                currAlphabetScrolledOn =
+                                    yOffset.getIndexOfCharBasedOnYPosition(alphabetHeightInPixels),
                             )
                         }
                     }
-                } else {
-                    LottieAnimation(
-                        composition = compositionEmpty,
-                        progress = { emptyProgress },
-                        modifier = Modifier.fillMaxWidth(),
-                    )
                 }
             }
         }

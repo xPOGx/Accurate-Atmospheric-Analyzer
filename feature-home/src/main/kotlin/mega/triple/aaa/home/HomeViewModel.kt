@@ -59,7 +59,12 @@ class HomeViewModel(
             HomeAction.OnNavigateSettings -> onNavigateToSettings.fire()
             HomeAction.UpdateAllData -> updateAll()
             HomeAction.Refresh -> refresh()
-            is HomeAction.UpdateCardsSetup -> setCardsSetup(action.cards)
+            is HomeAction.ChangeDay -> setTabId(action.index)
+            HomeAction.ChangeEditMode -> toggleEditMode()
+            is HomeAction.OnCardClick -> onCardClick(action.item)
+            is HomeAction.AddCard -> addCard(action.item)
+            is HomeAction.HideCard -> hideCard(action.item)
+            HomeAction.OnAddFirstCardClick -> addFirstCard()
         }
     }
 
@@ -135,14 +140,92 @@ class HomeViewModel(
         val models = cards.mapKeys { it.key.toDomainModel() }
         setCardsSetup(models)
     }
+
+    private fun setTabId(index: Int) {
+        _uiState.update {
+            it.copy(selectedTabId = index)
+        }
+    }
+
+    private fun toggleEditMode() {
+        _uiState.update {
+            it.copy(
+                editMode = !it.editMode,
+                uvCustomVisible = false,
+                selectedCard = null,
+            )
+        }
+    }
+
+    private fun onCardClick(item: HomeCardType) {
+        val uiState = _uiState.value
+        if (item == HomeCardType.UV_INDEX && !uiState.editMode) {
+            _uiState.update {
+                it.copy(uvCustomVisible = !it.uvCustomVisible)
+            }
+            return
+        }
+        if (!uiState.editMode) return
+        if (item == uiState.selectedCard) {
+            _uiState.update {
+                it.copy(selectedCard = null)
+            }
+            return
+        }
+        if (uiState.selectedCard == null) {
+            _uiState.update {
+                it.copy(selectedCard = item)
+            }
+            return
+        }
+        uiState.selectedCard.let { selected ->
+            val temp = mutableMapOf<HomeCardType, Boolean>()
+            uiState.cardsWrapper.cards.forEach { entry ->
+                when (entry.key) {
+                    item -> temp[selected] = uiState.cardsWrapper.cards[selected] ?: return
+                    selected -> temp[item] = uiState.cardsWrapper.cards[item] ?: return
+                    else -> temp[entry.key] = entry.value
+                }
+            }
+            _uiState.update {
+                it.copy(
+                    selectedCard = null,
+                )
+            }
+            setCardsSetup(temp)
+        }
+    }
+
+    private fun addCard(item: HomeCardType) {
+        val cards = uiState.value.cardsWrapper.cards.toMutableMap()
+        cards[item] = true
+        setCardsSetup(cards)
+    }
+
+    private fun hideCard(item: HomeCardType) {
+        val cards = uiState.value.cardsWrapper.cards.toMutableMap()
+        cards[item] = false
+        setCardsSetup(cards)
+    }
+
+    private fun addFirstCard() {
+        val temp = uiState.value.cardsWrapper.cards.toMutableMap()
+        val key = temp.keys.first()
+        temp[key] = true
+        setCardsSetup(temp)
+    }
 }
 
 data class HomeUiState(
     val location: UI<LocationUiModel?> = UI.LOADING,
     val forecastFlows: ForecastFlows = ForecastFlows(),
     val lastUpdatedDate: Calendar? = null,
-    val isRefreshing: Boolean = false,
     val cardsWrapper: HomeCardWrapper = HomeCardWrapper(),
+    val selectedTabId: Int = 0,
+    val editMode: Boolean = false,
+    val isRefreshing: Boolean = false,
+    val uvCustomVisible: Boolean = false,
+    val selectedCard: HomeCardType? = null,
 )
 
 data class HomeCardWrapper(

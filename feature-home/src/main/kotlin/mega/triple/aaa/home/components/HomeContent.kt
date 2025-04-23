@@ -110,6 +110,7 @@ fun HomeContent(
         }
 
         HomeCardType.FORECAST_HOURLY -> {
+            // TODO Day forecast card
             Box {
                 ForecastCard(
                     modifier = modifier,

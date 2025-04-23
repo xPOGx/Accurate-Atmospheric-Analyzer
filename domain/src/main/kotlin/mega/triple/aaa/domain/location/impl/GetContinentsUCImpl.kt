@@ -2,6 +2,7 @@ package mega.triple.aaa.domain.location.impl
 
 import kotlinx.coroutines.flow.first
 import mega.triple.aaa.domain.ext.EmptyDatabase
+import mega.triple.aaa.domain.ext.resultLauncher
 import mega.triple.aaa.domain.location.GetContinentsUC
 import mega.triple.aaa.domain.location.model.ContinentDomainModel
 import mega.triple.aaa.domain.location.model.ContinentDomainModel.Companion.toDbModel
@@ -13,22 +14,23 @@ class GetContinentsUCImpl(
     private val locationDbSource: LocationDbSource,
     private val locationNetSource: LocationNetSource,
 ) : GetContinentsUC {
-    override suspend operator fun invoke(): Result<List<ContinentDomainModel>> {
-        return try {
-            val dbModels = locationDbSource.getContinents().first()
-            if (dbModels.isEmpty()) {
-                throw EmptyDatabase()
-            } else {
-                val domainModels = dbModels.map { it.toDomainModel() }
-                Result.success(domainModels)
-            }
-        } catch (e: Throwable) {
-            return locationNetSource.getContinents()
+    override suspend operator fun invoke(): Result<List<ContinentDomainModel>> = resultLauncher {
+        val dbModels = locationDbSource.getContinents().first()
+        if (dbModels.isEmpty()) {
+            throw EmptyDatabase()
+        } else {
+            val domainModels = dbModels.map { it.toDomainModel() }
+            Result.success(domainModels)
+        }
+    }.fold(
+        onSuccess = { it },
+        onFailure = {
+            locationNetSource.getContinents()
                 .mapCatching { netModels ->
                     val dbModels = netModels.map { it.toDbModel() }
                     locationDbSource.insertContinents(dbModels)
                     dbModels.map { it.toDomainModel() }
                 }
         }
-    }
+    )
 }

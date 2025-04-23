@@ -11,7 +11,7 @@ class GetLastUpdateUCImpl(
     override operator fun invoke(): Flow<Long?> {
         return try {
             settingsDatastore.getLastUpdate()
-        } catch (_: Exception) {
+        } catch (_: Throwable) {
             flowOf(null)
         }
     }
