@@ -27,7 +27,7 @@ fun MeasureChooser(
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
-            stringResource(string.settings_measure),
+            text = stringResource(string.settings_measure),
             style = typography.ps400size18,
             color = Color.Black,
             modifier = Modifier.padding(horizontal = spaces.size16)
@@ -45,7 +45,7 @@ fun MeasureChooser(
                 modifier = Modifier.padding(vertical = spaces.size8)
             ) {
                 Text(
-                    stringResource(string.settings_metric),
+                    text = stringResource(string.settings_metric),
                     style = typography.ps700size18
                 )
             }
@@ -56,7 +56,7 @@ fun MeasureChooser(
                 modifier = Modifier.padding(vertical = spaces.size8)
             ) {
                 Text(
-                    stringResource(string.settings_imperial),
+                    text = stringResource(string.settings_imperial),
                     style = typography.ps700size18
                 )
             }

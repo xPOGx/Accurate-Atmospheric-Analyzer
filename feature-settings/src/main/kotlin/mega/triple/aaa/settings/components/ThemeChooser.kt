@@ -27,7 +27,7 @@ fun ThemeChooser(
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
-            "Theme",
+            text = stringResource(string.settings_theme),
             style = typography.ps400size18,
             color = Color.Black,
             modifier = Modifier.padding(horizontal = spaces.size16)
@@ -44,7 +44,7 @@ fun ThemeChooser(
                 modifier = Modifier.padding(vertical = spaces.size8)
             ) {
                 Text(
-                    stringResource(string.settings_auto),
+                    text = stringResource(string.settings_auto),
                     style = typography.ps700size18
                 )
             }
@@ -55,7 +55,7 @@ fun ThemeChooser(
                 modifier = Modifier.padding(vertical = spaces.size8)
             ) {
                 Text(
-                    stringResource(string.settings_dynamic),
+                    text = stringResource(string.settings_dynamic),
                     style = typography.ps700size18
                 )
             }
@@ -65,7 +65,7 @@ fun ThemeChooser(
                 modifier = Modifier.padding(vertical = spaces.size8)
             ) {
                 Text(
-                    stringResource(string.settings_dark),
+                    text = stringResource(string.settings_dark),
                     style = typography.ps700size18
                 )
             }
@@ -75,7 +75,7 @@ fun ThemeChooser(
                 modifier = Modifier.padding(vertical = spaces.size8)
             ) {
                 Text(
-                    stringResource(string.settings_light),
+                    text = stringResource(string.settings_light),
                     style = typography.ps700size18
                 )
             }

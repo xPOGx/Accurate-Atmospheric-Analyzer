@@ -26,7 +26,7 @@ fun LanguageChooser(
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
-            stringResource(string.settings_language),
+            text = stringResource(string.settings_language),
             style = typography.ps400size18,
             color = Color.Black,
             modifier = Modifier.padding(horizontal = spaces.size16)
@@ -44,7 +44,7 @@ fun LanguageChooser(
                 modifier = Modifier.padding(vertical = spaces.size8)
             ) {
                 Text(
-                    stringResource(string.settings_english),
+                    text = stringResource(string.settings_english),
                     style = typography.ps700size18
                 )
             }
@@ -55,7 +55,7 @@ fun LanguageChooser(
                 modifier = Modifier.padding(vertical = spaces.size8)
             ) {
                 Text(
-                    stringResource(string.settings_ukrainian),
+                    text = stringResource(string.settings_ukrainian),
                     style = typography.ps700size18
                 )
             }

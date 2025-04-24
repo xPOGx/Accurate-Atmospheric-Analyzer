@@ -14,6 +14,7 @@ import androidx.glance.layout.size
 import androidx.glance.preview.ExperimentalGlancePreviewApi
 import androidx.glance.preview.Preview
 import androidx.glance.text.Text
+import mega.triple.aaa.common.ext.Constants
 import mega.triple.aaa.ui.ext.formatTemperature
 import mega.triple.aaa.ui.ext.getAccuWeatherIconRes
 import mega.triple.aaa.ui.model.forecast.DailyForecastUiModel
@@ -53,11 +54,9 @@ internal fun ForecastDay(
             modifier = GlanceModifier.size(AAATheme.spaces.size54)
         )
         Text(
-            text = formatTemperature(
-                data?.day?.wetBulbTemperature?.average?.value
-                    ?: data?.day?.wetBulbTemperature?.mathAverage,
-                data?.day?.wetBulbTemperature?.maximum?.unit,
-            ),
+            text = data?.day?.wetBulbTemperature?.let {
+                formatTemperature(it.average?.value ?: it.mathAverage, it.maximum?.unit)
+            } ?: Constants.STUB_VALUE,
             style = defaultTextStyle,
         )
     }

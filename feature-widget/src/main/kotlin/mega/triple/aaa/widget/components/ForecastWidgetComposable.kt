@@ -23,6 +23,7 @@ import androidx.glance.preview.ExperimentalGlancePreviewApi
 import androidx.glance.preview.Preview
 import androidx.glance.unit.ColorProvider
 import mega.triple.aaa.common.ext.isToday
+import mega.triple.aaa.common.ext.normalized
 import mega.triple.aaa.strings.R
 import mega.triple.aaa.ui.R.drawable
 import mega.triple.aaa.ui.ext.formatDate
@@ -57,19 +58,17 @@ internal fun ForecastWidgetComposable(
             contentScale = ContentScale.Crop,
         )
         when (cellInfo) {
-            CELL_1_1 -> if (today == null) {
-                ForecastEmpty()
-            } else {
-                ForecastDay(
+            CELL_1_1 -> when (today) {
+                null -> ForecastEmpty()
+                else -> ForecastDay(
                     data = today,
                     title = context.getString(R.string.common_today)
                 )
             }
 
-            CELL_1_2 -> if (today == null || tomorrow == null) {
-                ForecastEmpty()
-            } else {
-                Column(
+            CELL_1_2 -> when {
+                today == null || tomorrow == null -> ForecastEmpty()
+                else -> Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = modifier,
                 ) {
@@ -95,10 +94,9 @@ internal fun ForecastWidgetComposable(
                 }
             }
 
-            CELL_2_1 -> if (today == null || tomorrow == null) {
-                ForecastEmpty()
-            } else {
-                Row(
+            CELL_2_1 -> when {
+                today == null || tomorrow == null -> ForecastEmpty()
+                else -> Row(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     ForecastDay(
@@ -112,10 +110,9 @@ internal fun ForecastWidgetComposable(
                 }
             }
 
-            CELL_2_2 -> if (list.isEmpty()) {
-                ForecastEmpty()
-            } else {
-                Column(
+            CELL_2_2 -> when {
+                list.isEmpty() -> ForecastEmpty()
+                else -> Column(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
@@ -124,13 +121,13 @@ internal fun ForecastWidgetComposable(
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         list.take(2).forEach {
-                            val dateTime = it.epochDate * 1000
-                            val title = if (dateTime.isToday()) {
-                                context.getString(R.string.common_today)
-                            } else formatDate(dateTime)
+                            val dateTime = it.epochDate.normalized()
                             ForecastDay(
                                 data = it,
-                                title = title,
+                                title = when {
+                                    dateTime.isToday() -> context.getString(R.string.common_today)
+                                    else -> formatDate(dateTime)
+                                },
                             )
                         }
                     }
@@ -148,12 +145,9 @@ internal fun ForecastWidgetComposable(
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         list.drop(2).take(2).forEach {
-                            val dateTime = it.epochDate * 1000
-                            val title = formatDate(dateTime)
-
                             ForecastDay(
                                 data = it,
-                                title = title,
+                                title = formatDate(it.epochDate.normalized()),
                             )
                         }
                     }

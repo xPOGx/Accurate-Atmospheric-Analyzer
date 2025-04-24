@@ -3,6 +3,7 @@ package mega.triple.aaa.widget.components
 import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.res.stringResource
 import androidx.glance.Button
 import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
@@ -16,6 +17,7 @@ import androidx.glance.preview.ExperimentalGlancePreviewApi
 import androidx.glance.preview.Preview
 import androidx.glance.text.Text
 import mega.triple.aaa.main.AAAActivity
+import mega.triple.aaa.strings.R
 import mega.triple.aaa.ui.theme.AAATheme
 import mega.triple.aaa.widget.ext.cellInfo
 import mega.triple.aaa.widget.ext.createCell
@@ -33,18 +35,33 @@ internal fun ForecastEmpty(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier,
     ) {
-        val textButton = if (small)
-            "O\nP\nE\nN" else "OPEN"
         if (!small) {
-            Text("NO DATA", style = defaultTextStyle)
+            Text(
+                text = stringResource(R.string.widget_empty),
+                style = defaultTextStyle,
+            )
             Spacer(GlanceModifier.height(AAATheme.spaces.size4))
         }
         if (small && !cellInfo.info.endsWith("1")) {
-            Text("NO", style = defaultTextStyle)
-            Text("D\nA\nT\nA", style = defaultTextStyle)
+            Text(
+                text = stringResource(R.string.widget_empty_long_first),
+                style = defaultTextStyle,
+            )
+            Text(
+                text = stringResource(R.string.widget_empty_long_second),
+                style = defaultTextStyle,
+            )
             Spacer(GlanceModifier.height(AAATheme.spaces.size4))
         }
-        Button(textButton, { actionStartActivity<AAAActivity>() })
+        Button(
+            text = stringResource(
+                when {
+                    small -> R.string.widget_action_open_long
+                    else -> R.string.widget_action_open
+                }
+            ),
+            onClick = { actionStartActivity<AAAActivity>() },
+        )
     }
 }
 

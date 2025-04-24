@@ -13,6 +13,10 @@ val defaultTextStyle = TextStyle(
     color = ColorProvider(Color.White),
 )
 
+private const val CELL_WIDTH = 73
+private const val CELL_HEIGHT = 118
+private const val CELL_PADDING = 16
+
 /**
  * Cell creation only in Portrait mode
  *
@@ -25,7 +29,10 @@ val defaultTextStyle = TextStyle(
  * References:
  * - [developer.android.com](https://developer.android.com/develop/ui/views/appwidgets/layouts#:~:text=n%20x%20m,x%20(66m%20%2D%2015))
  */
-fun createCell(n: Int, m: Int): DpSize = DpSize((73 * n - 16).dp, (118 * m - 16).dp)
+fun createCell(n: Int, m: Int): DpSize = DpSize(
+    (CELL_WIDTH * n - CELL_PADDING).dp,
+    (CELL_HEIGHT * m - CELL_PADDING).dp,
+)
 
 enum class CellInfo(val info: String) {
     CELL_1_1("1_1"),
@@ -41,6 +48,6 @@ fun DpSize.cellInfo(): CellInfo =
 
 fun DpSize.cellValues(): String = "${this.width.value}_${this.height.value}"
 
-fun Dp.getWidth(): Int = ((this.value + 16) / 73).toInt()
+fun Dp.getWidth(): Int = ((this.value + CELL_PADDING) / CELL_WIDTH).toInt()
 
-fun Dp.getHeight(): Int = ((this.value + 16) / 118).toInt()
+fun Dp.getHeight(): Int = ((this.value + CELL_PADDING) / CELL_HEIGHT).toInt()

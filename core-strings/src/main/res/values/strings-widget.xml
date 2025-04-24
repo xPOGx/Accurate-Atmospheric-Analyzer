@@ -1,0 +1,7 @@
+<resources>
+    <string name="widget_action_open">OPEN</string>
+    <string name="widget_action_open_long">O\nP\nE\nN</string>
+    <string name="widget_empty">NO DATA</string>
+    <string name="widget_empty_long_first">NO</string>
+    <string name="widget_empty_long_second">D\nA\nT\nA</string>
+</resources>
