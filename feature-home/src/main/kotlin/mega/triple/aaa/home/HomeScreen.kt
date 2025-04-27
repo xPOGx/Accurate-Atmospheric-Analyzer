@@ -2,7 +2,6 @@ package mega.triple.aaa.home
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.MutatePriority
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
@@ -28,12 +27,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,7 +39,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import kotlinx.coroutines.launch
 import mega.triple.aaa.home.components.HomeContent
 import mega.triple.aaa.home.components.HomeToolbar
 import mega.triple.aaa.home.ext.HomeAction
@@ -116,14 +112,6 @@ fun HomeScreen(
     val (availableCards, unavailableCards) = remember(uiState.cardsWrapper) {
         uiState.cardsWrapper.cards.partition()
     }
-    val scope = rememberCoroutineScope()
-    LaunchedEffect(uiState.cardsWrapper) {
-        scope.launch {
-            gridState.scroll(MutatePriority.PreventUserInput) {
-                scrollBy(-Float.MAX_VALUE / 2)
-            }
-        }
-    }
     // UI
     Scaffold(
         containerColor = colors.background,
@@ -187,11 +175,7 @@ fun HomeScreen(
                     }
                 }
                 if (availableCards.isEmpty()) {
-                    item(
-                        span = allLine,
-                        key = "EmptyCard",
-                        contentType = "EmptyCard",
-                    ) {
+                    item(span = allLine,) {
                         EmptyCard(
                             onClick = { onAction?.invoke(HomeAction.OnAddFirstCardClick) },
                         )
@@ -211,11 +195,13 @@ fun HomeScreen(
                                     else -> Color.Transparent
                                 },
                                 shape = RoundedCornerShape(spaces.size12),
-                            ).clip(AAATheme.shapes.cardShape)
+                            )
+                            .clip(AAATheme.shapes.cardShape)
                             .combinedClickable(
                                 onLongClick = { onAction?.invoke(HomeAction.ChangeEditMode) },
                                 onClick = { onAction?.invoke(HomeAction.OnCardClick(item)) },
-                            ).animateItem(),
+                            )
+                            .animateItem(),
                     ) {
                         HomeContent(
                             contentType = item,
@@ -242,7 +228,10 @@ fun HomeScreen(
                     }
                 }
                 if (uiState.editMode && unavailableCards.isNotEmpty()) {
-                    item(span = allLine) {
+                    item(
+                        span = allLine,
+                        key = "Divider",
+                    ) {
                         Image(
                             painter = painterResource(drawable.ic_divider),
                             contentDescription = null,

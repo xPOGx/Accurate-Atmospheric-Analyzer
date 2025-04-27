@@ -51,7 +51,7 @@ class SettingsDatastoreImpl(
     override fun getCardsSetup(): Flow<Map<HomeCardTypePrefModel, Boolean>> = data.mapLatest { pref ->
         val encoded = pref[cardsSetupPrefKey]
         if (encoded.isNullOrEmpty()) {
-           emptyMap()
+            emptyMap()
         } else {
             Json.decodeFromString(encoded)
         }
