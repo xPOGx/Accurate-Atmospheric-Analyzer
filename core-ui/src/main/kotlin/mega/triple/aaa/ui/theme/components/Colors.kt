@@ -21,6 +21,7 @@ class Colors(
     secondaryText: Color,
     rainChance: Color,
     error: Color,
+    chartArea: Color,
 ) {
     var background by mutableStateOf(background)
         private set
@@ -59,6 +60,9 @@ class Colors(
         private set
 
     var error by mutableStateOf(error)
+        private set
+
+    var chartArea by mutableStateOf(chartArea)
         private set
 }
 

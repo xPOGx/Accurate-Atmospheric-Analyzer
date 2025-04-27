@@ -25,6 +25,7 @@ workManager = "2.10.0"
 workStartup = "1.2.0"
 lottieCompose = "6.4.1"
 widget = "1.1.1"
+vico = "2.1.2"
 
 #build constants
 applicationId = "mega.triple.aaa"
@@ -111,6 +112,9 @@ lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", versio
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
+
+# Line chart
+vico-compose = { group = "com.patrykandpatrick.vico", name = "compose", version.ref = "vico" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

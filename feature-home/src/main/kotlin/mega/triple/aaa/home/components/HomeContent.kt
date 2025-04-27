@@ -1,5 +1,6 @@
 package mega.triple.aaa.home.components
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -19,6 +20,7 @@ import mega.triple.aaa.common.ext.getTimeDiff
 import mega.triple.aaa.home.ext.HomeCardType
 import mega.triple.aaa.strings.R.string
 import mega.triple.aaa.ui.components.card.ForecastCard
+import mega.triple.aaa.ui.components.card.ForecastDailyCard
 import mega.triple.aaa.ui.components.card.ParameterCard
 import mega.triple.aaa.ui.components.card.RainChanceCard
 import mega.triple.aaa.ui.components.view.UvIndexView
@@ -33,6 +35,7 @@ import mega.triple.aaa.ui.theme.AAATheme.typography
 import kotlin.math.absoluteValue
 import mega.triple.aaa.ui.R.drawable as drawableRes
 
+@SuppressLint("RestrictedApi")
 @Composable
 fun HomeContent(
     modifier: Modifier = Modifier,
@@ -41,6 +44,8 @@ fun HomeContent(
     diffDayNight: DayNightUiModel? = null,
     data: DailyForecastUiModel? = null,
     diffData: DailyForecastUiModel? = null,
+    forecast: List<DailyForecastUiModel> = emptyList(),
+    dayIndex: Int = 0,
     uvCustomVisible: Boolean = false,
 ) {
     when (contentType) {
@@ -119,15 +124,11 @@ fun HomeContent(
             }
         }
 
-        HomeCardType.FORECAST_DAILY -> {
-            // TODO Day forecast card
-            Box {
-                ForecastCard(
-                    modifier = modifier,
-                )
-                Text("DAILY")
-            }
-        }
+        HomeCardType.FORECAST_DAILY -> ForecastDailyCard(
+            forecast = forecast,
+            dayIndex = dayIndex,
+            modifier = modifier,
+        )
 
         HomeCardType.FORECAST_RAIN_CHANCE -> {
             RainChanceCard(
@@ -179,7 +180,7 @@ fun HomeContent(
 private fun HomeContentPreview() {
     AAATheme {
         HomeContent(
-            contentType = HomeCardType.FORECAST_RAIN_CHANCE,
+            contentType = HomeCardType.FORECAST_DAILY,
         )
     }
 }

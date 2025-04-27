@@ -165,7 +165,11 @@ fun HomeScreen(
                 }
             ) {
                 if (listMode) {
-                    items(uiState.forecastFlows.forecast) {
+                    items(
+                        items = uiState.forecastFlows.forecast,
+                        key = { it.date.toString() },
+                        contentType = { "DayCard" },
+                    ) {
                         DayCard(data = it)
                     }
                     return@LazyVerticalGrid
@@ -220,6 +224,8 @@ fun HomeScreen(
                             data = currentData,
                             diffData = diffData,
                             uvCustomVisible = uiState.uvCustomVisible,
+                            forecast = uiState.forecastFlows.forecast,
+                            dayIndex = uiState.selectedTabId,
                         )
 
                         if (uiState.editMode && uiState.selectedCard == null) {
@@ -236,11 +242,7 @@ fun HomeScreen(
                     }
                 }
                 if (uiState.editMode && unavailableCards.isNotEmpty()) {
-                    item(
-                        key = "UnavailableCardsDivider",
-                        span = allLine,
-                        contentType = "UnavailableCardsDivider",
-                    ) {
+                    item(span = allLine) {
                         Image(
                             painter = painterResource(drawable.ic_divider),
                             contentDescription = null,
@@ -252,8 +254,6 @@ fun HomeScreen(
                     items(
                         items = unavailableCards,
                         span = editContentSpan,
-                        key = { it.name },
-                        contentType = { "HomeContent" },
                     ) { item ->
                         Box(Modifier.animateItem()) {
                             HomeContent(
@@ -263,6 +263,8 @@ fun HomeScreen(
                                 data = currentData,
                                 diffData = diffData,
                                 uvCustomVisible = uiState.uvCustomVisible,
+                                forecast = uiState.forecastFlows.forecast,
+                                dayIndex = uiState.selectedTabId,
                             )
 
                             IconButton(

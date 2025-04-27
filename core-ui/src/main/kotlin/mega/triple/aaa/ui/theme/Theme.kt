@@ -39,6 +39,7 @@ fun lightColors() =
         secondaryText = Color(0xFF494649),
         rainChance = Color(0xFFFAEDFF),
         error = Color.Red.copy(alpha = .8f),
+        chartArea = Color(0xFF2B00A5),
     )
 
 fun darkColors() =
@@ -56,6 +57,7 @@ fun darkColors() =
         secondaryText = Color(0xFFB0B0B0),
         rainChance = Color(0xFF051200),
         error = Color(0xFFCF6679),
+        chartArea = Color(0xFF2B00A5),
     )
 
 fun ColorScheme.toColors(isDarkMode: Boolean): Colors =
@@ -73,6 +75,7 @@ fun ColorScheme.toColors(isDarkMode: Boolean): Colors =
         secondaryText = this.secondary,
         rainChance = this.error,
         error = this.error,
+        chartArea = Color(0xFF2B00A5),
     )
 
 @Composable

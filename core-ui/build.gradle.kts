@@ -13,6 +13,7 @@ android {
 dependencies {
     // 3rd party
     implementation(libs.lottie.compose)
+    implementation(libs.vico.compose)
     // Modules
     implementation(project(libs.versions.projectCoreCommon.get()))
     implementation(project(libs.versions.projectCoreStrings.get()))

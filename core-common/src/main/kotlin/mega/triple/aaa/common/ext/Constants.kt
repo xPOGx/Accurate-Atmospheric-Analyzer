@@ -26,5 +26,6 @@ object Constants {
     const val UI_PATTERN = "MMMM d, HH:mm"
     const val SIMPLE_PATTERN = "HH:mm"
     const val DATE_PATTEN = "EEEE, MMM dd"
+    const val SHORT_DATE_PATTEN = "EEE"
     const val TIME_ZONE_UA = "ua-UK"
 }

@@ -70,6 +70,16 @@ fun formatDate(value: Long): String {
     }
 }
 
+fun formatShortDate(value: Long): String {
+    return try {
+        SimpleDateFormat(Constants.SHORT_DATE_PATTEN, Locale.getDefault())
+            .format(Date(value))
+            .replaceFirstChar { it.uppercase() }
+    } catch (_: Throwable) {
+        Constants.STUB_VALUE
+    }
+}
+
 fun formatSpeed(value: Double?, unit: String?) = buildString {
     append(value?.roundToInt() ?: Constants.STUB_VALUE)
     append(unit)

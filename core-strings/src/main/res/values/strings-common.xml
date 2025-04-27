@@ -3,6 +3,7 @@
     <string name="common_error">Error!</string>
     <string name="common_try_again">Try again</string>
     <string name="common_hourly_forecast">Hourly forecast</string>
+    <string name="common_day_forecast">Day forecast</string>
     <string name="common_now">Now</string>
     <string name="common_tomorrow">Tomorrow</string>
     <string name="common_5_days">5 days</string>
