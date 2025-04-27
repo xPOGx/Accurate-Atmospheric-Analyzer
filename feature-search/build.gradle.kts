@@ -1,55 +1,16 @@
+import mega.triple.aaa.convention.core.namespace
+
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.jetbrains.kotlin.android)
-    // Ksp
-    alias(libs.plugins.ksp)
-    // In kotlin 2+ need compose plugin
-    alias(libs.plugins.jetbrains.kotlin.compose)
-    // Serialization
+    id("mega.triple.aaa.convention.feature")
+    id("mega.triple.aaa.convention.di")
     alias(libs.plugins.jetbrains.kotlin.serialization)
 }
 
 android {
-    with(libs) {
-        namespace = "${versions.applicationId.get()}.search"
-        compileSdk = versions.compileSdk.get().toInt()
-
-        defaultConfig {
-            minSdk = versions.minSdk.get().toInt()
-        }
-        compileOptions {
-            sourceCompatibility = JavaVersion.toVersion(versions.javaVersion.get())
-            targetCompatibility = JavaVersion.toVersion(versions.javaVersion.get())
-        }
-        kotlinOptions {
-            jvmTarget = versions.javaVersion.get()
-        }
-        ksp {
-            arg("KOIN_CONFIG_CHECK", "true")
-        }
-    }
+    namespace("search")
 }
 
 dependencies {
-    // CORE
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    // Koin
-    implementation(libs.koin.android)
-    implementation(libs.koin.annotatinos)
-    implementation(libs.koin.androidx.compose)
-    ksp(libs.koin.compiler)
-    // COMPOSE
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
-    implementation(libs.androidx.navigation.compose)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
-    // Serialization
-    implementation(libs.kotlinx.serialization.json)
     // 3rd party
     implementation(libs.lottie.compose)
     // Modules

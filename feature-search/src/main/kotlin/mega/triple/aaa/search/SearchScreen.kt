@@ -40,6 +40,7 @@ fun SearchScreen(
             SearchToolbar(
                 editMode = uiState.editMode,
                 forceMode = forceMode,
+                isSearchActive = uiState.isSearchActive,
                 onAction = onAction,
             )
         },

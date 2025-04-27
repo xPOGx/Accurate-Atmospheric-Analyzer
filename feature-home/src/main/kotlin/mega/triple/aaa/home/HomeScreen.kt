@@ -37,6 +37,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
@@ -170,7 +171,11 @@ fun HomeScreen(
                     return@LazyVerticalGrid
                 }
                 if (!uiState.editMode) {
-                    item(span = allLine) {
+                    item(
+                        span = allLine,
+                        key = "DayTab",
+                        contentType = "DayTab",
+                    ) {
                         DayTab(
                             selectedIndex = uiState.selectedTabId,
                             onSelect = { onAction?.invoke(HomeAction.ChangeDay(it)) },
@@ -178,9 +183,12 @@ fun HomeScreen(
                     }
                 }
                 if (availableCards.isEmpty()) {
-                    item(span = allLine) {
+                    item(
+                        span = allLine,
+                        key = "EmptyCard",
+                        contentType = "EmptyCard",
+                    ) {
                         EmptyCard(
-                            modifier = Modifier.animateItem(),
                             onClick = { onAction?.invoke(HomeAction.OnAddFirstCardClick) },
                         )
                     }
@@ -188,6 +196,8 @@ fun HomeScreen(
                 items(
                     items = availableCards,
                     span = editContentSpan,
+                    key = { it.name },
+                    contentType = { "HomeContent" },
                 ) { item: HomeCardType ->
                     Box(
                         modifier = Modifier
@@ -197,7 +207,8 @@ fun HomeScreen(
                                     else -> Color.Transparent
                                 },
                                 shape = RoundedCornerShape(spaces.size12),
-                            ).combinedClickable(
+                            ).clip(AAATheme.shapes.cardShape)
+                            .combinedClickable(
                                 onLongClick = { onAction?.invoke(HomeAction.ChangeEditMode) },
                                 onClick = { onAction?.invoke(HomeAction.OnCardClick(item)) },
                             ).animateItem(),
@@ -225,7 +236,11 @@ fun HomeScreen(
                     }
                 }
                 if (uiState.editMode && unavailableCards.isNotEmpty()) {
-                    item(key = "NotEmptyUnavailableCards", span = allLine) {
+                    item(
+                        key = "UnavailableCardsDivider",
+                        span = allLine,
+                        contentType = "UnavailableCardsDivider",
+                    ) {
                         Image(
                             painter = painterResource(drawable.ic_divider),
                             contentDescription = null,
@@ -237,6 +252,8 @@ fun HomeScreen(
                     items(
                         items = unavailableCards,
                         span = editContentSpan,
+                        key = { it.name },
+                        contentType = { "HomeContent" },
                     ) { item ->
                         Box(Modifier.animateItem()) {
                             HomeContent(
